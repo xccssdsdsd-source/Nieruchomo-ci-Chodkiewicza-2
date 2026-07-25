@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chodkiewicza 2 — Wynajem lokali użytkowych</title>
+<meta name="description" content="Nieruchomości Chodkiewicza 2 — wynajem lokali użytkowych, Chodkiewicza 2, 98-200 Sieradz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<style>
+:root{
+  --bg: 34 38% 96%;
+  --surface: 30 32% 91%;
+  --surface-2: 28 28% 87%;
+  --primary: 356 48% 26%;
+  --primary-2: 356 42% 36%;
+  --accent: 28 62% 46%;
+  --text: 20 20% 13%;
+  --muted: 22 10% 42%;
+  --line: 22 15% 82%;
+}
+*{-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:auto}
+body{
+  background:hsl(var(--bg));
+  color:hsl(var(--text));
+  font-family:'Manrope',sans-serif;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+.font-display{font-family:'Fraunces',serif}
+h1,h2,h3,.tracking-tightish{letter-spacing:-0.03em}
+.noise-bg{
+  background-image:
+    radial-gradient(ellipse 80% 60% at 15% 0%, hsl(var(--accent)/0.10), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 100% 20%, hsl(var(--primary)/0.12), transparent 60%);
+}
+.card-border{border:1px solid hsl(var(--text)/0.1)}
+.card-top{position:relative}
+.card-top::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:hsl(var(--accent))}
+.shadow-soft{box-shadow: 0 1px 0 hsl(var(--primary)/0.1), 0 18px 40px -22px hsl(var(--primary)/0.35)}
+.shadow-soft-lg{box-shadow: 0 1px 0 hsl(var(--primary)/0.12), 0 30px 60px -24px hsl(var(--primary)/0.45)}
+.btn-primary{
+  background:hsl(var(--primary));
+  color:hsl(34 38% 96%);
+  transition:transform 160ms cubic-bezier(0.23,1,0.32,1), box-shadow 200ms ease, background 200ms ease;
+}
+.btn-primary:hover{background:hsl(var(--primary-2)); box-shadow:0 14px 30px -12px hsl(var(--primary)/0.55); transform:translateY(-2px)}
+.btn-primary:active{transform:translateY(0) scale(0.97)}
+.btn-primary:focus-visible{outline:2px solid hsl(var(--accent)); outline-offset:2px}
+.btn-ghost{
+  border:1px solid hsl(34 38% 96%/0.35);
+  color:hsl(34 38% 96%);
+  transition:transform 160ms cubic-bezier(0.23,1,0.32,1), background 200ms ease, border-color 200ms ease;
+}
+.btn-ghost:hover{background:hsl(34 38% 96%/0.1); border-color:hsl(34 38% 96%/0.6); transform:translateY(-2px)}
+.btn-ghost:active{transform:translateY(0) scale(0.97)}
+.btn-ghost:focus-visible{outline:2px solid hsl(34 38% 96%); outline-offset:2px}
+.link-underline{position:relative}
+.link-underline::after{
+  content:'';position:absolute;left:0;bottom:-2px;width:100%;height:1px;
+  background:currentColor;transform:scaleX(0);transform-origin:right;
+  transition:transform 220ms cubic-bezier(0.23,1,0.32,1);
+}
+.link-underline:hover::after{transform:scaleX(1);transform-origin:left}
+.nav-blur{background:hsl(var(--bg)/0.72); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px)}
+#mainNav .nav-link, #mainNav #menuBtn{color:hsl(34 38% 96%); transition:color 200ms ease}
+#mainNav.nav-blur .nav-link, #mainNav.nav-blur #menuBtn{color:hsl(var(--text))}
+.skel-line{background:linear-gradient(90deg, hsl(var(--text)/0.08), hsl(var(--text)/0.13), hsl(var(--text)/0.08))}
+[data-reveal]{opacity:0; transform:translateY(32px)}
+.placeholder-box{
+  background:repeating-linear-gradient(135deg, hsl(var(--text)/0.04), hsl(var(--text)/0.04) 10px, hsl(var(--text)/0.06) 10px, hsl(var(--text)/0.06) 20px);
+  border:1px dashed hsl(var(--text)/0.18);
+}
+input,textarea{
+  background:hsl(var(--bg));
+  border:1px solid hsl(var(--line));
+  transition:border-color 160ms ease, box-shadow 160ms ease;
+}
+input:focus,textarea:focus{
+  outline:none; border-color:hsl(var(--primary)/0.6); box-shadow:0 0 0 4px hsl(var(--primary)/0.12);
+}
+.chat-panel{
+  transform-origin:bottom right;
+  transition:opacity 200ms cubic-bezier(0.23,1,0.32,1), transform 200ms cubic-bezier(0.23,1,0.32,1);
+}
+.chat-panel[data-closed]{opacity:0; transform:scale(0.95) translateY(12px); pointer-events:none}
+.msg-bubble{animation:msgIn 260ms cubic-bezier(0.23,1,0.32,1) both}
+@keyframes msgIn{from{opacity:0; transform:translateY(6px) scale(0.98)} to{opacity:1; transform:translateY(0) scale(1)}}
+.typing-dot{animation:typingBounce 1.1s ease-in-out infinite}
+.typing-dot:nth-child(2){animation-delay:0.15s}
+.typing-dot:nth-child(3){animation-delay:0.3s}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0); opacity:0.5}30%{transform:translateY(-4px); opacity:1}}
+@media (prefers-reduced-motion: reduce){
+  [data-reveal]{opacity:1 !important; transform:none !important}
+  *{animation-duration:0.001ms !important; transition-duration:0.001ms !important}
+}
+::selection{background:hsl(var(--primary)/0.2)}
+</style>
+</head>
+<body class="antialiased">
+
+<nav class="fixed top-0 left-0 right-0 z-50 transition-shadow duration-300" id="mainNav">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 h-20 flex items-center justify-between">
+    <a href="#top" class="font-display text-xl sm:text-2xl font-semibold tracking-tightish" style="color:hsl(var(--primary))">
+      Chodkiewicza <span style="color:hsl(var(--accent))">2</span>
+    </a>
+    <div class="hidden md:flex items-center gap-9 text-[15px] font-medium">
+      <a href="#o-nas" class="link-underline nav-link">O nas</a>
+      <a href="#czym-sie-zajmujemy" class="link-underline nav-link">Oferta</a>
+      <a href="#lokale" class="link-underline nav-link">Lokale</a>
+      <a href="#kontakt" class="link-underline nav-link">Kontakt</a>
+    </div>
+    <a href="tel:503444134" class="hidden md:inline-flex items-center gap-2 rounded-sm px-5 py-2.5 text-[15px] font-semibold btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      503 444 134
+    </a>
+    <button id="menuBtn" class="md:hidden p-2 -mr-2" aria-label="Otwórz menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+  <div id="mobileMenu" class="md:hidden hidden nav-blur card-border border-t px-5 py-5 flex flex-col gap-4 text-[15px] font-medium">
+    <a href="#o-nas">O nas</a>
+    <a href="#czym-sie-zajmujemy">Oferta</a>
+    <a href="#lokale">Lokale</a>
+    <a href="#kontakt">Kontakt</a>
+    <a href="tel:503444134" class="inline-flex w-fit items-center gap-2 rounded-sm px-5 py-2.5 font-semibold btn-primary">503 444 134</a>
+  </div>
+</nav>
+
+<header id="top" class="relative min-h-[100svh] flex items-end overflow-hidden">
+  <div class="absolute inset-0">
+    <img src="715972154_1479004397297832_6888587266518236106_n.jpg" alt="Budynek Chodkiewicza 2 z lokalami użytkowymi na parterze" class="w-full h-full object-cover" style="filter:brightness(1.2) saturate(1.05)" loading="eager">
+    <div class="absolute inset-0" style="background:linear-gradient(180deg, hsl(20 30% 6%/0.22) 0%, hsl(20 30% 6%/0.1) 40%, hsl(20 25% 5%/0.62) 100%)"></div>
+    <div class="absolute inset-0" style="background:linear-gradient(90deg, hsl(356 50% 12%/0.25), transparent 60%)"></div>
+  </div>
+
+  <div class="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-8 pb-16 sm:pb-24 pt-40" data-hero>
+    <p class="uppercase text-xs sm:text-sm font-semibold tracking-[0.25em] mb-5" style="color:hsl(34 40% 88%)">Chodkiewicza 2 · 98-200 Sieradz</p>
+    <h1 class="font-display text-white text-[13vw] sm:text-6xl md:text-7xl font-semibold tracking-tightish leading-[0.98] max-w-3xl">
+      Wynajem lokali<br>użytkowych
+    </h1>
+    <div class="mt-10 flex flex-wrap gap-4">
+      <a href="#kontakt" class="rounded-sm px-7 py-3.5 text-[15px] font-semibold btn-primary">Zapytaj o lokal</a>
+      <a href="#lokale" class="rounded-sm px-7 py-3.5 text-[15px] font-semibold btn-ghost">Zobacz dostępne lokale</a>
+    </div>
+  </div>
+
+  <a href="#o-nas" class="hidden sm:flex absolute bottom-8 left-1/2 -translate-x-1/2 z-10 items-center gap-2 text-xs font-medium tracking-wide" style="color:hsl(34 30% 90%)" aria-label="Przewiń w dół">
+    <span>Przewiń</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-bounce"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+  </a>
+</header>
+
+<section id="o-nas" class="py-24 sm:py-32 noise-bg">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+    <div>
+      <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish mb-4" style="color:hsl(var(--primary))" data-reveal>O nas</h2>
+      <div class="space-y-3 max-w-xl mb-10" data-reveal>
+        <div class="h-3 skel-line w-full"></div>
+        <div class="h-3 skel-line w-4/5"></div>
+      </div>
+      <div class="space-y-3 mb-10" data-reveal>
+        <div class="h-4 skel-line w-5/6"></div>
+        <div class="h-4 skel-line w-full"></div>
+        <div class="h-4 skel-line w-3/4"></div>
+        <div class="h-4 skel-line w-full"></div>
+        <div class="h-4 skel-line w-2/3"></div>
+      </div>
+      <a href="#kontakt" class="inline-block rounded-sm px-7 py-3.5 text-[15px] font-semibold btn-primary" data-reveal>Skontaktuj się</a>
+    </div>
+
+    <div class="card-top rounded-none card-border shadow-soft-lg overflow-hidden" style="background:hsl(var(--bg))" data-reveal>
+      <div class="flex items-center gap-3 px-6 py-4" style="background:hsl(var(--primary)); color:hsl(34 30% 96%)">
+        <span class="w-9 h-9 shrink-0 rounded-none flex items-center justify-center" style="background:hsl(34 30% 96%/0.15)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        </span>
+        <div>
+          <p class="font-semibold text-sm leading-tight">Asystent Chodkiewicza 2</p>
+          <p class="text-[11px] leading-tight" style="color:hsl(34 30% 96%/0.7)">Odpowiada na żywo, AI</p>
+        </div>
+      </div>
+      <div id="chatMessagesInline" class="h-[420px] overflow-y-auto px-5 py-5 space-y-3 text-[14px]"></div>
+      <form id="chatFormInline" class="p-4 flex items-center gap-2 card-border border-t">
+        <input id="chatInputInline" type="text" autocomplete="off" placeholder="Napisz wiadomość..." class="flex-1 rounded-sm px-4 py-2.5 text-[14px]">
+        <button type="submit" aria-label="Wyślij" class="w-11 h-11 shrink-0 rounded-sm flex items-center justify-center btn-primary">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="czym-sie-zajmujemy" class="py-24 sm:py-32">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish mb-14" style="color:hsl(var(--primary))" data-reveal>Czym się zajmujemy</h2>
+    <div class="grid sm:grid-cols-3 gap-6">
+      <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
+        <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
+        <div class="h-4 skel-line w-2/3 mb-4"></div>
+        <div class="h-3 skel-line w-full mb-2"></div>
+        <div class="h-3 skel-line w-5/6"></div>
+      </div>
+      <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
+        <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
+        <div class="h-4 skel-line w-1/2 mb-4"></div>
+        <div class="h-3 skel-line w-full mb-2"></div>
+        <div class="h-3 skel-line w-2/3"></div>
+      </div>
+      <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
+        <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
+        <div class="h-4 skel-line w-3/4 mb-4"></div>
+        <div class="h-3 skel-line w-5/6 mb-2"></div>
+        <div class="h-3 skel-line w-1/2"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="px-5 sm:px-8">
+  <div class="max-w-6xl mx-auto rounded-none overflow-hidden card-border shadow-soft-lg" data-reveal>
+    <img src="image.png" alt="Budynek Chodkiewicza 2" class="w-full h-[320px] sm:h-[460px] object-cover">
+  </div>
+</section>
+
+<section id="dlaczego-my" class="noise-bg py-24 sm:py-32">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <h2 class="font-display text-2xl sm:text-3xl font-semibold tracking-tightish mb-10" style="color:hsl(var(--primary))" data-reveal>Dlaczego my</h2>
+
+    <div class="grid grid-cols-3 gap-6 mb-14 pb-14" style="border-bottom:1px solid hsl(var(--text)/0.1)" data-reveal>
+      <div class="text-center sm:text-left">
+        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--accent))">12+</p>
+        <p class="text-[13px] sm:text-sm mt-2" style="color:hsl(var(--text)/0.65)">lat na rynku</p>
+      </div>
+      <div class="text-center sm:text-left">
+        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--accent))">40+</p>
+        <p class="text-[13px] sm:text-sm mt-2" style="color:hsl(var(--text)/0.65)">wynajętych lokali</p>
+      </div>
+      <div class="text-center sm:text-left">
+        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish flex items-center justify-center sm:justify-start gap-1" style="color:hsl(var(--accent))">
+          5.0
+          <span class="text-lg sm:text-xl" style="color:hsl(var(--accent))">★★★★★</span>
+        </p>
+        <p class="text-[13px] sm:text-sm mt-2" style="color:hsl(var(--text)/0.65)">ocena najemców</p>
+      </div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
+        <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
+        <div class="h-4 skel-line w-3/4 mb-4"></div>
+        <div class="h-3 skel-line w-full mb-2"></div>
+        <div class="h-3 skel-line w-2/3"></div>
+      </div>
+      <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
+        <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
+        <div class="h-4 skel-line w-1/2 mb-4"></div>
+        <div class="h-3 skel-line w-5/6 mb-2"></div>
+        <div class="h-3 skel-line w-3/4"></div>
+      </div>
+      <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
+        <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
+        <div class="h-4 skel-line w-2/3 mb-4"></div>
+        <div class="h-3 skel-line w-full mb-2"></div>
+        <div class="h-3 skel-line w-1/2"></div>
+      </div>
+      <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
+        <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
+        <div class="h-4 skel-line w-3/4 mb-4"></div>
+        <div class="h-3 skel-line w-2/3 mb-2"></div>
+        <div class="h-3 skel-line w-5/6"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="lokale" class="py-24 sm:py-32" style="background:hsl(var(--surface))">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-14" data-reveal>
+      <div>
+        <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--primary))">Aktualnie dostępne lokale</h2>
+      </div>
+      <div class="w-full max-w-sm space-y-2">
+        <div class="h-3 skel-line w-full"></div>
+        <div class="h-3 skel-line w-2/3"></div>
+      </div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <article class="card-top rounded-none overflow-hidden card-border shadow-soft group" style="background:hsl(var(--bg))" data-reveal>
+        <div class="aspect-[4/3] placeholder-box flex items-center justify-center" role="presentation">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:hsl(var(--text)/0.25)"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <div class="p-6">
+          <span class="inline-block text-[11px] font-semibold uppercase tracking-wide px-3 py-1 rounded-sm mb-4" style="background:hsl(var(--accent)/0.15); color:hsl(var(--accent))">Wkrótce</span>
+          <div class="h-4 skel-line w-3/4 mb-3"></div>
+          <div class="h-3 skel-line w-1/2 mb-2"></div>
+          <div class="h-3 skel-line w-2/3"></div>
+        </div>
+      </article>
+      <article class="card-top rounded-none overflow-hidden card-border shadow-soft group" style="background:hsl(var(--bg))" data-reveal>
+        <div class="aspect-[4/3] placeholder-box flex items-center justify-center" role="presentation">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:hsl(var(--text)/0.25)"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <div class="p-6">
+          <span class="inline-block text-[11px] font-semibold uppercase tracking-wide px-3 py-1 rounded-sm mb-4" style="background:hsl(var(--accent)/0.15); color:hsl(var(--accent))">Wkrótce</span>
+          <div class="h-4 skel-line w-2/3 mb-3"></div>
+          <div class="h-3 skel-line w-3/4 mb-2"></div>
+          <div class="h-3 skel-line w-1/2"></div>
+        </div>
+      </article>
+      <article class="card-top rounded-none overflow-hidden card-border shadow-soft group" style="background:hsl(var(--bg))" data-reveal>
+        <div class="aspect-[4/3] placeholder-box flex items-center justify-center" role="presentation">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:hsl(var(--text)/0.25)"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <div class="p-6">
+          <span class="inline-block text-[11px] font-semibold uppercase tracking-wide px-3 py-1 rounded-sm mb-4" style="background:hsl(var(--accent)/0.15); color:hsl(var(--accent))">Wkrótce</span>
+          <div class="h-4 skel-line w-3/4 mb-3"></div>
+          <div class="h-3 skel-line w-2/3 mb-2"></div>
+          <div class="h-3 skel-line w-1/2"></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="kontakt" class="py-24 sm:py-32 noise-bg">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="mb-14" data-reveal>
+      <p class="uppercase text-xs font-semibold tracking-[0.25em] mb-4" style="color:hsl(var(--accent))">Kontakt</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--primary))">Porozmawiajmy o Twoim lokalu</h2>
+    </div>
+
+    <div class="grid lg:grid-cols-12 gap-8">
+      <div class="lg:col-span-5 space-y-6" data-reveal>
+        <div class="card-top rounded-none p-7 card-border shadow-soft" style="background:hsl(var(--bg))">
+          <ul class="space-y-5 text-[15px]">
+            <li class="flex items-start gap-4">
+              <span class="shrink-0 w-11 h-11 rounded-none flex items-center justify-center" style="background:hsl(var(--primary)/0.1); color:hsl(var(--primary))">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </span>
+              <div>
+                <p class="font-semibold">Telefon</p>
+                <a href="tel:503444134" class="link-underline" style="color:hsl(var(--muted))">503 444 134</a>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="shrink-0 w-11 h-11 rounded-none flex items-center justify-center" style="background:hsl(var(--primary)/0.1); color:hsl(var(--primary))">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6l-10 7L2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+              </span>
+              <div>
+                <p class="font-semibold">E-mail</p>
+                <a href="mailto:robertsieradz@wp.pl" class="link-underline" style="color:hsl(var(--muted))">robertsieradz@wp.pl</a>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="shrink-0 w-11 h-11 rounded-none flex items-center justify-center" style="background:hsl(var(--primary)/0.1); color:hsl(var(--primary))">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </span>
+              <div>
+                <p class="font-semibold">Adres</p>
+                <p style="color:hsl(var(--muted))">Chodkiewicza 2, 98-200 Sieradz</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="rounded-none overflow-hidden card-border shadow-soft h-64 lg:h-72">
+          <iframe
+            src="https://www.google.com/maps?q=Chodkiewicza+2,98-200+Sieradz&t=k&output=embed"
+            class="w-full h-full"
+            style="border:0"
+            loading="lazy"
+            title="Mapa — Chodkiewicza 2, 98-200 Sieradz">
+          </iframe>
+        </div>
+      </div>
+
+      <form id="contactForm" class="lg:col-span-7 card-top rounded-none p-7 sm:p-9 card-border shadow-soft space-y-5" style="background:hsl(var(--bg))" data-reveal novalidate>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="cf-name" class="block text-sm font-semibold mb-2">Imię i nazwisko <span style="color:hsl(var(--accent))">*</span></label>
+            <input id="cf-name" name="name" type="text" required autocomplete="name" class="w-full rounded-sm px-4 py-3 text-[15px]" placeholder="Jan Kowalski">
+          </div>
+          <div>
+            <label for="cf-phone" class="block text-sm font-semibold mb-2">Telefon</label>
+            <input id="cf-phone" name="phone" type="tel" autocomplete="tel" class="w-full rounded-sm px-4 py-3 text-[15px]" placeholder="600 000 000">
+          </div>
+        </div>
+        <div>
+          <label for="cf-email" class="block text-sm font-semibold mb-2">E-mail <span style="color:hsl(var(--accent))">*</span></label>
+          <input id="cf-email" name="email" type="email" required autocomplete="email" class="w-full rounded-sm px-4 py-3 text-[15px]" placeholder="jan@przyklad.pl">
+        </div>
+        <div>
+          <label for="cf-message" class="block text-sm font-semibold mb-2">Wiadomość <span style="color:hsl(var(--accent))">*</span></label>
+          <textarea id="cf-message" name="message" required rows="4" class="w-full rounded-sm px-4 py-3 text-[15px] resize-none" placeholder="Napisz, jakiego lokalu szukasz..."></textarea>
+        </div>
+        <p id="cf-error" class="hidden text-sm font-medium" style="color:hsl(0 65% 42%)">Uzupełnij wymagane pola przed wysłaniem.</p>
+        <button type="submit" id="cf-submit" class="w-full sm:w-auto rounded-sm px-8 py-3.5 text-[15px] font-semibold btn-primary inline-flex items-center justify-center gap-2">
+          <span id="cf-submit-label">Wyślij wiadomość</span>
+        </button>
+        <div id="cf-success" class="hidden items-center gap-3 rounded-sm px-4 py-3 text-sm font-medium" style="background:hsl(140 40% 92%); color:hsl(140 45% 22%)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+          Dziękujemy! Odezwiemy się najszybciej, jak to możliwe.
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer style="background:hsl(var(--primary)); color:hsl(34 30% 92%)" class="py-14">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+    <div>
+      <p class="font-display text-xl font-semibold">Chodkiewicza 2</p>
+      <p class="text-sm mt-1" style="color:hsl(34 30% 92%/0.7)">Chodkiewicza 2, 98-200 Sieradz</p>
+    </div>
+    <div class="text-sm flex flex-col sm:items-end gap-1" style="color:hsl(34 30% 92%/0.85)">
+      <a href="tel:503444134" class="link-underline w-fit">503 444 134</a>
+      <a href="mailto:robertsieradz@wp.pl" class="link-underline w-fit">robertsieradz@wp.pl</a>
+    </div>
+  </div>
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 mt-10 pt-6 text-xs" style="border-top:1px solid hsl(34 30% 92%/0.15); color:hsl(34 30% 92%/0.5)">
+    © <span id="year"></span> Nieruchomości Chodkiewicza 2. Wszystkie prawa zastrzeżone.
+  </div>
+</footer>
+
+<div class="fixed bottom-5 right-5 sm:bottom-7 sm:right-7 z-[60] flex flex-col items-end gap-4">
+  <div id="chatPanel" data-closed class="chat-panel w-[calc(100vw-2.5rem)] max-w-[380px] h-[min(560px,70svh)] rounded-none overflow-hidden flex flex-col shadow-soft-lg card-border" style="background:hsl(var(--bg))">
+    <div class="flex items-center justify-between px-5 py-4" style="background:hsl(var(--primary)); color:hsl(34 30% 96%)">
+      <div class="flex items-center gap-3">
+        <span class="w-9 h-9 rounded-none flex items-center justify-center" style="background:hsl(34 30% 96%/0.15)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        </span>
+        <div>
+          <p class="font-semibold text-sm leading-tight">Asystent Chodkiewicza 2</p>
+          <p class="text-[11px] leading-tight" style="color:hsl(34 30% 96%/0.7)">Zapytaj o wynajem lokalu</p>
+        </div>
+      </div>
+      <button id="chatClose" aria-label="Zamknij czat" class="w-8 h-8 rounded-none flex items-center justify-center hover:bg-white/10 transition-colors">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div id="chatMessages" class="flex-1 overflow-y-auto px-4 py-4 space-y-3 text-[14px]"></div>
+    <form id="chatForm" class="p-3 flex items-center gap-2 card-border border-t">
+      <input id="chatInput" type="text" autocomplete="off" placeholder="Napisz wiadomość..." class="flex-1 rounded-sm px-4 py-2.5 text-[14px]">
+      <button type="submit" aria-label="Wyślij" class="w-10 h-10 shrink-0 rounded-sm flex items-center justify-center btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      </button>
+    </form>
+  </div>
+
+  <button id="chatToggle" aria-label="Otwórz czat" aria-expanded="false" class="w-16 h-16 rounded-sm flex items-center justify-center shadow-soft-lg btn-primary">
+    <svg id="chatIconOpen" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+    <svg id="chatIconClose" class="hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+</div>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear()
+
+const menuBtn = document.getElementById('menuBtn')
+const mobileMenu = document.getElementById('mobileMenu')
+menuBtn.addEventListener('click', () => {
+  const isHidden = mobileMenu.classList.contains('hidden')
+  mobileMenu.classList.toggle('hidden')
+  menuBtn.setAttribute('aria-expanded', String(isHidden))
+})
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  mobileMenu.classList.add('hidden')
+  menuBtn.setAttribute('aria-expanded', 'false')
+}))
+
+const nav = document.getElementById('mainNav')
+const onScroll = () => {
+  if (window.scrollY > 20) nav.classList.add('nav-blur', 'shadow-soft')
+  else nav.classList.remove('nav-blur', 'shadow-soft')
+}
+window.addEventListener('scroll', onScroll)
+onScroll()
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+if (!reduceMotion && window.gsap) {
+  gsap.registerPlugin(ScrollTrigger)
+  const lenis = new Lenis()
+  lenis.on('scroll', ScrollTrigger.update)
+  gsap.ticker.add(time => lenis.raf(time * 1000))
+  gsap.ticker.lagSmoothing(0)
+
+  gsap.from('[data-hero] > *', {
+    y: 28, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.1, delay: 0.2
+  })
+
+  gsap.utils.toArray('[data-reveal]').forEach(el => {
+    gsap.to(el, {
+      y: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 88%' }
+    })
+  })
+}
+
+const cfForm = document.getElementById('contactForm')
+const cfError = document.getElementById('cf-error')
+const cfSuccess = document.getElementById('cf-success')
+const cfSubmit = document.getElementById('cf-submit')
+const cfLabel = document.getElementById('cf-submit-label')
+cfForm.addEventListener('submit', e => {
+  e.preventDefault()
+  const name = document.getElementById('cf-name').value.trim()
+  const email = document.getElementById('cf-email').value.trim()
+  const message = document.getElementById('cf-message').value.trim()
+  if (!name || !email || !message) {
+    cfError.classList.remove('hidden')
+    return
+  }
+  cfError.classList.add('hidden')
+  cfSubmit.disabled = true
+  cfLabel.textContent = 'Wysyłanie...'
+  setTimeout(() => {
+    cfSubmit.disabled = false
+    cfLabel.textContent = 'Wyślij wiadomość'
+    cfSuccess.classList.remove('hidden')
+    cfSuccess.classList.add('flex')
+    cfForm.reset()
+  }, 900)
+})
+
+const DEEPSEEK_KEY = 'sk-8a646db8b7bf49b8b3d7cef3e4268db9'
+const GROQ_KEY = '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'
+
+const SYSTEM_PROMPT = `Jesteś asystentem AI nieruchomości "Chodkiewicza 2" w Sieradzu (adres: Chodkiewicza 2, 98-200 Sieradz, tel. 503 444 134, e-mail robertsieradz@wp.pl). Budynek oferuje lokale użytkowe na parterze pod działalność usługową, handlową lub biurową, przy głównej drodze, z miejscami parkingowymi.
+
+Zasady odpowiedzi:
+- Odpowiadaj wyłącznie po polsku, rzeczowo, ciepło i konkretnie, maksymalnie w kilku zdaniach.
+- Nigdy nie zmyślaj konkretnych metraży, cen czynszu ani dat dostępności lokali — te informacje nie są jeszcze opublikowane. Gdy ktoś pyta o konkretną ofertę, cenę lub dostępność, powiedz to wprost i zaproponuj kontakt telefoniczny (503 444 134) lub formularz na stronie.
+- Możesz swobodnie dzielić się rzeczową, ogólną wiedzą o wynajmie lokali użytkowych w Polsce, np.: typowe elementy umowy najmu (czynsz, opłaty za media i część wspólną, kaucja zabezpieczająca zwykle 1-3 miesięczne czynsze, czas trwania umowy, okres wypowiedzenia, waloryzacja czynszu wskaźnikiem inflacji GUS, protokół zdawczo-odbiorczy), różnice względem najmu mieszkalnego (brak ochrony lokatorskiej, zwykle najem opodatkowany VAT, możliwość wystawiania faktur), oraz na co zwrócić uwagę wybierając lokal (widoczność i ruch pieszy, parking, dopuszczalne moce przyłączy, wymogi sanepidu/ppoż dla gastronomii, możliwość adaptacji wnętrza).
+- Jeśli pytanie nie dotyczy nieruchomości ani wynajmu, uprzejmie skieruj rozmowę z powrotem na temat lokali w Chodkiewicza 2.
+- Nie podawaj się za człowieka, jeśli zapytają — jesteś asystentem AI tej strony.`
+
+async function callDeepSeek(messages) {
+  const res = await fetch('https://api.deepseek.com/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + DEEPSEEK_KEY },
+    body: JSON.stringify({ model: 'deepseek-chat', messages, temperature: 0.6 })
+  })
+  if (!res.ok) throw new Error('deepseek_failed')
+  const data = await res.json()
+  return data.choices[0].message.content
+}
+
+async function callGroq(messages) {
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + GROQ_KEY },
+    body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages, temperature: 0.6 })
+  })
+  if (!res.ok) throw new Error('groq_failed')
+  const data = await res.json()
+  return data.choices[0].message.content
+}
+
+async function getReply(messages) {
+  try {
+    return await callDeepSeek(messages)
+  } catch {
+    try {
+      return await callGroq(messages)
+    } catch {
+      return 'Przepraszamy, chwilowo nie mogę się połączyć. Zadzwoń pod 503 444 134 lub napisz na robertsieradz@wp.pl — chętnie pomożemy.'
+    }
+  }
+}
+
+const GREETING = 'Dzień dobry! Jestem asystentem AI nieruchomości Chodkiewicza 2. Chętnie odpowiem na pytania o wynajem lokalu użytkowego.'
+
+function createChatWidget({ messagesEl, formEl, inputEl, greetOnInit }) {
+  const history = [{ role: 'system', content: SYSTEM_PROMPT }]
+
+  function addBubble(role, text) {
+    const wrap = document.createElement('div')
+    wrap.className = 'msg-bubble flex ' + (role === 'user' ? 'justify-end' : 'justify-start')
+    const bubble = document.createElement('div')
+    bubble.className = 'max-w-[85%] rounded-sm px-4 py-2.5 leading-relaxed'
+    if (role === 'user') {
+      bubble.style.background = 'hsl(var(--primary))'
+      bubble.style.color = 'hsl(34 30% 96%)'
+    } else {
+      bubble.style.background = 'hsl(var(--surface))'
+    }
+    bubble.textContent = text
+    wrap.appendChild(bubble)
+    messagesEl.appendChild(wrap)
+    messagesEl.scrollTop = messagesEl.scrollHeight
+    return wrap
+  }
+
+  function addTyping() {
+    const wrap = document.createElement('div')
+    wrap.className = 'msg-bubble flex justify-start typing-bubble'
+    wrap.innerHTML = '<div class="rounded-sm px-4 py-3 flex gap-1.5" style="background:hsl(var(--surface))"><span class="typing-dot w-1.5 h-1.5 rounded-full" style="background:hsl(var(--muted))"></span><span class="typing-dot w-1.5 h-1.5 rounded-full" style="background:hsl(var(--muted))"></span><span class="typing-dot w-1.5 h-1.5 rounded-full" style="background:hsl(var(--muted))"></span></div>'
+    messagesEl.appendChild(wrap)
+    messagesEl.scrollTop = messagesEl.scrollHeight
+  }
+
+  function removeTyping() {
+    messagesEl.querySelector('.typing-bubble')?.remove()
+  }
+
+  function init() {
+    if (greetOnInit && !messagesEl.children.length) {
+      addBubble('assistant', GREETING)
+    }
+  }
+
+  formEl.addEventListener('submit', async e => {
+    e.preventDefault()
+    const text = inputEl.value.trim()
+    if (!text) return
+    inputEl.value = ''
+    addBubble('user', text)
+    history.push({ role: 'user', content: text })
+    addTyping()
+    const reply = await getReply(history)
+    removeTyping()
+    addBubble('assistant', reply)
+    history.push({ role: 'assistant', content: reply })
+  })
+
+  return { init, addBubble }
+}
+
+const inlineChat = createChatWidget({
+  messagesEl: document.getElementById('chatMessagesInline'),
+  formEl: document.getElementById('chatFormInline'),
+  inputEl: document.getElementById('chatInputInline'),
+  greetOnInit: true
+})
+inlineChat.init()
+
+const floatingChat = createChatWidget({
+  messagesEl: document.getElementById('chatMessages'),
+  formEl: document.getElementById('chatForm'),
+  inputEl: document.getElementById('chatInput'),
+  greetOnInit: false
+})
+
+const chatToggle = document.getElementById('chatToggle')
+const chatPanel = document.getElementById('chatPanel')
+const chatClose = document.getElementById('chatClose')
+const chatIconOpen = document.getElementById('chatIconOpen')
+const chatIconClose = document.getElementById('chatIconClose')
+let chatOpen = false
+
+function openChat() {
+  chatOpen = true
+  chatPanel.removeAttribute('data-closed')
+  chatToggle.setAttribute('aria-expanded', 'true')
+  chatIconOpen.classList.add('hidden')
+  chatIconClose.classList.remove('hidden')
+  if (!document.getElementById('chatMessages').children.length) {
+    floatingChat.addBubble('assistant', GREETING)
+  }
+  document.getElementById('chatInput').focus()
+}
+
+function closeChat() {
+  chatOpen = false
+  chatPanel.setAttribute('data-closed', '')
+  chatToggle.setAttribute('aria-expanded', 'false')
+  chatIconOpen.classList.remove('hidden')
+  chatIconClose.classList.add('hidden')
+}
+
+chatToggle.addEventListener('click', () => chatOpen ? closeChat() : openChat())
+chatClose.addEventListener('click', closeChat)
+</script>
+</body>
+</html>
