@@ -106,7 +106,7 @@ input:focus,textarea:focus{
 </head>
 <body class="antialiased">
 
-<nav class="fixed top-0 left-0 right-0 z-50 transition-shadow duration-300" id="mainNav">
+<nav class="fixed top-0 left-0 right-0 z-50 -translate-y-full opacity-0 transition-[transform,opacity,box-shadow] duration-300" id="mainNav">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 h-20 flex items-center justify-between">
     <a href="#top" class="font-display text-xl sm:text-2xl font-semibold tracking-tightish" style="color:hsl(var(--primary))">
       Chodkiewicza <span style="color:hsl(var(--accent))">2</span>
@@ -477,8 +477,13 @@ mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
 
 const nav = document.getElementById('mainNav')
 const onScroll = () => {
-  if (window.scrollY > 20) nav.classList.add('nav-blur', 'shadow-soft')
-  else nav.classList.remove('nav-blur', 'shadow-soft')
+  if (window.scrollY > 20) {
+    nav.classList.add('nav-blur', 'shadow-soft')
+    nav.classList.remove('-translate-y-full', 'opacity-0')
+  } else {
+    nav.classList.remove('nav-blur', 'shadow-soft')
+    nav.classList.add('-translate-y-full', 'opacity-0')
+  }
 }
 window.addEventListener('scroll', onScroll)
 onScroll()
