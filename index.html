@@ -68,18 +68,41 @@ h1,h2,h3,.tracking-tightish{letter-spacing:-0.03em}
 .card-border{border:1px solid hsl(var(--text)/0.1)}
 .card-top{position:relative}
 .card-top::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:hsl(var(--accent))}
-.shadow-soft{box-shadow: 0 1px 0 hsl(var(--primary)/0.1), 0 18px 40px -22px hsl(var(--primary)/0.35)}
-.shadow-soft-lg{box-shadow: 0 1px 0 hsl(var(--primary)/0.12), 0 30px 60px -24px hsl(var(--primary)/0.45)}
+.shadow-soft{
+  box-shadow:
+    0 1px 1px hsl(var(--primary)/0.06),
+    0 2px 4px hsl(var(--primary)/0.05),
+    0 10px 18px -8px hsl(var(--primary)/0.16),
+    0 28px 44px -20px hsl(var(--primary)/0.28);
+}
+.shadow-soft-lg{
+  box-shadow:
+    0 1px 1px hsl(var(--primary)/0.08),
+    0 4px 10px hsl(var(--primary)/0.07),
+    0 18px 30px -10px hsl(var(--primary)/0.22),
+    0 44px 70px -22px hsl(var(--primary)/0.36);
+}
 .btn-primary{
   background-image:linear-gradient(100deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 42%, hsl(var(--primary-2)) 50%, hsl(var(--primary)) 58%, hsl(var(--primary)) 100%);
   background-size:240% 100%;
   background-position:100% 0;
   color:hsl(34 38% 96%);
-  transition:transform 200ms cubic-bezier(0.23,1,0.32,1), box-shadow 250ms ease, background-position 550ms cubic-bezier(0.23,1,0.32,1);
+  box-shadow:
+    0 1px 1px hsl(var(--primary)/0.15),
+    0 2px 6px hsl(var(--primary)/0.18),
+    0 12px 22px -10px hsl(var(--primary)/0.45);
+  transition:transform 220ms cubic-bezier(0.23,1,0.32,1), box-shadow 300ms cubic-bezier(0.23,1,0.32,1), background-position 550ms cubic-bezier(0.23,1,0.32,1);
   will-change:transform;
 }
-.btn-primary:hover{background-position:0 0; box-shadow:0 18px 34px -14px hsl(var(--primary)/0.6); transform:translateY(-3px) scale(1.015)}
-.btn-primary:active{transform:translateY(-1px) scale(0.96); box-shadow:0 8px 16px -10px hsl(var(--primary)/0.5); transition-duration:100ms}
+.btn-primary:hover{
+  background-position:0 0;
+  box-shadow:
+    0 2px 2px hsl(var(--primary)/0.2),
+    0 8px 16px hsl(var(--primary)/0.22),
+    0 26px 44px -14px hsl(var(--primary)/0.55);
+  transform:translateY(-3px) scale(1.015);
+}
+.btn-primary:active{transform:translateY(-1px) scale(0.96); box-shadow:0 1px 1px hsl(var(--primary)/0.15), 0 8px 16px -10px hsl(var(--primary)/0.5); transition-duration:100ms}
 .btn-primary:focus-visible{outline:2px solid hsl(var(--accent)); outline-offset:2px}
 .btn-primary svg{transition:transform 250ms cubic-bezier(0.23,1,0.32,1)}
 .btn-primary:hover svg{transform:translateX(3px)}
@@ -88,7 +111,7 @@ h1,h2,h3,.tracking-tightish{letter-spacing:-0.03em}
   border:1px solid hsl(34 38% 96%/0.35);
   color:hsl(34 38% 96%);
   overflow:hidden;
-  transition:transform 200ms cubic-bezier(0.23,1,0.32,1), border-color 250ms ease, box-shadow 250ms ease;
+  transition:transform 220ms cubic-bezier(0.23,1,0.32,1), border-color 250ms ease, box-shadow 300ms cubic-bezier(0.23,1,0.32,1);
 }
 .btn-ghost::before{
   content:'';position:absolute;inset:0;background:hsl(34 38% 96%/0.14);
@@ -96,11 +119,25 @@ h1,h2,h3,.tracking-tightish{letter-spacing:-0.03em}
 }
 .btn-ghost:hover::before{transform:scaleX(1)}
 .btn-ghost > *{position:relative; z-index:1}
-.btn-ghost:hover{border-color:hsl(34 38% 96%/0.75); transform:translateY(-3px) scale(1.015); box-shadow:0 14px 28px -16px hsl(20 30% 6%/0.5)}
+.btn-ghost:hover{
+  border-color:hsl(34 38% 96%/0.75);
+  transform:translateY(-3px) scale(1.015);
+  box-shadow:
+    0 2px 4px hsl(20 30% 6%/0.2),
+    0 10px 20px hsl(20 30% 6%/0.22),
+    0 28px 46px -16px hsl(20 30% 6%/0.5);
+}
 .btn-ghost:active{transform:translateY(-1px) scale(0.96); transition-duration:100ms}
 .btn-ghost:focus-visible{outline:2px solid hsl(34 38% 96%); outline-offset:2px}
-.card-lift{transition:transform 300ms cubic-bezier(0.23,1,0.32,1), box-shadow 300ms ease}
-.card-lift:hover{transform:translateY(-6px); box-shadow:0 26px 44px -22px hsl(var(--primary)/0.4)}
+.card-lift{transition:transform 400ms cubic-bezier(0.23,1,0.32,1), box-shadow 400ms cubic-bezier(0.23,1,0.32,1)}
+.card-lift:hover{
+  transform:translateY(-8px);
+  box-shadow:
+    0 2px 2px hsl(var(--primary)/0.08),
+    0 6px 12px hsl(var(--primary)/0.08),
+    0 20px 34px -12px hsl(var(--primary)/0.26),
+    0 46px 70px -24px hsl(var(--primary)/0.4);
+}
 .link-underline{position:relative}
 .link-underline::after{
   content:'';position:absolute;left:0;bottom:-2px;width:100%;height:1px;
@@ -308,7 +345,7 @@ input:focus,textarea:focus{
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <h2 class="font-display text-2xl sm:text-3xl font-semibold tracking-tightish mb-10" style="color:hsl(var(--primary))" data-reveal>Dlaczego my</h2>
 
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-6" data-reveal>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-14 pb-14" style="border-bottom:1px solid hsl(var(--text)/0.1)" data-reveal>
       <div class="text-center sm:text-left">
         <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish blur-stat" style="color:hsl(var(--accent))" aria-hidden="true">12+</p>
         <p class="text-[13px] sm:text-sm mt-2" style="color:hsl(var(--text)/0.65)">lat na rynku</p>
@@ -329,8 +366,6 @@ input:focus,textarea:focus{
         <p class="text-[13px] sm:text-sm mt-2" style="color:hsl(var(--text)/0.65)">ocena najemców</p>
       </div>
     </div>
-    <p class="text-xs mb-14 pb-14" style="color:hsl(var(--text)/0.4); border-bottom:1px solid hsl(var(--text)/0.1)" data-reveal>Aktualne dane przedstawiamy podczas konsultacji.</p>
-
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <div class="card-top card-lift tilt-card rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal data-tilt>
         <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
@@ -663,11 +698,18 @@ if (hoverFine && !reduceMotion) {
       const px = (e.clientX - rect.left) / rect.width - 0.5
       const py = (e.clientY - rect.top) / rect.height - 0.5
       card.style.transition = 'none'
-      card.style.transform = `translateY(-6px) rotateX(${py * -8}deg) rotateY(${px * 10}deg)`
+      card.style.transform = `translateY(-8px) rotateX(${py * -8}deg) rotateY(${px * 10}deg)`
+      card.style.boxShadow = `
+        0 2px 2px hsl(var(--primary)/0.08),
+        ${px * -14}px ${8 + py * -14}px 16px hsl(var(--primary)/0.1),
+        ${px * -28}px ${24 + py * -22}px 40px -14px hsl(var(--primary)/0.32),
+        ${px * -40}px ${50 + py * -30}px 68px -22px hsl(var(--primary)/0.4)
+      `
     })
     card.addEventListener('pointerleave', () => {
       card.style.transition = ''
       card.style.transform = ''
+      card.style.boxShadow = ''
     })
   })
 }
