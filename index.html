@@ -111,9 +111,17 @@ h1,h2,h3,.tracking-tightish{letter-spacing:-0.03em}
 .nav-blur{background:hsl(var(--bg)/0.72); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px)}
 #mainNav .nav-link, #mainNav #menuBtn{color:hsl(34 38% 96%); transition:color 200ms ease}
 #mainNav.nav-blur .nav-link, #mainNav.nav-blur #menuBtn{color:hsl(var(--text))}
-.skel-line{background:linear-gradient(90deg, hsl(var(--text)/0.08), hsl(var(--text)/0.13), hsl(var(--text)/0.08))}
+.skel-line{
+  border-radius:3px;
+  background:linear-gradient(90deg, hsl(var(--text)/0.06), hsl(var(--text)/0.14), hsl(var(--text)/0.06));
+  background-size:220% 100%;
+  animation:skelShimmer 2.4s ease-in-out infinite;
+}
+@keyframes skelShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.blur-stat{filter:blur(7px); user-select:none}
 [data-reveal]{opacity:0; transform:translateY(32px)}
 .placeholder-box{
+  border-radius:3px;
   background:repeating-linear-gradient(135deg, hsl(var(--text)/0.04), hsl(var(--text)/0.04) 10px, hsl(var(--text)/0.06) 10px, hsl(var(--text)/0.06) 20px);
   border:1px dashed hsl(var(--text)/0.18);
 }
@@ -266,23 +274,28 @@ input:focus,textarea:focus{
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <h2 class="font-display text-2xl sm:text-3xl font-semibold tracking-tightish mb-10" style="color:hsl(var(--primary))" data-reveal>Dlaczego my</h2>
 
-    <div class="grid grid-cols-3 gap-6 mb-14 pb-14" style="border-bottom:1px solid hsl(var(--text)/0.1)" data-reveal>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-6" data-reveal>
       <div class="text-center sm:text-left">
-        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--accent))">12+</p>
+        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish blur-stat" style="color:hsl(var(--accent))" aria-hidden="true">12+</p>
         <p class="text-[13px] sm:text-sm mt-2" style="color:hsl(var(--text)/0.65)">lat na rynku</p>
       </div>
       <div class="text-center sm:text-left">
-        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--accent))">40+</p>
+        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish blur-stat" style="color:hsl(var(--accent))" aria-hidden="true">40+</p>
         <p class="text-[13px] sm:text-sm mt-2" style="color:hsl(var(--text)/0.65)">wynajętych lokali</p>
       </div>
       <div class="text-center sm:text-left">
-        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish flex items-center justify-center sm:justify-start gap-1" style="color:hsl(var(--accent))">
+        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish blur-stat" style="color:hsl(var(--accent))" aria-hidden="true">6+</p>
+        <p class="text-[13px] sm:text-sm mt-2" style="color:hsl(var(--text)/0.65)">lokali na wynajem</p>
+      </div>
+      <div class="text-center sm:text-left">
+        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish flex items-center justify-center sm:justify-start gap-1 blur-stat" style="color:hsl(var(--accent))" aria-hidden="true">
           5.0
           <span class="text-lg sm:text-xl" style="color:hsl(var(--accent))">★★★★★</span>
         </p>
         <p class="text-[13px] sm:text-sm mt-2" style="color:hsl(var(--text)/0.65)">ocena najemców</p>
       </div>
     </div>
+    <p class="text-xs mb-14 pb-14" style="color:hsl(var(--text)/0.4); border-bottom:1px solid hsl(var(--text)/0.1)" data-reveal>Aktualne dane przedstawiamy podczas konsultacji.</p>
 
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <div class="card-top card-lift rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
@@ -577,6 +590,7 @@ Zasady odpowiedzi:
 - Nigdy nie zmyślaj konkretnych metraży, cen czynszu ani dat dostępności lokali — te informacje nie są jeszcze opublikowane. Gdy ktoś pyta o konkretną ofertę, cenę lub dostępność, powiedz to wprost i zaproponuj kontakt telefoniczny (503 444 134) lub formularz na stronie.
 - Możesz swobodnie dzielić się rzeczową, ogólną wiedzą o wynajmie lokali użytkowych w Polsce, np.: typowe elementy umowy najmu (czynsz, opłaty za media i część wspólną, kaucja zabezpieczająca zwykle 1-3 miesięczne czynsze, czas trwania umowy, okres wypowiedzenia, waloryzacja czynszu wskaźnikiem inflacji GUS, protokół zdawczo-odbiorczy), różnice względem najmu mieszkalnego (brak ochrony lokatorskiej, zwykle najem opodatkowany VAT, możliwość wystawiania faktur), oraz na co zwrócić uwagę wybierając lokal (widoczność i ruch pieszy, parking, dopuszczalne moce przyłączy, wymogi sanepidu/ppoż dla gastronomii, możliwość adaptacji wnętrza).
 - Jeśli pytanie nie dotyczy nieruchomości ani wynajmu, uprzejmie skieruj rozmowę z powrotem na temat lokali w Chodkiewicza 2.
+- Jeśli użytkownik pyta o konkretną cenę, metraż, termin dostępności lub wprost mówi, że jest zainteresowany najmem, zawsze zakończ odpowiedź krótkim zaproszeniem do kontaktu — telefon 503 444 134 lub formularz na stronie — jako najszybszej drogi do konkretów i umówienia konsultacji.
 - Nie podawaj się za człowieka, jeśli zapytają — jesteś asystentem AI tej strony.`
 
 async function callDeepSeek(messages) {
@@ -614,6 +628,7 @@ async function getReply(messages) {
 }
 
 const GREETING = 'Dzień dobry! Jestem asystentem AI nieruchomości Chodkiewicza 2. Chętnie odpowiem na pytania o wynajem lokalu użytkowego.'
+const SUGGESTIONS = ['Jakie są dostępne lokale?', 'Jak wygląda proces wynajmu?', 'Chcę umówić konsultację']
 
 function createChatWidget({ messagesEl, formEl, inputEl, greetOnInit }) {
   const history = [{ role: 'system', content: SYSTEM_PROMPT }]
@@ -648,27 +663,50 @@ function createChatWidget({ messagesEl, formEl, inputEl, greetOnInit }) {
     messagesEl.querySelector('.typing-bubble')?.remove()
   }
 
-  function init() {
-    if (greetOnInit && !messagesEl.children.length) {
-      addBubble('assistant', GREETING)
-    }
-  }
-
-  formEl.addEventListener('submit', async e => {
-    e.preventDefault()
-    const text = inputEl.value.trim()
-    if (!text) return
+  function send(text) {
     inputEl.value = ''
     addBubble('user', text)
     history.push({ role: 'user', content: text })
+    messagesEl.querySelector('.suggestions')?.remove()
     addTyping()
-    const reply = await getReply(history)
-    removeTyping()
-    addBubble('assistant', reply)
-    history.push({ role: 'assistant', content: reply })
+    getReply(history).then(reply => {
+      removeTyping()
+      addBubble('assistant', reply)
+      history.push({ role: 'assistant', content: reply })
+    })
+  }
+
+  function addSuggestions(list) {
+    const wrap = document.createElement('div')
+    wrap.className = 'msg-bubble suggestions flex flex-wrap gap-2'
+    list.forEach(text => {
+      const btn = document.createElement('button')
+      btn.type = 'button'
+      btn.textContent = text
+      btn.className = 'text-[12.5px] font-medium px-3 py-2 rounded-sm card-border transition-colors hover:opacity-70'
+      btn.style.background = 'hsl(var(--bg))'
+      btn.addEventListener('click', () => send(text))
+      wrap.appendChild(btn)
+    })
+    messagesEl.appendChild(wrap)
+    messagesEl.scrollTop = messagesEl.scrollHeight
+  }
+
+  function init() {
+    if (greetOnInit && !messagesEl.children.length) {
+      addBubble('assistant', GREETING)
+      addSuggestions(SUGGESTIONS)
+    }
+  }
+
+  formEl.addEventListener('submit', e => {
+    e.preventDefault()
+    const text = inputEl.value.trim()
+    if (!text) return
+    send(text)
   })
 
-  return { init, addBubble }
+  return { init, addBubble, addSuggestions }
 }
 
 const inlineChat = createChatWidget({
@@ -701,6 +739,7 @@ function openChat() {
   chatIconClose.classList.remove('hidden')
   if (!document.getElementById('chatMessages').children.length) {
     floatingChat.addBubble('assistant', GREETING)
+    floatingChat.addSuggestions(SUGGESTIONS)
   }
   document.getElementById('chatInput').focus()
 }
