@@ -36,10 +36,34 @@ body{
 }
 .font-display{font-family:'Fraunces',serif}
 h1,h2,h3,.tracking-tightish{letter-spacing:-0.03em}
-.noise-bg{
+.tint-clay{
   background-image:
     radial-gradient(ellipse 80% 60% at 15% 0%, hsl(var(--accent)/0.10), transparent 60%),
     radial-gradient(ellipse 60% 50% at 100% 20%, hsl(var(--primary)/0.12), transparent 60%);
+}
+.tint-sand{
+  background:hsl(var(--surface));
+  background-image:
+    radial-gradient(ellipse 70% 50% at 100% 0%, hsl(var(--accent)/0.14), transparent 55%),
+    radial-gradient(ellipse 50% 60% at 0% 100%, hsl(var(--primary)/0.08), transparent 60%);
+}
+.tint-umber{
+  background:hsl(var(--surface-2));
+  background-image:
+    radial-gradient(ellipse 60% 55% at 85% 100%, hsl(var(--primary)/0.16), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 5% 0%, hsl(var(--accent)/0.10), transparent 55%);
+}
+.tint-rose{
+  background:hsl(var(--bg));
+  background-image:
+    linear-gradient(135deg, hsl(var(--primary)/0.06), transparent 40%),
+    radial-gradient(ellipse 55% 60% at 100% 50%, hsl(var(--accent)/0.10), transparent 60%);
+}
+.tint-linen{
+  background:hsl(var(--surface));
+  background-image:
+    radial-gradient(ellipse 70% 55% at 0% 100%, hsl(var(--accent)/0.12), transparent 55%),
+    radial-gradient(ellipse 55% 50% at 100% 0%, hsl(var(--primary)/0.10), transparent 60%);
 }
 .card-border{border:1px solid hsl(var(--text)/0.1)}
 .card-top{position:relative}
@@ -47,21 +71,36 @@ h1,h2,h3,.tracking-tightish{letter-spacing:-0.03em}
 .shadow-soft{box-shadow: 0 1px 0 hsl(var(--primary)/0.1), 0 18px 40px -22px hsl(var(--primary)/0.35)}
 .shadow-soft-lg{box-shadow: 0 1px 0 hsl(var(--primary)/0.12), 0 30px 60px -24px hsl(var(--primary)/0.45)}
 .btn-primary{
-  background:hsl(var(--primary));
+  background-image:linear-gradient(100deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 42%, hsl(var(--primary-2)) 50%, hsl(var(--primary)) 58%, hsl(var(--primary)) 100%);
+  background-size:240% 100%;
+  background-position:100% 0;
   color:hsl(34 38% 96%);
-  transition:transform 160ms cubic-bezier(0.23,1,0.32,1), box-shadow 200ms ease, background 200ms ease;
+  transition:transform 200ms cubic-bezier(0.23,1,0.32,1), box-shadow 250ms ease, background-position 550ms cubic-bezier(0.23,1,0.32,1);
+  will-change:transform;
 }
-.btn-primary:hover{background:hsl(var(--primary-2)); box-shadow:0 14px 30px -12px hsl(var(--primary)/0.55); transform:translateY(-2px)}
-.btn-primary:active{transform:translateY(0) scale(0.97)}
+.btn-primary:hover{background-position:0 0; box-shadow:0 18px 34px -14px hsl(var(--primary)/0.6); transform:translateY(-3px) scale(1.015)}
+.btn-primary:active{transform:translateY(-1px) scale(0.96); box-shadow:0 8px 16px -10px hsl(var(--primary)/0.5); transition-duration:100ms}
 .btn-primary:focus-visible{outline:2px solid hsl(var(--accent)); outline-offset:2px}
+.btn-primary svg{transition:transform 250ms cubic-bezier(0.23,1,0.32,1)}
+.btn-primary:hover svg{transform:translateX(3px)}
 .btn-ghost{
+  position:relative;
   border:1px solid hsl(34 38% 96%/0.35);
   color:hsl(34 38% 96%);
-  transition:transform 160ms cubic-bezier(0.23,1,0.32,1), background 200ms ease, border-color 200ms ease;
+  overflow:hidden;
+  transition:transform 200ms cubic-bezier(0.23,1,0.32,1), border-color 250ms ease, box-shadow 250ms ease;
 }
-.btn-ghost:hover{background:hsl(34 38% 96%/0.1); border-color:hsl(34 38% 96%/0.6); transform:translateY(-2px)}
-.btn-ghost:active{transform:translateY(0) scale(0.97)}
+.btn-ghost::before{
+  content:'';position:absolute;inset:0;background:hsl(34 38% 96%/0.14);
+  transform:scaleX(0); transform-origin:left; transition:transform 350ms cubic-bezier(0.23,1,0.32,1); z-index:0;
+}
+.btn-ghost:hover::before{transform:scaleX(1)}
+.btn-ghost > *{position:relative; z-index:1}
+.btn-ghost:hover{border-color:hsl(34 38% 96%/0.75); transform:translateY(-3px) scale(1.015); box-shadow:0 14px 28px -16px hsl(20 30% 6%/0.5)}
+.btn-ghost:active{transform:translateY(-1px) scale(0.96); transition-duration:100ms}
 .btn-ghost:focus-visible{outline:2px solid hsl(34 38% 96%); outline-offset:2px}
+.card-lift{transition:transform 300ms cubic-bezier(0.23,1,0.32,1), box-shadow 300ms ease}
+.card-lift:hover{transform:translateY(-6px); box-shadow:0 26px 44px -22px hsl(var(--primary)/0.4)}
 .link-underline{position:relative}
 .link-underline::after{
   content:'';position:absolute;left:0;bottom:-2px;width:100%;height:1px;
@@ -136,7 +175,7 @@ input:focus,textarea:focus{
 
 <header id="top" class="relative min-h-[100svh] flex items-end overflow-hidden">
   <div class="absolute inset-0">
-    <img src="715972154_1479004397297832_6888587266518236106_n.jpg" alt="Budynek Chodkiewicza 2 z lokalami użytkowymi na parterze" class="w-full h-full object-cover" style="filter:brightness(1.2) saturate(1.05)" loading="eager">
+    <img src="image.png" alt="Siedziba firmy Nieruchomości Chodkiewicza 2" class="w-full h-full object-cover" style="filter:brightness(1.2) saturate(1.05)" loading="eager">
     <div class="absolute inset-0" style="background:linear-gradient(180deg, hsl(20 30% 6%/0.22) 0%, hsl(20 30% 6%/0.1) 40%, hsl(20 25% 5%/0.62) 100%)"></div>
     <div class="absolute inset-0" style="background:linear-gradient(90deg, hsl(356 50% 12%/0.25), transparent 60%)"></div>
   </div>
@@ -158,7 +197,7 @@ input:focus,textarea:focus{
   </a>
 </header>
 
-<section id="o-nas" class="py-24 sm:py-32 noise-bg">
+<section id="o-nas" class="py-24 sm:py-32 tint-clay">
   <div class="max-w-6xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
     <div>
       <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish mb-4" style="color:hsl(var(--primary))" data-reveal>O nas</h2>
@@ -197,23 +236,23 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="czym-sie-zajmujemy" class="py-24 sm:py-32">
+<section id="czym-sie-zajmujemy" class="py-24 sm:py-32 tint-sand">
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish mb-14" style="color:hsl(var(--primary))" data-reveal>Czym się zajmujemy</h2>
     <div class="grid sm:grid-cols-3 gap-6">
-      <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
+      <div class="card-top card-lift rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
         <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
         <div class="h-4 skel-line w-2/3 mb-4"></div>
         <div class="h-3 skel-line w-full mb-2"></div>
         <div class="h-3 skel-line w-5/6"></div>
       </div>
-      <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
+      <div class="card-top card-lift rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
         <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
         <div class="h-4 skel-line w-1/2 mb-4"></div>
         <div class="h-3 skel-line w-full mb-2"></div>
         <div class="h-3 skel-line w-2/3"></div>
       </div>
-      <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
+      <div class="card-top card-lift rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
         <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
         <div class="h-4 skel-line w-3/4 mb-4"></div>
         <div class="h-3 skel-line w-5/6 mb-2"></div>
@@ -223,13 +262,7 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section class="px-5 sm:px-8">
-  <div class="max-w-6xl mx-auto rounded-none overflow-hidden card-border shadow-soft-lg" data-reveal>
-    <img src="image.png" alt="Budynek Chodkiewicza 2" class="w-full h-[320px] sm:h-[460px] object-cover">
-  </div>
-</section>
-
-<section id="dlaczego-my" class="noise-bg py-24 sm:py-32">
+<section id="dlaczego-my" class="tint-umber py-24 sm:py-32">
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <h2 class="font-display text-2xl sm:text-3xl font-semibold tracking-tightish mb-10" style="color:hsl(var(--primary))" data-reveal>Dlaczego my</h2>
 
@@ -252,25 +285,25 @@ input:focus,textarea:focus{
     </div>
 
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
+      <div class="card-top card-lift rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
         <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
         <div class="h-4 skel-line w-3/4 mb-4"></div>
         <div class="h-3 skel-line w-full mb-2"></div>
         <div class="h-3 skel-line w-2/3"></div>
       </div>
-      <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
+      <div class="card-top card-lift rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
         <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
         <div class="h-4 skel-line w-1/2 mb-4"></div>
         <div class="h-3 skel-line w-5/6 mb-2"></div>
         <div class="h-3 skel-line w-3/4"></div>
       </div>
-      <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
+      <div class="card-top card-lift rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
         <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
         <div class="h-4 skel-line w-2/3 mb-4"></div>
         <div class="h-3 skel-line w-full mb-2"></div>
         <div class="h-3 skel-line w-1/2"></div>
       </div>
-      <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
+      <div class="card-top card-lift rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal>
         <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
         <div class="h-4 skel-line w-3/4 mb-4"></div>
         <div class="h-3 skel-line w-2/3 mb-2"></div>
@@ -280,7 +313,7 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="lokale" class="py-24 sm:py-32" style="background:hsl(var(--surface))">
+<section id="lokale" class="py-24 sm:py-32 tint-rose">
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-14" data-reveal>
       <div>
@@ -293,8 +326,8 @@ input:focus,textarea:focus{
     </div>
 
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <article class="card-top rounded-none overflow-hidden card-border shadow-soft group" style="background:hsl(var(--bg))" data-reveal>
-        <div class="aspect-[4/3] placeholder-box flex items-center justify-center" role="presentation">
+      <article class="card-top card-lift rounded-none overflow-hidden card-border shadow-soft group" style="background:hsl(var(--bg))" data-reveal>
+        <div class="aspect-[4/3] placeholder-box flex items-center justify-center transition-transform duration-500 ease-out group-hover:scale-105" role="presentation">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:hsl(var(--text)/0.25)"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
         </div>
         <div class="p-6">
@@ -304,8 +337,8 @@ input:focus,textarea:focus{
           <div class="h-3 skel-line w-2/3"></div>
         </div>
       </article>
-      <article class="card-top rounded-none overflow-hidden card-border shadow-soft group" style="background:hsl(var(--bg))" data-reveal>
-        <div class="aspect-[4/3] placeholder-box flex items-center justify-center" role="presentation">
+      <article class="card-top card-lift rounded-none overflow-hidden card-border shadow-soft group" style="background:hsl(var(--bg))" data-reveal>
+        <div class="aspect-[4/3] placeholder-box flex items-center justify-center transition-transform duration-500 ease-out group-hover:scale-105" role="presentation">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:hsl(var(--text)/0.25)"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
         </div>
         <div class="p-6">
@@ -315,8 +348,8 @@ input:focus,textarea:focus{
           <div class="h-3 skel-line w-1/2"></div>
         </div>
       </article>
-      <article class="card-top rounded-none overflow-hidden card-border shadow-soft group" style="background:hsl(var(--bg))" data-reveal>
-        <div class="aspect-[4/3] placeholder-box flex items-center justify-center" role="presentation">
+      <article class="card-top card-lift rounded-none overflow-hidden card-border shadow-soft group" style="background:hsl(var(--bg))" data-reveal>
+        <div class="aspect-[4/3] placeholder-box flex items-center justify-center transition-transform duration-500 ease-out group-hover:scale-105" role="presentation">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:hsl(var(--text)/0.25)"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
         </div>
         <div class="p-6">
@@ -330,7 +363,7 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="kontakt" class="py-24 sm:py-32 noise-bg">
+<section id="kontakt" class="py-24 sm:py-32 tint-linen">
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <div class="mb-14" data-reveal>
       <p class="uppercase text-xs font-semibold tracking-[0.25em] mb-4" style="color:hsl(var(--accent))">Kontakt</p>
@@ -540,7 +573,7 @@ const GROQ_KEY = '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'
 const SYSTEM_PROMPT = `Jesteś asystentem AI nieruchomości "Chodkiewicza 2" w Sieradzu (adres: Chodkiewicza 2, 98-200 Sieradz, tel. 503 444 134, e-mail robertsieradz@wp.pl). Budynek oferuje lokale użytkowe na parterze pod działalność usługową, handlową lub biurową, przy głównej drodze, z miejscami parkingowymi.
 
 Zasady odpowiedzi:
-- Odpowiadaj wyłącznie po polsku, rzeczowo, ciepło i konkretnie, maksymalnie w kilku zdaniach.
+- Odpowiadaj w języku, w którym pisze użytkownik — domyślnie po polsku, ale jeśli użytkownik pisze po angielsku, odpowiadaj płynnie po angielsku (i analogicznie w innych sytuacjach dopasuj się do jego języka). Odpowiadaj rzeczowo, ciepło i konkretnie, maksymalnie w kilku zdaniach.
 - Nigdy nie zmyślaj konkretnych metraży, cen czynszu ani dat dostępności lokali — te informacje nie są jeszcze opublikowane. Gdy ktoś pyta o konkretną ofertę, cenę lub dostępność, powiedz to wprost i zaproponuj kontakt telefoniczny (503 444 134) lub formularz na stronie.
 - Możesz swobodnie dzielić się rzeczową, ogólną wiedzą o wynajmie lokali użytkowych w Polsce, np.: typowe elementy umowy najmu (czynsz, opłaty za media i część wspólną, kaucja zabezpieczająca zwykle 1-3 miesięczne czynsze, czas trwania umowy, okres wypowiedzenia, waloryzacja czynszu wskaźnikiem inflacji GUS, protokół zdawczo-odbiorczy), różnice względem najmu mieszkalnego (brak ochrony lokatorskiej, zwykle najem opodatkowany VAT, możliwość wystawiania faktur), oraz na co zwrócić uwagę wybierając lokal (widoczność i ruch pieszy, parking, dopuszczalne moce przyłączy, wymogi sanepidu/ppoż dla gastronomii, możliwość adaptacji wnętrza).
 - Jeśli pytanie nie dotyczy nieruchomości ani wynajmu, uprzejmie skieruj rozmowę z powrotem na temat lokali w Chodkiewicza 2.
