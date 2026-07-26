@@ -13,6 +13,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
 <style>
 :root{
   --bg: 34 38% 96%;
@@ -171,21 +172,9 @@ h1,h2,h3,.tracking-tightish{letter-spacing:-0.03em}
 .mobile-menu-item:nth-child(3){transition-delay:120ms}
 .mobile-menu-item:nth-child(4){transition-delay:160ms}
 .mobile-menu-item:nth-child(5){transition-delay:200ms}
+.mobile-menu-item:nth-child(6){transition-delay:240ms}
 #mobileMenu.open .mobile-menu-item{opacity:1; transform:translateY(0)}
-.skel-line{
-  border-radius:3px;
-  background:linear-gradient(90deg, hsl(var(--text)/0.06), hsl(var(--text)/0.14), hsl(var(--text)/0.06));
-  background-size:220% 100%;
-  animation:skelShimmer 2.4s ease-in-out infinite;
-}
-@keyframes skelShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.blur-stat{filter:blur(7px); user-select:none}
 [data-reveal]{opacity:0; transform:translateY(32px)}
-.placeholder-box{
-  border-radius:3px;
-  background:repeating-linear-gradient(135deg, hsl(var(--text)/0.04), hsl(var(--text)/0.04) 10px, hsl(var(--text)/0.06) 10px, hsl(var(--text)/0.06) 20px);
-  border:1px dashed hsl(var(--text)/0.18);
-}
 input,textarea{
   background:hsl(var(--bg));
   border:1px solid hsl(var(--line));
@@ -241,6 +230,19 @@ input:focus,textarea:focus{
 @media (hover: hover) and (pointer: fine){
   .tilt-card:hover{transition-duration:150ms}
 }
+
+.text-placeholder{filter:blur(5px); user-select:none; pointer-events:none}
+
+.bg-accent-blob{position:absolute; border-radius:50%; filter:blur(70px); pointer-events:none; z-index:0; will-change:transform}
+.section-relative{position:relative; overflow:hidden}
+.section-relative > .max-w-6xl,.section-relative > .max-w-2xl{position:relative; z-index:1}
+
+.grain-dots{position:absolute; inset:0; pointer-events:none; z-index:0; opacity:0.5;
+  background-image:radial-gradient(hsl(var(--text)/0.10) 1px, transparent 1px);
+  background-size:22px 22px;
+  -webkit-mask-image:radial-gradient(ellipse 60% 50% at 50% 0%, black 0%, transparent 75%);
+  mask-image:radial-gradient(ellipse 60% 50% at 50% 0%, black 0%, transparent 75%);
+}
 </style>
 </head>
 <body class="antialiased">
@@ -255,12 +257,12 @@ input:focus,textarea:focus{
     <div class="hidden md:flex items-center gap-9 text-[15px] font-medium">
       <a href="#o-nas" class="link-underline nav-link">O nas</a>
       <a href="#czym-sie-zajmujemy" class="link-underline nav-link">Oferta</a>
+      <a href="#dlaczego-my" class="link-underline nav-link">Dlaczego my</a>
+      <a href="#gwarancje" class="link-underline nav-link">Gwarancje</a>
       <a href="#lokale" class="link-underline nav-link">Lokale</a>
-      <a href="#kontakt" class="link-underline nav-link">Kontakt</a>
     </div>
-    <a href="tel:503444134" class="magnetic hidden md:inline-flex items-center gap-2 rounded-sm px-5 py-2.5 text-[15px] font-semibold btn-primary">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-      503 444 134
+    <a href="#kontakt" class="magnetic hidden md:inline-flex items-center gap-2 rounded-sm px-6 py-2.5 text-[15px] font-semibold btn-primary">
+      Kontakt
     </a>
     <button id="menuBtn" class="md:hidden w-11 h-11 -mr-2 flex items-center justify-center" aria-label="Otwórz menu" aria-expanded="false" aria-controls="mobileMenu">
       <span class="hamburger" aria-hidden="true">
@@ -273,9 +275,10 @@ input:focus,textarea:focus{
   <div id="mobileMenu" class="md:hidden hidden nav-blur card-border border-t px-5 py-5 flex flex-col gap-4 text-[15px] font-medium">
     <a href="#o-nas" class="mobile-menu-item link-underline w-fit">O nas</a>
     <a href="#czym-sie-zajmujemy" class="mobile-menu-item link-underline w-fit">Oferta</a>
+    <a href="#dlaczego-my" class="mobile-menu-item link-underline w-fit">Dlaczego my</a>
+    <a href="#gwarancje" class="mobile-menu-item link-underline w-fit">Gwarancje</a>
     <a href="#lokale" class="mobile-menu-item link-underline w-fit">Lokale</a>
-    <a href="#kontakt" class="mobile-menu-item link-underline w-fit">Kontakt</a>
-    <a href="tel:503444134" class="mobile-menu-item inline-flex w-fit items-center gap-2 rounded-sm px-5 py-2.5 font-semibold btn-primary">503 444 134</a>
+    <a href="#kontakt" class="mobile-menu-item inline-flex w-fit items-center gap-2 rounded-sm px-5 py-2.5 font-semibold btn-primary">Kontakt</a>
   </div>
 </nav>
 
@@ -304,20 +307,19 @@ input:focus,textarea:focus{
   </a>
 </header>
 
-<section id="o-nas" class="py-24 sm:py-32 tint-clay">
+<section id="o-nas" class="py-24 sm:py-32 tint-clay section-relative">
+  <div class="bg-accent-blob" data-blob style="width:420px; height:420px; left:-10%; top:-8%; background:hsl(var(--accent)/0.16)"></div>
+  <div class="bg-accent-blob" data-blob style="width:320px; height:320px; right:-6%; bottom:0%; background:hsl(var(--primary)/0.14)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
     <div>
       <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish mb-4" style="color:hsl(var(--primary))" data-reveal>O nas</h2>
-      <div class="space-y-3 max-w-xl mb-10" data-reveal>
-        <div class="h-3 skel-line w-full"></div>
-        <div class="h-3 skel-line w-4/5"></div>
-      </div>
-      <div class="space-y-3 mb-10" data-reveal>
-        <div class="h-4 skel-line w-5/6"></div>
-        <div class="h-4 skel-line w-full"></div>
-        <div class="h-4 skel-line w-3/4"></div>
-        <div class="h-4 skel-line w-full"></div>
-        <div class="h-4 skel-line w-2/3"></div>
+      <p class="font-display italic text-xl sm:text-2xl max-w-xl mb-8" style="color:hsl(var(--primary-2))" data-reveal>
+        Zaufany wynajem lokali użytkowych w sercu Sieradza.
+      </p>
+      <div class="max-w-xl mb-10 pl-5 py-1" style="border-left:2px solid hsl(var(--accent)/0.45)" data-reveal>
+        <p class="text-placeholder text-[15px] leading-relaxed" style="color:hsl(var(--muted))">
+          Pełny opis firmy — historia, doświadczenie i podejście do najemców — pojawi się w tym miejscu po ustaleniu szczegółów z Państwem.
+        </p>
       </div>
       <a href="#kontakt" class="inline-block rounded-sm px-7 py-3.5 text-[15px] font-semibold btn-primary" data-reveal>Skontaktuj się</a>
     </div>
@@ -343,137 +345,175 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="czym-sie-zajmujemy" class="py-24 sm:py-32 tint-sand">
+<section id="czym-sie-zajmujemy" class="py-24 sm:py-32 tint-sand section-relative">
+  <div class="grain-dots"></div>
+  <div class="bg-accent-blob" data-blob style="width:360px; height:360px; right:-8%; top:-10%; background:hsl(var(--accent)/0.16)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish mb-14" style="color:hsl(var(--primary))" data-reveal>Czym się zajmujemy</h2>
     <div class="grid sm:grid-cols-3 gap-6">
       <div class="card-top card-lift tilt-card rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal data-tilt>
-        <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
-        <div class="h-4 skel-line w-2/3 mb-4"></div>
-        <div class="h-3 skel-line w-full mb-2"></div>
-        <div class="h-3 skel-line w-5/6"></div>
+        <div class="w-11 h-11 mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--primary)/0.1); color:hsl(var(--primary))">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 21v-4h6v4"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/></svg>
+        </div>
+        <h3 class="font-semibold text-lg mb-2" style="color:hsl(var(--text))">Lokale handlowe i usługowe</h3>
+        <p class="text-placeholder text-[14px]" style="color:hsl(var(--muted))">Przestrzenie na parterze przy głównej drodze, gotowe pod działalność handlową lub usługową.</p>
       </div>
       <div class="card-top card-lift tilt-card rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal data-tilt>
-        <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
-        <div class="h-4 skel-line w-1/2 mb-4"></div>
-        <div class="h-3 skel-line w-full mb-2"></div>
-        <div class="h-3 skel-line w-2/3"></div>
+        <div class="w-11 h-11 mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--primary)/0.1); color:hsl(var(--primary))">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <h3 class="font-semibold text-lg mb-2" style="color:hsl(var(--text))">Lokale biurowe</h3>
+        <p class="text-placeholder text-[14px]" style="color:hsl(var(--muted))">Funkcjonalne powierzchnie biurowe w dogodnej lokalizacji, z miejscami parkingowymi.</p>
       </div>
       <div class="card-top card-lift tilt-card rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal data-tilt>
-        <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
-        <div class="h-4 skel-line w-3/4 mb-4"></div>
-        <div class="h-3 skel-line w-5/6 mb-2"></div>
-        <div class="h-3 skel-line w-1/2"></div>
+        <div class="w-11 h-11 mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--primary)/0.1); color:hsl(var(--primary))">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h3 class="font-semibold text-lg mb-2" style="color:hsl(var(--text))">Wsparcie najemcy</h3>
+        <p class="text-placeholder text-[14px]" style="color:hsl(var(--muted))">Pomoc na każdym etapie — od wyboru lokalu, przez umowę, po przekazanie kluczy.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section id="dlaczego-my" class="tint-umber py-24 sm:py-32">
+<section id="dlaczego-my" class="tint-umber py-24 sm:py-32 section-relative">
+  <div class="bg-accent-blob" data-blob style="width:400px; height:400px; left:-8%; bottom:-10%; background:hsl(var(--primary)/0.16)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <h2 class="font-display text-2xl sm:text-3xl font-semibold tracking-tightish mb-10" style="color:hsl(var(--primary))" data-reveal>Dlaczego my</h2>
 
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-14 pb-14" style="border-bottom:1px solid hsl(var(--text)/0.1)" data-reveal>
       <div class="text-center sm:text-left">
-        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish blur-stat" style="color:hsl(var(--accent))" aria-hidden="true">12+</p>
+        <p class="text-placeholder font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--accent))">12</p>
         <p class="text-[13px] sm:text-sm mt-2" style="color:hsl(var(--text)/0.65)">lat na rynku</p>
+        <span class="inline-block mt-1 text-[10px] font-semibold uppercase tracking-wide" style="color:hsl(var(--accent))">Wkrótce</span>
       </div>
       <div class="text-center sm:text-left">
-        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish blur-stat" style="color:hsl(var(--accent))" aria-hidden="true">40+</p>
+        <p class="text-placeholder font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--accent))">48</p>
         <p class="text-[13px] sm:text-sm mt-2" style="color:hsl(var(--text)/0.65)">wynajętych lokali</p>
+        <span class="inline-block mt-1 text-[10px] font-semibold uppercase tracking-wide" style="color:hsl(var(--accent))">Wkrótce</span>
       </div>
       <div class="text-center sm:text-left">
-        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish blur-stat" style="color:hsl(var(--accent))" aria-hidden="true">6+</p>
+        <p class="text-placeholder font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--accent))">6</p>
         <p class="text-[13px] sm:text-sm mt-2" style="color:hsl(var(--text)/0.65)">lokali na wynajem</p>
+        <span class="inline-block mt-1 text-[10px] font-semibold uppercase tracking-wide" style="color:hsl(var(--accent))">Wkrótce</span>
       </div>
       <div class="text-center sm:text-left">
-        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish flex items-center justify-center sm:justify-start gap-1 blur-stat" style="color:hsl(var(--accent))" aria-hidden="true">
-          5.0
-          <span class="text-lg sm:text-xl" style="color:hsl(var(--accent))">★★★★★</span>
-        </p>
+        <p class="text-placeholder font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--accent))">4.9</p>
         <p class="text-[13px] sm:text-sm mt-2" style="color:hsl(var(--text)/0.65)">ocena najemców</p>
+        <span class="inline-block mt-1 text-[10px] font-semibold uppercase tracking-wide" style="color:hsl(var(--accent))">Wkrótce</span>
       </div>
     </div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <div class="card-top card-lift tilt-card rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal data-tilt>
-        <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
-        <div class="h-4 skel-line w-3/4 mb-4"></div>
-        <div class="h-3 skel-line w-full mb-2"></div>
-        <div class="h-3 skel-line w-2/3"></div>
+        <div class="w-11 h-11 mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--accent)/0.12); color:hsl(var(--accent))">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <h3 class="text-placeholder font-semibold text-[15px] mb-2" style="color:hsl(var(--text))">Widoczna lokalizacja</h3>
+        <p class="text-placeholder text-[13.5px]" style="color:hsl(var(--muted))">Lokale przy głównej drodze w Sieradzu — dobra ekspozycja i łatwy dojazd.</p>
       </div>
       <div class="card-top card-lift tilt-card rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal data-tilt>
-        <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
-        <div class="h-4 skel-line w-1/2 mb-4"></div>
-        <div class="h-3 skel-line w-5/6 mb-2"></div>
-        <div class="h-3 skel-line w-3/4"></div>
+        <div class="w-11 h-11 mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--accent)/0.12); color:hsl(var(--accent))">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 8h3a2 2 0 1 1 0 4H9V8Z"/><path d="M9 16v-4"/></svg>
+        </div>
+        <h3 class="text-placeholder font-semibold text-[15px] mb-2" style="color:hsl(var(--text))">Miejsca parkingowe</h3>
+        <p class="text-placeholder text-[13.5px]" style="color:hsl(var(--muted))">Wygodny parking dla klientów i pracowników tuż przy budynku.</p>
       </div>
       <div class="card-top card-lift tilt-card rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal data-tilt>
-        <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
-        <div class="h-4 skel-line w-2/3 mb-4"></div>
-        <div class="h-3 skel-line w-full mb-2"></div>
-        <div class="h-3 skel-line w-1/2"></div>
+        <div class="w-11 h-11 mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--accent)/0.12); color:hsl(var(--accent))">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+        </div>
+        <h3 class="text-placeholder font-semibold text-[15px] mb-2" style="color:hsl(var(--text))">Elastyczne przeznaczenie</h3>
+        <p class="text-placeholder text-[13.5px]" style="color:hsl(var(--muted))">Lokale pod działalność handlową, usługową lub biurową.</p>
       </div>
       <div class="card-top card-lift tilt-card rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal data-tilt>
-        <div class="w-10 h-10 mb-6 placeholder-box" role="presentation"></div>
-        <div class="h-4 skel-line w-3/4 mb-4"></div>
-        <div class="h-3 skel-line w-2/3 mb-2"></div>
-        <div class="h-3 skel-line w-5/6"></div>
+        <div class="w-11 h-11 mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--accent)/0.12); color:hsl(var(--accent))">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        </div>
+        <h3 class="text-placeholder font-semibold text-[15px] mb-2" style="color:hsl(var(--text))">Szybka odpowiedź</h3>
+        <p class="text-placeholder text-[13.5px]" style="color:hsl(var(--muted))">Zadzwoń, napisz lub zapytaj naszego asystenta AI na stronie — odpowiadamy szybko.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section id="lokale" class="py-24 sm:py-32 tint-rose">
+<section id="gwarancje" class="py-24 sm:py-32 tint-sand section-relative">
+  <div class="grain-dots"></div>
+  <div class="bg-accent-blob" data-blob style="width:340px; height:340px; right:-10%; top:10%; background:hsl(var(--accent)/0.14)"></div>
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="max-w-2xl mb-14" data-reveal>
+      <p class="uppercase text-xs font-semibold tracking-[0.25em] mb-4" style="color:hsl(var(--accent))">Gwarancje</p>
+      <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish mb-4" style="color:hsl(var(--primary))">Rozumiemy Twoje obawy</h2>
+      <p class="text-placeholder text-[15px] sm:text-[16px]" style="color:hsl(var(--muted))">Wynajem lokalu to poważna decyzja. Oto, jak dbamy o to, żeby przebiegła bez niespodzianek.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="card-top card-lift tilt-card rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal data-tilt>
+        <div class="w-11 h-11 mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--primary)/0.1); color:hsl(var(--primary))">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+        </div>
+        <p class="text-placeholder text-[12px] font-semibold uppercase tracking-wide mb-2" style="color:hsl(var(--accent))">Obawa: „Czy umowa będzie uczciwa?"</p>
+        <h3 class="text-placeholder font-semibold text-lg mb-2" style="color:hsl(var(--text))">Jasna umowa najmu</h3>
+        <p class="text-placeholder text-[14px]" style="color:hsl(var(--muted))">Warunki czynszu, kaucji i okresu wypowiedzenia omawiamy wprost, zanim cokolwiek podpiszesz.</p>
+      </div>
+      <div class="card-top card-lift tilt-card rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal data-tilt>
+        <div class="w-11 h-11 mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--primary)/0.1); color:hsl(var(--primary))">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94Z"/></svg>
+        </div>
+        <p class="text-placeholder text-[12px] font-semibold uppercase tracking-wide mb-2" style="color:hsl(var(--accent))">Obawa: „Co jeśli coś się zepsuje?"</p>
+        <h3 class="text-placeholder font-semibold text-lg mb-2" style="color:hsl(var(--text))">Szybki kontakt w sprawach lokalu</h3>
+        <p class="text-placeholder text-[14px]" style="color:hsl(var(--muted))">Usterkę zgłaszasz od razu telefonicznie — reagujemy sprawnie, bez zbędnej biurokracji.</p>
+      </div>
+      <div class="card-top card-lift tilt-card rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal data-tilt>
+        <div class="w-11 h-11 mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--primary)/0.1); color:hsl(var(--primary))">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <p class="text-placeholder text-[12px] font-semibold uppercase tracking-wide mb-2" style="color:hsl(var(--accent))">Obawa: „Czy czynsz nagle wzrośnie?"</p>
+        <h3 class="text-placeholder font-semibold text-lg mb-2" style="color:hsl(var(--text))">Przewidywalne warunki</h3>
+        <p class="text-placeholder text-[14px]" style="color:hsl(var(--muted))">Zasady ewentualnej zmiany czynszu są jasno zapisane w umowie — bez niespodzianek w trakcie najmu.</p>
+      </div>
+      <div class="card-top card-lift tilt-card rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal data-tilt>
+        <div class="w-11 h-11 mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--primary)/0.1); color:hsl(var(--primary))">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <p class="text-placeholder text-[12px] font-semibold uppercase tracking-wide mb-2" style="color:hsl(var(--accent))">Obawa: „Czy zostanę sam po podpisaniu?"</p>
+        <h3 class="text-placeholder font-semibold text-lg mb-2" style="color:hsl(var(--text))">Stały kontakt przez cały najem</h3>
+        <p class="text-placeholder text-[14px]" style="color:hsl(var(--muted))">Telefon i e-mail, pod którym naprawdę można się z nami skontaktować — również po podpisaniu umowy.</p>
+      </div>
+    </div>
+
+    <div class="mt-14 text-center" data-reveal>
+      <p class="text-placeholder text-[15px] max-w-xl mx-auto mb-5" style="color:hsl(var(--muted))">Nie znalazłeś odpowiedzi na swoje pytanie? Wkrótce dodamy tu pełną sekcję najczęściej zadawanych pytań — a już dziś możesz zapytać nas bezpośrednio.</p>
+      <a href="#kontakt" class="text-placeholder inline-block rounded-sm px-7 py-3.5 text-[15px] font-semibold btn-primary">Zadaj pytanie</a>
+    </div>
+  </div>
+</section>
+
+<section id="lokale" class="py-24 sm:py-32 tint-rose section-relative">
+  <div class="bg-accent-blob" data-blob style="width:380px; height:380px; left:-8%; top:-6%; background:hsl(var(--primary)/0.14)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-14" data-reveal>
       <div>
         <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--primary))">Aktualnie dostępne lokale</h2>
       </div>
-      <div class="w-full max-w-sm space-y-2">
-        <div class="h-3 skel-line w-full"></div>
-        <div class="h-3 skel-line w-2/3"></div>
-      </div>
+      <p class="text-placeholder w-full max-w-sm text-[15px]" style="color:hsl(var(--muted))">Pełna oferta pojawi się tutaj wkrótce — zapytaj już teraz, a poinformujemy Cię jako pierwszych.</p>
     </div>
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <article class="card-top card-lift tilt-card rounded-none overflow-hidden card-border shadow-soft group" style="background:hsl(var(--bg))" data-reveal data-tilt>
-        <div class="aspect-[4/3] placeholder-box flex items-center justify-center transition-transform duration-500 ease-out group-hover:scale-105" role="presentation">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:hsl(var(--text)/0.25)"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+    <div class="max-w-2xl mx-auto">
+      <div class="card-top card-lift tilt-card rounded-none card-border shadow-soft-lg text-center p-10 sm:p-16" style="background:hsl(var(--bg))" data-reveal data-tilt>
+        <div class="w-16 h-16 mx-auto mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--accent)/0.12); color:hsl(var(--accent))">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 21H3"/><path d="M6 21V8l6-4 6 4v13"/><path d="M10 21v-6h4v6"/></svg>
         </div>
-        <div class="p-6">
-          <span class="inline-block text-[11px] font-semibold uppercase tracking-wide px-3 py-1 rounded-sm mb-4" style="background:hsl(var(--accent)/0.15); color:hsl(var(--accent))">Wkrótce</span>
-          <div class="h-4 skel-line w-3/4 mb-3"></div>
-          <div class="h-3 skel-line w-1/2 mb-2"></div>
-          <div class="h-3 skel-line w-2/3"></div>
-        </div>
-      </article>
-      <article class="card-top card-lift tilt-card rounded-none overflow-hidden card-border shadow-soft group" style="background:hsl(var(--bg))" data-reveal data-tilt>
-        <div class="aspect-[4/3] placeholder-box flex items-center justify-center transition-transform duration-500 ease-out group-hover:scale-105" role="presentation">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:hsl(var(--text)/0.25)"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
-        </div>
-        <div class="p-6">
-          <span class="inline-block text-[11px] font-semibold uppercase tracking-wide px-3 py-1 rounded-sm mb-4" style="background:hsl(var(--accent)/0.15); color:hsl(var(--accent))">Wkrótce</span>
-          <div class="h-4 skel-line w-2/3 mb-3"></div>
-          <div class="h-3 skel-line w-3/4 mb-2"></div>
-          <div class="h-3 skel-line w-1/2"></div>
-        </div>
-      </article>
-      <article class="card-top card-lift tilt-card rounded-none overflow-hidden card-border shadow-soft group" style="background:hsl(var(--bg))" data-reveal data-tilt>
-        <div class="aspect-[4/3] placeholder-box flex items-center justify-center transition-transform duration-500 ease-out group-hover:scale-105" role="presentation">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:hsl(var(--text)/0.25)"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
-        </div>
-        <div class="p-6">
-          <span class="inline-block text-[11px] font-semibold uppercase tracking-wide px-3 py-1 rounded-sm mb-4" style="background:hsl(var(--accent)/0.15); color:hsl(var(--accent))">Wkrótce</span>
-          <div class="h-4 skel-line w-3/4 mb-3"></div>
-          <div class="h-3 skel-line w-2/3 mb-2"></div>
-          <div class="h-3 skel-line w-1/2"></div>
-        </div>
-      </article>
+        <span class="text-placeholder inline-block text-[11px] font-semibold uppercase tracking-wide px-3 py-1 rounded-sm mb-4" style="background:hsl(var(--accent)/0.15); color:hsl(var(--accent))">Wkrótce</span>
+        <h3 class="text-placeholder font-display text-2xl sm:text-3xl font-semibold tracking-tightish mb-3" style="color:hsl(var(--primary))">Nowe lokale w przygotowaniu</h3>
+        <p class="text-placeholder text-[15px] max-w-md mx-auto mb-8" style="color:hsl(var(--muted))">Kompletujemy pełną ofertę dostępnych lokali użytkowych. Zostaw kontakt, a odezwiemy się, gdy tylko będzie gotowa — lub zapytaj już dziś o dostępność.</p>
+        <a href="#kontakt" class="inline-block rounded-sm px-7 py-3.5 text-[15px] font-semibold btn-primary">Zapytaj o dostępność</a>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="kontakt" class="py-24 sm:py-32 tint-linen">
+<section id="kontakt" class="py-24 sm:py-32 tint-linen section-relative">
+  <div class="bg-accent-blob" data-blob style="width:360px; height:360px; right:-8%; bottom:-8%; background:hsl(var(--accent)/0.14)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <div class="mb-14" data-reveal>
       <p class="uppercase text-xs font-semibold tracking-[0.25em] mb-4" style="color:hsl(var(--accent))">Kontakt</p>
@@ -663,26 +703,71 @@ updateScrollProgress()
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 const hoverFine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
 
-const revealEls = document.querySelectorAll('[data-reveal]')
-const revealNow = el => { el.style.transition = 'opacity 900ms cubic-bezier(0.23,1,0.32,1), transform 900ms cubic-bezier(0.23,1,0.32,1)'; el.style.opacity = '1'; el.style.transform = 'none' }
+const revealEls = Array.from(document.querySelectorAll('[data-reveal]'))
+const hasAnime = typeof anime !== 'undefined'
+
+const revealGroup = els => {
+  if (!hasAnime) {
+    els.forEach(el => { el.style.opacity = '1'; el.style.transform = 'none' })
+    return
+  }
+  anime({
+    targets: els,
+    opacity: [0, 1],
+    translateY: [30, 0],
+    rotateX: [6, 0],
+    scale: [0.975, 1],
+    easing: 'easeOutExpo',
+    duration: 1100,
+    delay: anime.stagger(90)
+  })
+}
+
 if (reduceMotion || !('IntersectionObserver' in window)) {
   revealEls.forEach(el => { el.style.opacity = '1'; el.style.transform = 'none' })
 } else {
+  const groups = new Map()
+  revealEls.forEach(el => {
+    const section = el.closest('section') || el.parentElement
+    if (!groups.has(section)) groups.set(section, [])
+    groups.get(section).push(el)
+  })
   const revealObserver = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        revealNow(entry.target)
+        const els = groups.get(entry.target)
+        if (els) {
+          revealGroup(els)
+          groups.delete(entry.target)
+        }
         obs.unobserve(entry.target)
       }
     })
-  }, { threshold: 0.05, rootMargin: '0px 0px -8% 0px' })
-  revealEls.forEach(el => revealObserver.observe(el))
+  }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' })
+  groups.forEach((els, section) => revealObserver.observe(section))
 }
 window.addEventListener('load', () => {
   setTimeout(() => {
-    revealEls.forEach(el => { if (parseFloat(getComputedStyle(el).opacity) < 1) revealNow(el) })
+    const remaining = revealEls.filter(el => parseFloat(getComputedStyle(el).opacity) < 1)
+    if (remaining.length) revealGroup(remaining)
   }, 3000)
 })
+
+if (hasAnime && !reduceMotion) {
+  document.querySelectorAll('[data-blob]').forEach((blob, i) => {
+    anime({
+      targets: blob,
+      translateX: () => anime.random(-26, 26),
+      translateY: () => anime.random(-22, 22),
+      scale: [1, 1.08],
+      duration: () => anime.random(9000, 14000),
+      easing: 'easeInOutSine',
+      direction: 'alternate',
+      loop: true,
+      delay: i * 300
+    })
+  })
+}
 
 let lenisInstance = null
 if (!reduceMotion && window.gsap) {
