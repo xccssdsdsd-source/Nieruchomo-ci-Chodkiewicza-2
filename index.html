@@ -13,6 +13,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
 <style>
 :root{
   --bg: 34 38% 96%;
@@ -206,6 +207,17 @@ input:focus,textarea:focus{
 }
 
 .text-placeholder{filter:blur(5px); user-select:none; pointer-events:none}
+
+.bg-accent-blob{position:absolute; border-radius:50%; filter:blur(70px); pointer-events:none; z-index:0; will-change:transform}
+.section-relative{position:relative; overflow:hidden}
+.section-relative > .max-w-6xl,.section-relative > .max-w-2xl{position:relative; z-index:1}
+
+.grain-dots{position:absolute; inset:0; pointer-events:none; z-index:0; opacity:0.5;
+  background-image:radial-gradient(hsl(var(--text)/0.10) 1px, transparent 1px);
+  background-size:22px 22px;
+  -webkit-mask-image:radial-gradient(ellipse 60% 50% at 50% 0%, black 0%, transparent 75%);
+  mask-image:radial-gradient(ellipse 60% 50% at 50% 0%, black 0%, transparent 75%);
+}
 </style>
 </head>
 <body class="antialiased">
@@ -266,7 +278,9 @@ input:focus,textarea:focus{
   </a>
 </header>
 
-<section id="o-nas" class="py-24 sm:py-32 tint-clay">
+<section id="o-nas" class="py-24 sm:py-32 tint-clay section-relative">
+  <div class="bg-accent-blob" data-blob style="width:420px; height:420px; left:-10%; top:-8%; background:hsl(var(--accent)/0.16)"></div>
+  <div class="bg-accent-blob" data-blob style="width:320px; height:320px; right:-6%; bottom:0%; background:hsl(var(--primary)/0.14)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
     <div>
       <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish mb-4" style="color:hsl(var(--primary))" data-reveal>O nas</h2>
@@ -302,7 +316,9 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="czym-sie-zajmujemy" class="py-24 sm:py-32 tint-sand">
+<section id="czym-sie-zajmujemy" class="py-24 sm:py-32 tint-sand section-relative">
+  <div class="grain-dots"></div>
+  <div class="bg-accent-blob" data-blob style="width:360px; height:360px; right:-8%; top:-10%; background:hsl(var(--accent)/0.16)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish mb-14" style="color:hsl(var(--primary))" data-reveal>Czym się zajmujemy</h2>
     <div class="grid sm:grid-cols-3 gap-6">
@@ -331,7 +347,8 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="dlaczego-my" class="tint-umber py-24 sm:py-32">
+<section id="dlaczego-my" class="tint-umber py-24 sm:py-32 section-relative">
+  <div class="bg-accent-blob" data-blob style="width:400px; height:400px; left:-8%; bottom:-10%; background:hsl(var(--primary)/0.16)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <h2 class="font-display text-2xl sm:text-3xl font-semibold tracking-tightish mb-10" style="color:hsl(var(--primary))" data-reveal>Dlaczego my</h2>
 
@@ -390,7 +407,9 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="gwarancje" class="py-24 sm:py-32 tint-sand">
+<section id="gwarancje" class="py-24 sm:py-32 tint-sand section-relative">
+  <div class="grain-dots"></div>
+  <div class="bg-accent-blob" data-blob style="width:340px; height:340px; right:-10%; top:10%; background:hsl(var(--accent)/0.14)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <div class="max-w-2xl mb-14" data-reveal>
       <p class="uppercase text-xs font-semibold tracking-[0.25em] mb-4" style="color:hsl(var(--accent))">Gwarancje</p>
@@ -440,7 +459,8 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="lokale" class="py-24 sm:py-32 tint-rose">
+<section id="lokale" class="py-24 sm:py-32 tint-rose section-relative">
+  <div class="bg-accent-blob" data-blob style="width:380px; height:380px; left:-8%; top:-6%; background:hsl(var(--primary)/0.14)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-14" data-reveal>
       <div>
@@ -463,7 +483,8 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="kontakt" class="py-24 sm:py-32 tint-linen">
+<section id="kontakt" class="py-24 sm:py-32 tint-linen section-relative">
+  <div class="bg-accent-blob" data-blob style="width:360px; height:360px; right:-8%; bottom:-8%; background:hsl(var(--accent)/0.14)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <div class="mb-14" data-reveal>
       <p class="uppercase text-xs font-semibold tracking-[0.25em] mb-4" style="color:hsl(var(--accent))">Kontakt</p>
@@ -633,26 +654,71 @@ updateScrollProgress()
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 const hoverFine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
 
-const revealEls = document.querySelectorAll('[data-reveal]')
-const revealNow = el => { el.style.transition = 'opacity 900ms cubic-bezier(0.23,1,0.32,1), transform 900ms cubic-bezier(0.23,1,0.32,1)'; el.style.opacity = '1'; el.style.transform = 'none' }
+const revealEls = Array.from(document.querySelectorAll('[data-reveal]'))
+const hasAnime = typeof anime !== 'undefined'
+
+const revealGroup = els => {
+  if (!hasAnime) {
+    els.forEach(el => { el.style.opacity = '1'; el.style.transform = 'none' })
+    return
+  }
+  anime({
+    targets: els,
+    opacity: [0, 1],
+    translateY: [30, 0],
+    rotateX: [6, 0],
+    scale: [0.975, 1],
+    easing: 'easeOutExpo',
+    duration: 1100,
+    delay: anime.stagger(90)
+  })
+}
+
 if (reduceMotion || !('IntersectionObserver' in window)) {
   revealEls.forEach(el => { el.style.opacity = '1'; el.style.transform = 'none' })
 } else {
+  const groups = new Map()
+  revealEls.forEach(el => {
+    const section = el.closest('section') || el.parentElement
+    if (!groups.has(section)) groups.set(section, [])
+    groups.get(section).push(el)
+  })
   const revealObserver = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        revealNow(entry.target)
+        const els = groups.get(entry.target)
+        if (els) {
+          revealGroup(els)
+          groups.delete(entry.target)
+        }
         obs.unobserve(entry.target)
       }
     })
-  }, { threshold: 0.05, rootMargin: '0px 0px -8% 0px' })
-  revealEls.forEach(el => revealObserver.observe(el))
+  }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' })
+  groups.forEach((els, section) => revealObserver.observe(section))
 }
 window.addEventListener('load', () => {
   setTimeout(() => {
-    revealEls.forEach(el => { if (parseFloat(getComputedStyle(el).opacity) < 1) revealNow(el) })
+    const remaining = revealEls.filter(el => parseFloat(getComputedStyle(el).opacity) < 1)
+    if (remaining.length) revealGroup(remaining)
   }, 3000)
 })
+
+if (hasAnime && !reduceMotion) {
+  document.querySelectorAll('[data-blob]').forEach((blob, i) => {
+    anime({
+      targets: blob,
+      translateX: () => anime.random(-26, 26),
+      translateY: () => anime.random(-22, 22),
+      scale: [1, 1.08],
+      duration: () => anime.random(9000, 14000),
+      easing: 'easeInOutSine',
+      direction: 'alternate',
+      loop: true,
+      delay: i * 300
+    })
+  })
+}
 
 let lenisInstance = null
 if (!reduceMotion && window.gsap) {
