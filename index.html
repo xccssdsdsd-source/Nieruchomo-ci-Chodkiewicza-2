@@ -16,9 +16,9 @@
 <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
 <style>
 :root{
-  --bg: 34 38% 96%;
-  --surface: 30 32% 91%;
-  --surface-2: 28 28% 87%;
+  --bg: 37 38% 97%;
+  --surface: 33 30% 92%;
+  --surface-2: 27 24% 86%;
   --primary: 356 48% 26%;
   --primary-2: 356 42% 36%;
   --accent: 28 62% 46%;
@@ -30,6 +30,9 @@
 html{scroll-behavior:auto}
 body{
   background:hsl(var(--bg));
+  background-image:
+    radial-gradient(circle at 12% 8%, hsl(var(--accent)/0.055), transparent 26rem),
+    radial-gradient(circle at 88% 34%, hsl(var(--primary)/0.045), transparent 32rem);
   color:hsl(var(--text));
   font-family:'Manrope',sans-serif;
   line-height:1.7;
@@ -38,33 +41,45 @@ body{
 .font-display{font-family:'Fraunces',serif}
 h1,h2,h3,.tracking-tightish{letter-spacing:-0.03em}
 .tint-clay{
+  background-color:hsl(35 38% 95%);
   background-image:
-    radial-gradient(ellipse 80% 60% at 15% 0%, hsl(var(--accent)/0.10), transparent 60%),
-    radial-gradient(ellipse 60% 50% at 100% 20%, hsl(var(--primary)/0.12), transparent 60%);
+    linear-gradient(90deg, transparent 0 7.5%, hsl(var(--primary)/0.055) 7.55%, transparent 7.65% 92.35%, hsl(var(--primary)/0.055) 92.45%, transparent 92.55%),
+    radial-gradient(ellipse 70% 58% at 5% 5%, hsl(var(--accent)/0.16), transparent 60%),
+    radial-gradient(ellipse 50% 65% at 96% 86%, hsl(var(--primary)/0.13), transparent 64%),
+    linear-gradient(120deg, hsl(40 50% 99%/0.72), transparent 44%);
 }
 .tint-sand{
-  background:hsl(var(--surface));
+  background-color:hsl(var(--surface));
   background-image:
-    radial-gradient(ellipse 70% 50% at 100% 0%, hsl(var(--accent)/0.14), transparent 55%),
-    radial-gradient(ellipse 50% 60% at 0% 100%, hsl(var(--primary)/0.08), transparent 60%);
+    linear-gradient(hsl(var(--primary)/0.032) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--primary)/0.032) 1px, transparent 1px),
+    radial-gradient(ellipse 68% 52% at 104% -4%, hsl(var(--accent)/0.20), transparent 58%),
+    radial-gradient(ellipse 56% 70% at -8% 108%, hsl(var(--primary)/0.10), transparent 62%),
+    linear-gradient(135deg, hsl(40 45% 98%/0.52), transparent 48%);
+  background-size:56px 56px,56px 56px,auto,auto,auto;
 }
 .tint-umber{
-  background:hsl(var(--surface-2));
+  background-color:hsl(var(--surface-2));
   background-image:
-    radial-gradient(ellipse 60% 55% at 85% 100%, hsl(var(--primary)/0.16), transparent 60%),
-    radial-gradient(ellipse 50% 40% at 5% 0%, hsl(var(--accent)/0.10), transparent 55%);
+    radial-gradient(ellipse 52% 84% at 100% 42%, hsl(var(--primary)/0.20), transparent 62%),
+    radial-gradient(ellipse 48% 58% at 0% 0%, hsl(var(--accent)/0.15), transparent 58%),
+    repeating-linear-gradient(118deg, transparent 0 84px, hsl(35 35% 98%/0.09) 85px, transparent 86px 168px),
+    linear-gradient(145deg, hsl(34 32% 92%/0.56), transparent 46%);
 }
 .tint-rose{
-  background:hsl(var(--bg));
+  background-color:hsl(37 38% 97%);
   background-image:
-    linear-gradient(135deg, hsl(var(--primary)/0.06), transparent 40%),
-    radial-gradient(ellipse 55% 60% at 100% 50%, hsl(var(--accent)/0.10), transparent 60%);
+    radial-gradient(circle at 16% 22%, transparent 0 170px, hsl(var(--primary)/0.07) 171px 172px, transparent 173px 212px, hsl(var(--accent)/0.06) 213px 214px, transparent 215px),
+    radial-gradient(ellipse 66% 76% at 102% 58%, hsl(var(--accent)/0.15), transparent 60%),
+    linear-gradient(135deg, hsl(var(--primary)/0.075), transparent 42%);
 }
 .tint-linen{
-  background:hsl(var(--surface));
+  background-color:hsl(var(--surface));
   background-image:
-    radial-gradient(ellipse 70% 55% at 0% 100%, hsl(var(--accent)/0.12), transparent 55%),
-    radial-gradient(ellipse 55% 50% at 100% 0%, hsl(var(--primary)/0.10), transparent 60%);
+    repeating-linear-gradient(90deg, transparent 0 119px, hsl(var(--primary)/0.035) 120px, transparent 121px 240px),
+    radial-gradient(ellipse 70% 64% at -4% 108%, hsl(var(--accent)/0.18), transparent 58%),
+    radial-gradient(ellipse 54% 58% at 100% 0%, hsl(var(--primary)/0.13), transparent 62%),
+    linear-gradient(120deg, hsl(40 45% 98%/0.46), transparent 52%);
 }
 .card-border{border:1px solid hsl(var(--text)/0.1)}
 .card-top{position:relative}
@@ -146,7 +161,7 @@ h1,h2,h3,.tracking-tightish{letter-spacing:-0.03em}
   transition:transform 220ms cubic-bezier(0.23,1,0.32,1);
 }
 .link-underline:hover::after{transform:scaleX(1);transform-origin:left}
-.nav-blur{background:hsl(var(--bg)/0.72); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px)}
+.nav-blur{background:hsl(var(--bg)/0.78); backdrop-filter:blur(18px) saturate(1.2); -webkit-backdrop-filter:blur(18px) saturate(1.2)}
 #mainNav .nav-link, #mainNav #menuBtn{color:hsl(34 38% 96%); transition:color 200ms ease}
 #mainNav.nav-blur .nav-link, #mainNav.nav-blur #menuBtn{color:hsl(var(--text))}
 [data-reveal]{opacity:0; transform:translateY(32px)}
@@ -179,6 +194,27 @@ input:focus,textarea:focus{
 
 .hero-kenburns{animation:kenBurns 22s cubic-bezier(0.45,0,0.55,1) infinite alternate}
 @keyframes kenBurns{from{transform:scale(1) translate3d(0,0,0)}to{transform:scale(1.13) translate3d(-1%,-1%,0)}}
+.hero-shade{
+  background:
+    radial-gradient(ellipse 64% 58% at 28% 70%, transparent 0%, hsl(20 28% 5%/0.12) 54%, hsl(20 30% 4%/0.48) 100%),
+    linear-gradient(180deg, hsl(20 30% 5%/0.34) 0%, transparent 34%, hsl(20 28% 4%/0.68) 100%);
+}
+.hero-warmth{
+  background:
+    linear-gradient(90deg, hsl(var(--primary)/0.46) 0%, hsl(var(--primary)/0.12) 44%, transparent 72%),
+    radial-gradient(circle at 72% 24%, hsl(36 80% 72%/0.16), transparent 30%);
+  mix-blend-mode:multiply;
+}
+#top::before{
+  content:'';position:absolute;inset:18px;z-index:2;pointer-events:none;
+  border:1px solid hsl(37 42% 96%/0.28);
+  box-shadow:inset 0 0 80px hsl(20 30% 4%/0.12);
+}
+#top::after{
+  content:'CHODKIEWICZA 2  /  SIERADZ';position:absolute;z-index:3;pointer-events:none;
+  top:50%;right:-82px;transform:rotate(90deg) translateX(50%);
+  color:hsl(37 42% 96%/0.68);font-size:9px;font-weight:700;letter-spacing:.34em;
+}
 
 .hero-word-mask{overflow:hidden; display:inline-block; vertical-align:top}
 .hero-word{display:inline-block; will-change:transform}
@@ -208,15 +244,36 @@ input:focus,textarea:focus{
 
 .text-placeholder{filter:blur(5px); user-select:none; pointer-events:none}
 
-.bg-accent-blob{position:absolute; border-radius:50%; filter:blur(70px); pointer-events:none; z-index:0; will-change:transform}
-.section-relative{position:relative; overflow:hidden}
+.bg-accent-blob{position:absolute; border-radius:50%; filter:blur(92px); opacity:.72; pointer-events:none; z-index:0; will-change:transform}
+.section-relative{position:relative; overflow:hidden; isolation:isolate; border-top:1px solid hsl(var(--primary)/0.07)}
 .section-relative > .max-w-6xl,.section-relative > .max-w-2xl{position:relative; z-index:1}
+.section-relative::before{
+  content:'';position:absolute;z-index:0;pointer-events:none;
+  inset:18px;
+  border-left:1px solid hsl(var(--primary)/0.07);
+  border-right:1px solid hsl(var(--primary)/0.07);
+}
+.section-relative::after{
+  content:attr(data-scene);position:absolute;z-index:0;pointer-events:none;
+  right:clamp(22px,5vw,76px);top:clamp(18px,4vw,54px);
+  font-family:'Fraunces',serif;font-size:clamp(6rem,15vw,13rem);line-height:.8;
+  font-weight:600;font-style:italic;letter-spacing:-.08em;
+  color:transparent;-webkit-text-stroke:1px hsl(var(--primary)/0.095);
+  opacity:.9;
+}
 
 .grain-dots{position:absolute; inset:0; pointer-events:none; z-index:0; opacity:0.5;
-  background-image:radial-gradient(hsl(var(--text)/0.10) 1px, transparent 1px);
-  background-size:22px 22px;
+  background-image:radial-gradient(hsl(var(--text)/0.12) .7px, transparent .8px);
+  background-size:18px 18px;
   -webkit-mask-image:radial-gradient(ellipse 60% 50% at 50% 0%, black 0%, transparent 75%);
   mask-image:radial-gradient(ellipse 60% 50% at 50% 0%, black 0%, transparent 75%);
+}
+@media (max-width:640px){
+  #top::before{inset:10px}
+  #top::after{display:none}
+  .section-relative::before{inset:10px}
+  .section-relative::after{right:20px;top:28px;font-size:7rem}
+  .tint-sand{background-size:38px 38px,38px 38px,auto,auto,auto}
 }
 </style>
 </head>
@@ -256,8 +313,8 @@ input:focus,textarea:focus{
 <header id="top" class="relative min-h-[100svh] flex items-end overflow-hidden glow-parent">
   <div class="absolute inset-0" data-hero-bg>
     <img src="image.png" alt="Siedziba firmy Nieruchomości Chodkiewicza 2" class="hero-kenburns w-full h-full object-cover" style="filter:brightness(1.2) saturate(1.05)" loading="eager">
-    <div class="absolute inset-0" style="background:linear-gradient(180deg, hsl(20 30% 6%/0.22) 0%, hsl(20 30% 6%/0.1) 40%, hsl(20 25% 5%/0.62) 100%)"></div>
-    <div class="absolute inset-0" style="background:linear-gradient(90deg, hsl(356 50% 12%/0.25), transparent 60%)"></div>
+    <div class="absolute inset-0 hero-shade"></div>
+    <div class="absolute inset-0 hero-warmth"></div>
   </div>
   <div class="glow-spot"></div>
 
@@ -278,7 +335,7 @@ input:focus,textarea:focus{
   </a>
 </header>
 
-<section id="o-nas" class="py-24 sm:py-32 tint-clay section-relative">
+<section id="o-nas" class="py-24 sm:py-32 tint-clay section-relative" data-scene="01">
   <div class="bg-accent-blob" data-blob style="width:420px; height:420px; left:-10%; top:-8%; background:hsl(var(--accent)/0.16)"></div>
   <div class="bg-accent-blob" data-blob style="width:320px; height:320px; right:-6%; bottom:0%; background:hsl(var(--primary)/0.14)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
@@ -316,7 +373,7 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="czym-sie-zajmujemy" class="py-24 sm:py-32 tint-sand section-relative">
+<section id="czym-sie-zajmujemy" class="py-24 sm:py-32 tint-sand section-relative" data-scene="02">
   <div class="grain-dots"></div>
   <div class="bg-accent-blob" data-blob style="width:360px; height:360px; right:-8%; top:-10%; background:hsl(var(--accent)/0.16)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
@@ -347,7 +404,7 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="dlaczego-my" class="tint-umber py-24 sm:py-32 section-relative">
+<section id="dlaczego-my" class="tint-umber py-24 sm:py-32 section-relative" data-scene="03">
   <div class="bg-accent-blob" data-blob style="width:400px; height:400px; left:-8%; bottom:-10%; background:hsl(var(--primary)/0.16)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <h2 class="font-display text-2xl sm:text-3xl font-semibold tracking-tightish mb-10" style="color:hsl(var(--primary))" data-reveal>Dlaczego my</h2>
@@ -407,7 +464,7 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="gwarancje" class="py-24 sm:py-32 tint-sand section-relative">
+<section id="gwarancje" class="py-24 sm:py-32 tint-sand section-relative" data-scene="04">
   <div class="grain-dots"></div>
   <div class="bg-accent-blob" data-blob style="width:340px; height:340px; right:-10%; top:10%; background:hsl(var(--accent)/0.14)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
@@ -459,7 +516,7 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="lokale" class="py-24 sm:py-32 tint-rose section-relative">
+<section id="lokale" class="py-24 sm:py-32 tint-rose section-relative" data-scene="05">
   <div class="bg-accent-blob" data-blob style="width:380px; height:380px; left:-8%; top:-6%; background:hsl(var(--primary)/0.14)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-14" data-reveal>
@@ -483,7 +540,7 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="kontakt" class="py-24 sm:py-32 tint-linen section-relative">
+<section id="kontakt" class="py-24 sm:py-32 tint-linen section-relative" data-scene="06">
   <div class="bg-accent-blob" data-blob style="width:360px; height:360px; right:-8%; bottom:-8%; background:hsl(var(--accent)/0.14)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <div class="mb-14" data-reveal>
