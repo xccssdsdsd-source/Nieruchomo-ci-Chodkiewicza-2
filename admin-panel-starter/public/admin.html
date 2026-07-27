@@ -1,0 +1,1495 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel administratora — Nieruchomości</title>
+<link href="/admin.css" rel="stylesheet">
+</head>
+<body class="bg-sand-50 text-slate-800 min-h-screen antialiased">
+
+<div id="login-view" class="min-h-screen flex items-center justify-center px-4">
+	<form id="login-form" class="bg-white rounded-2xl shadow-lifted p-10 w-full max-w-sm space-y-5 anim-fade-in-up">
+		<div class="text-center space-y-1">
+			<div class="mx-auto w-11 h-11 rounded-xl bg-brand-700 text-white flex items-center justify-center font-display text-lg">P</div>
+			<h1 class="font-display text-2xl font-semibold text-brand-900 mt-3">Panel administratora</h1>
+			<p class="text-sm text-slate-500">Zaloguj się, aby zarządzać treścią</p>
+		</div>
+		<div>
+			<label class="block text-sm font-medium text-slate-700 mb-1.5" for="login-email">Email</label>
+			<input id="login-email" type="email" required autocomplete="username" class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none transition-[box-shadow,border-color] duration-150 focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+		</div>
+		<div>
+			<label class="block text-sm font-medium text-slate-700 mb-1.5" for="login-password">Hasło</label>
+			<input id="login-password" type="password" required autocomplete="current-password" class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none transition-[box-shadow,border-color] duration-150 focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+		</div>
+		<p id="login-error" role="alert" class="text-sm text-rose-600 hidden"></p>
+		<button type="submit" id="login-submit" class="w-full bg-brand-700 text-white rounded-lg px-3 py-2.5 font-medium hover:bg-brand-600 active:bg-brand-800 transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700 disabled:opacity-50 disabled:cursor-not-allowed">
+			Zaloguj się
+		</button>
+	</form>
+</div>
+
+<div id="panel-view" class="hidden min-h-screen">
+	<header class="bg-white border-b border-slate-200 sticky top-0 z-20">
+		<div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+			<div class="flex items-center gap-2.5 shrink-0">
+				<div class="w-8 h-8 rounded-lg bg-brand-700 text-white flex items-center justify-center font-display text-sm">P</div>
+				<span class="font-display text-lg font-semibold text-brand-900 hidden sm:inline">Panel nieruchomości</span>
+			</div>
+			<nav class="hidden md:flex items-center gap-1 bg-sand-100 rounded-full p-1" role="tablist" aria-label="Sekcje panelu">
+				<button data-tab="dashboard" class="tab-btn px-4 py-1.5 rounded-full text-sm font-medium transition-colors duration-150" role="tab">Podsumowanie</button>
+				<button data-tab="properties" class="tab-btn px-4 py-1.5 rounded-full text-sm font-medium transition-colors duration-150" role="tab">Nieruchomości</button>
+				<button data-tab="reviews" class="tab-btn px-4 py-1.5 rounded-full text-sm font-medium transition-colors duration-150" role="tab">Opinie</button>
+				<button data-tab="blog" class="tab-btn px-4 py-1.5 rounded-full text-sm font-medium transition-colors duration-150" role="tab">Blog</button>
+				<button data-tab="chatbot" class="tab-btn px-4 py-1.5 rounded-full text-sm font-medium transition-colors duration-150" role="tab">Chatbot AI</button>
+			</nav>
+			<div class="flex items-center gap-2 sm:gap-3">
+				<button id="logout-btn" type="button" aria-label="Wyloguj" title="Wyloguj" class="inline-flex items-center justify-center w-11 h-11 rounded-lg border border-slate-200 text-slate-600 hover:text-brand-700 hover:bg-slate-100 active:bg-slate-200 transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M21 19V5a2 2 0 0 0-2-2h-5"/><path d="M14 21h5a2 2 0 0 0 2-2"/></svg>
+				</button>
+				<button id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 active:bg-slate-200 transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+				</button>
+			</div>
+		</div>
+		<nav id="mobile-nav" class="md:hidden hidden border-t border-slate-200 bg-white anim-fade-in-up" role="tablist" aria-label="Sekcje panelu (mobile)">
+			<div class="max-w-6xl mx-auto px-4 py-2 grid grid-cols-2 gap-1.5">
+				<button data-tab="dashboard" class="tab-btn-mobile min-h-[44px] px-4 py-2.5 rounded-lg text-sm font-medium text-left transition-colors duration-150" role="tab">Podsumowanie</button>
+				<button data-tab="properties" class="tab-btn-mobile min-h-[44px] px-4 py-2.5 rounded-lg text-sm font-medium text-left transition-colors duration-150" role="tab">Nieruchomości</button>
+				<button data-tab="reviews" class="tab-btn-mobile min-h-[44px] px-4 py-2.5 rounded-lg text-sm font-medium text-left transition-colors duration-150" role="tab">Opinie</button>
+				<button data-tab="blog" class="tab-btn-mobile min-h-[44px] px-4 py-2.5 rounded-lg text-sm font-medium text-left transition-colors duration-150" role="tab">Blog</button>
+				<button data-tab="chatbot" class="tab-btn-mobile min-h-[44px] px-4 py-2.5 rounded-lg text-sm font-medium text-left transition-colors duration-150 col-span-2" role="tab">Chatbot AI</button>
+			</div>
+		</nav>
+	</header>
+
+	<main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+		<section id="tab-dashboard" class="tab-panel"></section>
+		<section id="tab-properties" class="tab-panel hidden"></section>
+		<section id="tab-reviews" class="tab-panel hidden"></section>
+		<section id="tab-blog" class="tab-panel hidden"></section>
+		<section id="tab-chatbot" class="tab-panel hidden"></section>
+	</main>
+</div>
+
+<div id="toast-container" aria-live="polite" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 items-end"></div>
+
+<div id="modal-root"></div>
+
+<template id="tpl-dropzone">
+	<div class="dropzone group relative border-2 border-dashed border-slate-300 rounded-xl p-4 text-center cursor-pointer transition-colors duration-150 hover:border-brand-400 hover:bg-brand-50/40" role="button" aria-label="Dodaj zdjęcie">
+		<input type="file" accept="image/*" class="dz-input sr-only">
+		<div class="dz-idle flex flex-col items-center gap-1.5 py-2 pointer-events-none">
+			<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-slate-400 group-hover:text-brand-500 transition-colors duration-150"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1M7 9l5-5 5 5M12 4v13"/></svg>
+			<p class="text-sm text-slate-500"><span class="text-brand-700 font-medium">Kliknij</span> lub przeciągnij zdjęcie</p>
+		</div>
+		<div class="dz-loading hidden items-center justify-center gap-2 py-2 text-sm text-brand-700">
+			<svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" opacity="0.25"/><path d="M22 12a10 10 0 0 0-10-10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+			Przesyłanie...
+		</div>
+	</div>
+</template>
+
+<script>
+const state = { properties: [], posts: [], reviews: [], chatbotConfig: null, chatbotDocs: [], userEmail: '' }
+const $ = (sel, root = document) => root.querySelector(sel)
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel))
+
+const statusMeta = {
+	dostepna: { label: 'Dostępna', cls: 'bg-brand-100 text-brand-800' },
+	zarezerwowana: { label: 'Zarezerwowana', cls: 'bg-amber-100 text-amber-800' },
+	sprzedana: { label: 'Sprzedana', cls: 'bg-slate-200 text-slate-600' },
+}
+
+const fmtPrice = (value) => new Intl.NumberFormat('pl-PL').format(value) + ' zł'
+const fmtDate = (value) => new Date(value).toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })
+
+const starsSvg = (filled) => `<svg width="16" height="16" viewBox="0 0 24 24" fill="${filled ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.75" class="${filled ? 'text-gold-500' : 'text-slate-300'}"><path d="M12 2.5l3 6.5 7 .7-5.3 4.7 1.6 6.9-6.3-3.7-6.3 3.7 1.6-6.9L2 9.7l7-.7z" stroke-linejoin="round"/></svg>`
+const renderStars = (rating) => `<span class="inline-flex items-center gap-0.5" role="img" aria-label="${rating} na 5 gwiazdek">${[1, 2, 3, 4, 5].map((i) => starsSvg(i <= rating)).join('')}</span>`
+
+const showToast = (message, type = 'success') => {
+	const container = $('#toast-container')
+	const el = document.createElement('div')
+	const styles = type === 'error' ? 'bg-rose-600 text-white' : 'bg-brand-800 text-white'
+	el.className = `anim-fade-in-up ${styles} rounded-lg shadow-lifted px-4 py-2.5 text-sm font-medium max-w-sm`
+	el.textContent = message
+	container.appendChild(el)
+	setTimeout(() => {
+		el.style.transition = 'opacity 200ms ease-out, transform 200ms ease-out'
+		el.style.opacity = '0'
+		el.style.transform = 'translateY(4px)'
+		setTimeout(() => el.remove(), 200)
+	}, 4000)
+}
+
+const confirmDialog = (message) => new Promise((resolve) => {
+	const root = $('#modal-root')
+	root.innerHTML = `
+		<div class="fixed inset-0 z-40 flex items-center justify-center bg-slate-900/50 anim-fade-in p-4" data-role="backdrop">
+			<div class="bg-white rounded-2xl shadow-lifted p-6 w-full max-w-sm anim-scale-in" role="dialog" aria-modal="true">
+				<p class="text-slate-800 mb-5">${message}</p>
+				<div class="flex justify-end gap-2">
+					<button data-role="cancel" class="px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors duration-150">Anuluj</button>
+					<button data-role="confirm" class="px-3.5 py-2 rounded-lg text-sm font-medium bg-rose-600 text-white hover:bg-rose-700 transition-colors duration-150">Usuń</button>
+				</div>
+			</div>
+		</div>
+	`
+	const close = (result) => { root.innerHTML = ''; document.removeEventListener('keydown', onKey); resolve(result) }
+	const onKey = (e) => { if (e.key === 'Escape') close(false) }
+	document.addEventListener('keydown', onKey)
+	root.querySelector('[data-role="backdrop"]').addEventListener('click', (e) => { if (e.target === e.currentTarget) close(false) })
+	root.querySelector('[data-role="cancel"]').addEventListener('click', () => close(false))
+	root.querySelector('[data-role="confirm"]').addEventListener('click', () => close(true))
+})
+
+const api = async (path, options = {}) => {
+	const response = await fetch(path, { credentials: 'include', cache: 'no-store', ...options })
+	if (response.status === 401) {
+		showLogin()
+		throw new Error('unauthorized')
+	}
+	const isJson = response.headers.get('content-type')?.includes('application/json')
+	const data = isJson ? await response.json().catch(() => null) : null
+	if (!response.ok) {
+		const validationMessages = data?.error?.fieldErrors
+			? Object.values(data.error.fieldErrors).flat().filter((message) => typeof message === 'string')
+			: []
+		const formMessages = Array.isArray(data?.error?.formErrors)
+			? data.error.formErrors.filter((message) => typeof message === 'string')
+			: []
+		const message = typeof data?.error === 'string'
+			? data.error
+			: [...validationMessages, ...formMessages].join(' ') || 'Coś poszło nie tak. Spróbuj ponownie.'
+		throw new Error(message)
+	}
+	return data
+}
+
+const uploadFile = async (file, folder) => {
+	const formData = new FormData()
+	formData.append('file', file)
+	formData.append('folder', folder)
+	const data = await api('/api/uploads', { method: 'POST', body: formData })
+	return data.url
+}
+
+const wireDropzone = (container, { multiple, onUploaded }) => {
+	const tpl = $('#tpl-dropzone').content.cloneNode(true)
+	container.appendChild(tpl)
+	const dz = container.querySelector('.dropzone')
+	const input = dz.querySelector('.dz-input')
+	const idle = dz.querySelector('.dz-idle')
+	const loading = dz.querySelector('.dz-loading')
+	if (multiple) input.setAttribute('multiple', '')
+
+	const setLoading = (isLoading) => {
+		idle.classList.toggle('hidden', isLoading)
+		loading.classList.toggle('hidden', !isLoading)
+		loading.classList.toggle('flex', isLoading)
+	}
+
+	const handleFiles = async (files) => {
+		if (!files || files.length === 0) return
+		setLoading(true)
+		try {
+			const urls = []
+			for (const file of files) urls.push(await uploadFile(file, dz.dataset.folder || 'misc'))
+			await onUploaded(urls)
+		} catch (err) {
+			showToast(err.message || 'Nie udało się przesłać zdjęcia.', 'error')
+		} finally {
+			setLoading(false)
+			input.value = ''
+		}
+	}
+
+	dz.addEventListener('click', () => input.click())
+	dz.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click() } })
+	dz.setAttribute('tabindex', '0')
+	input.addEventListener('change', () => handleFiles(input.files))
+	;['dragenter', 'dragover'].forEach((evt) => dz.addEventListener(evt, (e) => { e.preventDefault(); dz.classList.add('border-brand-400', 'bg-brand-50/40') }))
+	;['dragleave', 'drop'].forEach((evt) => dz.addEventListener(evt, (e) => { e.preventDefault(); dz.classList.remove('border-brand-400', 'bg-brand-50/40') }))
+	dz.addEventListener('drop', (e) => handleFiles(multiple ? e.dataTransfer.files : [e.dataTransfer.files[0]]))
+
+	return dz
+}
+
+// Generic add/remove row editor for a list of plain strings (video URLs,
+// highlight bullet points, ...). Renders into `rowsHost`, wires the "add"
+// button, and returns `{ values() }` to read current (trimmed) values.
+const wireRowEditor = (rowsHost, addBtn, initial, placeholder, inputType) => {
+	let items = [...initial]
+	if (items.length === 0) items = ['']
+
+	const draw = () => {
+		rowsHost.innerHTML = items.map((value, i) => `
+			<div class="flex items-center gap-2">
+				<input type="${inputType}" data-i="${i}" placeholder="${placeholder}" value="${escapeHtml(value)}" class="row-input flex-1 border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30 min-h-[44px]">
+				<button type="button" data-i="${i}" class="row-remove shrink-0 w-11 h-11 flex items-center justify-center rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors duration-150" aria-label="Usuń">×</button>
+			</div>
+		`).join('')
+		rowsHost.querySelectorAll('.row-input').forEach((input) => {
+			input.addEventListener('input', () => { items[Number(input.dataset.i)] = input.value })
+		})
+		rowsHost.querySelectorAll('.row-remove').forEach((btn) => {
+			btn.addEventListener('click', () => {
+				items.splice(Number(btn.dataset.i), 1)
+				if (items.length === 0) items = ['']
+				draw()
+			})
+		})
+	}
+	draw()
+	addBtn.addEventListener('click', () => { items.push(''); draw() })
+
+	return { values: () => items.map((v) => v.trim()) }
+}
+const wireUrlRowEditor = (rowsHost, addBtn, initial, placeholder) => wireRowEditor(rowsHost, addBtn, initial, placeholder, 'url')
+const wireTextRowEditor = (rowsHost, addBtn, initial, placeholder) => wireRowEditor(rowsHost, addBtn, initial, placeholder, 'text')
+
+const showLogin = () => {
+	$('#login-view').classList.remove('hidden')
+	$('#panel-view').classList.add('hidden')
+}
+
+const showPanelShell = () => {
+	$('#login-view').classList.add('hidden')
+	$('#panel-view').classList.remove('hidden')
+}
+
+let activeTab = 'dashboard'
+const closeMobileNav = () => {
+	$('#mobile-nav').classList.add('hidden')
+	$('#menu-btn').setAttribute('aria-expanded', 'false')
+}
+const setActiveTab = (tab) => {
+	activeTab = tab
+	$$('.tab-btn').forEach((btn) => {
+		const isActive = btn.dataset.tab === tab
+		btn.classList.toggle('bg-white', isActive)
+		btn.classList.toggle('shadow-soft', isActive)
+		btn.classList.toggle('text-brand-800', isActive)
+		btn.classList.toggle('text-slate-500', !isActive)
+	})
+	$$('.tab-btn-mobile').forEach((btn) => {
+		const isActive = btn.dataset.tab === tab
+		btn.classList.toggle('bg-brand-50', isActive)
+		btn.classList.toggle('text-brand-800', isActive)
+		btn.classList.toggle('text-slate-600', !isActive)
+	})
+	$$('.tab-panel').forEach((panel) => panel.classList.toggle('hidden', panel.id !== `tab-${tab}`))
+	closeMobileNav()
+	render()
+}
+
+$$('.tab-btn, .tab-btn-mobile').forEach((btn) => btn.addEventListener('click', () => setActiveTab(btn.dataset.tab)))
+$('#menu-btn').addEventListener('click', () => {
+	const isOpen = !$('#mobile-nav').classList.contains('hidden')
+	$('#mobile-nav').classList.toggle('hidden', isOpen)
+	$('#menu-btn').setAttribute('aria-expanded', String(!isOpen))
+})
+
+// ---------- Dashboard ----------
+
+const renderDashboard = () => {
+	const el = $('#tab-dashboard')
+	const counts = state.properties.reduce((acc, p) => { acc[p.status] = (acc[p.status] || 0) + 1; return acc }, {})
+	const published = state.posts.filter((p) => p.published).length
+	const stat = (label, value, accent) => `
+		<div class="bg-white rounded-2xl shadow-soft p-5 anim-fade-in-up">
+			<p class="text-sm text-slate-500">${label}</p>
+			<p class="font-display text-3xl font-semibold ${accent} mt-1 tabular">${value}</p>
+		</div>
+	`
+	el.innerHTML = `
+		<h1 class="font-display text-2xl font-semibold text-brand-900 mb-1">Podsumowanie</h1>
+		<p class="text-slate-500 mb-6">Aktualny stan treści w panelu.</p>
+		<div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+			${stat('Nieruchomości', state.properties.length, 'text-brand-800')}
+			${stat('Dostępne', counts.dostepna || 0, 'text-brand-800')}
+			${stat('Zarezerwowane', counts.zarezerwowana || 0, 'text-amber-700')}
+			${stat('Wpisy na blogu (opubl.)', `${published}/${state.posts.length}`, 'text-brand-800')}
+			${stat('Opinie', state.reviews.length, 'text-brand-800')}
+		</div>
+		<h2 class="font-display text-lg font-semibold text-brand-900 mb-3">Ostatnio dodane nieruchomości</h2>
+		<div class="bg-white rounded-2xl shadow-soft divide-y divide-slate-100">
+			${state.properties.length === 0 ? '<p class="p-5 text-sm text-slate-500">Brak nieruchomości — dodaj pierwszą w zakładce „Nieruchomości”.</p>' :
+				state.properties.slice(0, 5).map((p) => `
+					<div class="flex items-center justify-between gap-4 p-4">
+						<div class="min-w-0">
+							<p class="font-medium text-slate-800 truncate">${escapeHtml(p.title)}</p>
+							<p class="text-sm text-slate-500">${fmtDate(p.createdAt)}</p>
+						</div>
+						<div class="flex items-center gap-3 shrink-0">
+							<span class="text-sm font-medium tabular">${fmtPrice(p.price)}</span>
+							<span class="text-xs font-medium px-2.5 py-1 rounded-full ${statusMeta[p.status].cls}">${statusMeta[p.status].label}</span>
+						</div>
+					</div>
+				`).join('')}
+		</div>
+	`
+}
+
+const escapeHtml = (value) => (value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+
+// Defense-in-depth: every URL we render (image src, file href) is expected to
+// be a same-origin path our own /api/uploads returned. Reject anything else
+// (javascript:, data:, or any other scheme) before it ever reaches the DOM,
+// then escape it for safe attribute interpolation.
+const safeUrl = (value) => {
+	if (typeof value !== 'string') return ''
+	if (/^\/api\/images\/[a-zA-Z0-9_./-]+$/.test(value)) return escapeHtml(value)
+	return ''
+}
+
+// ---------- Properties ----------
+
+const loadProperties = async () => { state.properties = await api('/api/properties') }
+
+const renderProperties = () => {
+	const el = $('#tab-properties')
+	el.innerHTML = `
+		<div class="flex items-center justify-between mb-6">
+			<div>
+				<h1 class="font-display text-2xl font-semibold text-brand-900">Nieruchomości</h1>
+				<p class="text-slate-500">${state.properties.length} pozycji</p>
+			</div>
+			<button id="new-property-btn" class="bg-brand-700 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-brand-600 active:bg-brand-800 transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700">
+				+ Dodaj nieruchomość
+			</button>
+		</div>
+		<div id="property-form-slot" class="mb-6"></div>
+		<div id="property-list" class="grid gap-4 sm:grid-cols-2"></div>
+	`
+	$('#new-property-btn').addEventListener('click', () => renderPropertyForm())
+	const list = $('#property-list')
+	if (state.properties.length === 0) {
+		list.innerHTML = `<div class="sm:col-span-2 bg-white rounded-2xl shadow-soft p-10 text-center text-slate-500">Brak nieruchomości. Kliknij „Dodaj nieruchomość”, aby dodać pierwszą.</div>`
+		return
+	}
+	for (const property of state.properties) list.appendChild(renderPropertyCard(property))
+}
+
+const renderPropertyForm = () => {
+	const slot = $('#property-form-slot')
+	const pendingImages = []
+	slot.innerHTML = `
+		<form id="create-property-form" class="bg-white rounded-2xl shadow-soft p-6 anim-fade-in-up space-y-4">
+			<h2 class="font-display text-lg font-semibold text-brand-900">Nowa nieruchomość</h2>
+			<div class="grid sm:grid-cols-2 gap-4">
+				<div class="sm:col-span-2">
+					<label class="block text-sm font-medium text-slate-700 mb-1.5" for="cp-title">Tytuł *</label>
+					<input id="cp-title" required class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+				</div>
+				<div>
+					<label class="block text-sm font-medium text-slate-700 mb-1.5" for="cp-price">Cena (PLN) *</label>
+					<input id="cp-price" type="number" min="1" step="1" required class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+				</div>
+				<div>
+					<label class="block text-sm font-medium text-slate-700 mb-1.5" for="cp-status">Status</label>
+					<select id="cp-status" class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+						<option value="dostepna">Dostępna</option>
+						<option value="zarezerwowana">Zarezerwowana</option>
+						<option value="sprzedana">Sprzedana</option>
+					</select>
+				</div>
+				<div class="sm:col-span-2">
+					<label class="block text-sm font-medium text-slate-700 mb-1.5" for="cp-description">Opis</label>
+					<textarea id="cp-description" rows="3" class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30"></textarea>
+				</div>
+				<div class="sm:col-span-2">
+					<label class="block text-sm font-medium text-slate-700 mb-1.5">Zdjęcia</label>
+					<div id="cp-dropzone-slot"></div>
+					<div id="cp-preview" class="flex flex-wrap gap-2 mt-2"></div>
+				</div>
+				<div class="sm:col-span-2">
+					<label class="block text-sm font-medium text-slate-700 mb-1.5">Filmy (adresy URL)</label>
+					<div id="cp-video-rows" class="space-y-2"></div>
+					<button type="button" id="cp-add-video" class="mt-2 text-sm font-medium text-brand-700 hover:text-brand-800 px-2.5 py-1.5 rounded-lg hover:bg-brand-50 transition-colors duration-150 min-h-[44px]">+ Dodaj film</button>
+				</div>
+				<div class="sm:col-span-2">
+					<label class="block text-sm font-medium text-slate-700 mb-1.5">Wyróżnione cechy</label>
+					<div id="cp-highlight-rows" class="space-y-2"></div>
+					<button type="button" id="cp-add-highlight" class="mt-2 text-sm font-medium text-brand-700 hover:text-brand-800 px-2.5 py-1.5 rounded-lg hover:bg-brand-50 transition-colors duration-150 min-h-[44px]">+ Dodaj cechę</button>
+				</div>
+			</div>
+			<div class="flex items-center gap-2 pt-1">
+				<button type="submit" id="cp-submit" class="bg-brand-700 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-brand-600 active:bg-brand-800 transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]">Zapisz nieruchomość</button>
+				<button type="button" id="cp-cancel" class="px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors duration-150 min-h-[44px]">Anuluj</button>
+			</div>
+			<p id="cp-error" class="hidden text-sm font-medium text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3.5 py-2.5" role="alert"></p>
+		</form>
+	`
+	const dzHost = $('#cp-dropzone-slot')
+	const dz = wireDropzone(dzHost, {
+		multiple: true,
+		onUploaded: async (urls) => {
+			pendingImages.push(...urls)
+			renderPreview()
+		},
+	})
+	dz.dataset.folder = 'properties'
+
+	const renderPreview = () => {
+		$('#cp-preview').innerHTML = pendingImages.map((url, i) => `
+			<div class="relative w-16 h-16 rounded-lg overflow-hidden border border-slate-200">
+				<img src="${safeUrl(url)}" alt="" class="w-full h-full object-cover">
+				<button type="button" data-i="${i}" class="cp-remove-img absolute top-0.5 right-0.5 bg-slate-900/70 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs leading-none hover:bg-rose-600 transition-colors duration-150">×</button>
+			</div>
+		`).join('')
+		$$('.cp-remove-img').forEach((btn) => btn.addEventListener('click', () => { pendingImages.splice(Number(btn.dataset.i), 1); renderPreview() }))
+	}
+
+	const videoRows = wireUrlRowEditor($('#cp-video-rows'), $('#cp-add-video'), [], 'https://...')
+	const highlightRows = wireTextRowEditor($('#cp-highlight-rows'), $('#cp-add-highlight'), [], 'np. balkon 12m²')
+
+	$('#cp-cancel').addEventListener('click', () => { slot.innerHTML = '' })
+
+	$('#create-property-form').addEventListener('submit', async (e) => {
+		e.preventDefault()
+		const submitBtn = $('#cp-submit')
+		const errorEl = $('#cp-error')
+		errorEl.classList.add('hidden')
+		submitBtn.disabled = true
+		submitBtn.textContent = 'Zapisywanie...'
+		try {
+			const created = await api('/api/properties', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					title: $('#cp-title').value,
+					price: Number($('#cp-price').value),
+					status: $('#cp-status').value,
+					description: $('#cp-description').value || undefined,
+					imageUrls: pendingImages,
+					videoUrls: videoRows.values().filter(Boolean),
+					highlights: highlightRows.values().filter(Boolean),
+				}),
+			})
+			showToast('Nieruchomość dodana. Możesz od razu ją edytować.')
+			slot.innerHTML = ''
+			await refreshProperties({ openId: created.id })
+		} catch (err) {
+			const message = err instanceof Error ? err.message : 'Nie udało się zapisać nieruchomości.'
+			errorEl.textContent = message
+			errorEl.classList.remove('hidden')
+			showToast(message, 'error')
+			submitBtn.disabled = false
+			submitBtn.textContent = 'Zapisz nieruchomość'
+		}
+	})
+}
+
+const renderPropertyCard = (property) => {
+	const card = document.createElement('div')
+	card.className = 'bg-white rounded-2xl shadow-soft p-5 anim-fade-in-up'
+	card.dataset.recordId = property.id
+	card.innerHTML = `
+		<div class="view-mode">
+			<div class="flex items-start justify-between gap-3 mb-3">
+				<div class="min-w-0">
+					<h3 class="font-display text-lg font-semibold text-slate-900 truncate">${escapeHtml(property.title)}</h3>
+					<p class="tabular font-medium text-brand-800 mt-0.5">${fmtPrice(property.price)}</p>
+				</div>
+				<span class="shrink-0 text-xs font-medium px-2.5 py-1 rounded-full ${statusMeta[property.status].cls}">${statusMeta[property.status].label}</span>
+			</div>
+			${property.description ? `<p class="text-sm text-slate-500 mb-3 line-clamp-2">${escapeHtml(property.description)}</p>` : ''}
+			${property.highlights.length ? `<ul class="flex flex-wrap gap-1.5 mb-3">${property.highlights.map((h) => `<li class="text-xs font-medium text-brand-800 bg-brand-50 border border-brand-100 rounded-full px-2.5 py-1">${escapeHtml(h)}</li>`).join('')}</ul>` : ''}
+			<div class="flex items-center gap-2">
+				<button data-action="edit" class="text-sm font-medium text-brand-700 hover:text-brand-800 px-2.5 py-1.5 rounded-lg hover:bg-brand-50 transition-colors duration-150 min-h-[44px]">Edytuj</button>
+				<button data-action="delete" class="text-sm font-medium text-rose-600 hover:text-rose-700 px-2.5 py-1.5 rounded-lg hover:bg-rose-50 transition-colors duration-150 min-h-[44px]">Usuń</button>
+			</div>
+		</div>
+		<div class="edit-mode hidden space-y-3"></div>
+		<div class="mt-4 pt-4 border-t border-slate-100">
+			<p class="text-xs font-medium text-slate-500 mb-2">Zdjęcia (${property.imageUrls.length})</p>
+			<div class="image-grid flex flex-wrap gap-2 mb-2"></div>
+			<div class="dropzone-slot"></div>
+			${property.videoUrls.length ? `
+				<p class="text-xs font-medium text-slate-500 mt-3 mb-1.5">Filmy (${property.videoUrls.length})</p>
+				<ul class="space-y-1">${property.videoUrls.map((v) => `<li class="text-sm"><a href="${safeUrl(v)}" target="_blank" rel="noopener" class="text-brand-700 hover:text-brand-800 underline underline-offset-2 break-all">${escapeHtml(v)}</a></li>`).join('')}</ul>
+			` : ''}
+		</div>
+	`
+
+	renderImageGrid(card, property)
+
+	const dz = wireDropzone(card.querySelector('.dropzone-slot'), {
+		multiple: true,
+		onUploaded: async (urls) => {
+			const next = [...property.imageUrls, ...urls]
+			await patchProperty(property.id, { imageUrls: next }, { focusId: property.id })
+		},
+	})
+	dz.dataset.folder = `properties/${property.id}`
+
+	card.querySelector('[data-action="delete"]').addEventListener('click', async () => {
+		const ok = await confirmDialog(`Usunąć nieruchomość „${escapeHtml(property.title)}”? Tej operacji nie można cofnąć.`)
+		if (!ok) return
+		try {
+			await api(`/api/properties/${property.id}`, { method: 'DELETE' })
+			showToast('Nieruchomość usunięta.')
+			await refreshProperties()
+		} catch (err) {
+			showToast(err.message, 'error')
+		}
+	})
+
+	card.querySelector('[data-action="edit"]').addEventListener('click', () => renderPropertyEditForm(card, property))
+
+	return card
+}
+
+const renderImageGrid = (card, property) => {
+	const grid = card.querySelector('.image-grid')
+	if (property.imageUrls.length === 0) {
+		grid.innerHTML = '<p class="text-sm text-slate-400">Brak zdjęć.</p>'
+		return
+	}
+	grid.innerHTML = property.imageUrls.map((url, i) => `
+		<div class="relative w-16 h-16 rounded-lg overflow-hidden border border-slate-200 group">
+			<img src="${safeUrl(url)}" alt="Zdjęcie nieruchomości ${escapeHtml(property.title)}" class="w-full h-full object-cover">
+			<button data-i="${i}" class="remove-image absolute top-0.5 right-0.5 bg-slate-900/70 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs leading-none opacity-0 group-hover:opacity-100 hover:bg-rose-600 transition-opacity duration-150">×</button>
+		</div>
+	`).join('')
+	$$('.remove-image', grid).forEach((btn) => btn.addEventListener('click', async () => {
+		const next = property.imageUrls.filter((_, i) => i !== Number(btn.dataset.i))
+		try {
+			await patchProperty(property.id, { imageUrls: next }, { focusId: property.id })
+		} catch (err) {
+			showToast(err.message, 'error')
+		}
+	}))
+}
+
+const patchProperty = async (id, payload, { focusId } = {}) => {
+	await api(`/api/properties/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+	await refreshProperties({ focusId })
+}
+
+const renderPropertyEditForm = (card, property) => {
+	card.querySelector('.view-mode').classList.add('hidden')
+	const editEl = card.querySelector('.edit-mode')
+	editEl.classList.remove('hidden')
+	editEl.innerHTML = `
+		<div class="grid sm:grid-cols-2 gap-3">
+			<div class="sm:col-span-2">
+				<label class="block text-xs font-medium text-slate-600 mb-1">Tytuł</label>
+				<input class="ep-title w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30" value="${escapeHtml(property.title)}">
+			</div>
+			<div>
+				<label class="block text-xs font-medium text-slate-600 mb-1">Cena (PLN)</label>
+				<input type="number" min="1" class="ep-price w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30" value="${property.price}">
+			</div>
+			<div>
+				<label class="block text-xs font-medium text-slate-600 mb-1">Status</label>
+				<select class="ep-status w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+					${Object.entries(statusMeta).map(([value, meta]) => `<option value="${value}" ${value === property.status ? 'selected' : ''}>${meta.label}</option>`).join('')}
+				</select>
+			</div>
+			<div class="sm:col-span-2">
+				<label class="block text-xs font-medium text-slate-600 mb-1">Opis</label>
+				<textarea rows="2" class="ep-description w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">${escapeHtml(property.description)}</textarea>
+			</div>
+			<div class="sm:col-span-2">
+				<label class="block text-xs font-medium text-slate-600 mb-1">Filmy (adresy URL)</label>
+				<div id="ep-video-rows-${property.id}" class="space-y-2"></div>
+				<button type="button" id="ep-add-video-${property.id}" class="mt-2 text-sm font-medium text-brand-700 hover:text-brand-800 px-2.5 py-1.5 rounded-lg hover:bg-brand-50 transition-colors duration-150 min-h-[44px]">+ Dodaj film</button>
+			</div>
+			<div class="sm:col-span-2">
+				<label class="block text-xs font-medium text-slate-600 mb-1">Wyróżnione cechy</label>
+				<div id="ep-highlight-rows-${property.id}" class="space-y-2"></div>
+				<button type="button" id="ep-add-highlight-${property.id}" class="mt-2 text-sm font-medium text-brand-700 hover:text-brand-800 px-2.5 py-1.5 rounded-lg hover:bg-brand-50 transition-colors duration-150 min-h-[44px]">+ Dodaj cechę</button>
+			</div>
+		</div>
+		<div class="flex items-center gap-2">
+			<button data-action="save" class="bg-brand-700 text-white rounded-lg px-3.5 py-2 text-sm font-medium hover:bg-brand-600 transition-colors duration-150 disabled:opacity-50 min-h-[44px]">Zapisz</button>
+			<button data-action="cancel" class="px-3.5 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors duration-150 min-h-[44px]">Anuluj</button>
+		</div>
+	`
+	const videoRows = wireUrlRowEditor(editEl.querySelector(`#ep-video-rows-${property.id}`), editEl.querySelector(`#ep-add-video-${property.id}`), property.videoUrls, 'https://...')
+	const highlightRows = wireTextRowEditor(editEl.querySelector(`#ep-highlight-rows-${property.id}`), editEl.querySelector(`#ep-add-highlight-${property.id}`), property.highlights, 'np. balkon 12m²')
+	editEl.querySelector('[data-action="cancel"]').addEventListener('click', () => {
+		editEl.classList.add('hidden')
+		card.querySelector('.view-mode').classList.remove('hidden')
+	})
+	editEl.querySelector('[data-action="save"]').addEventListener('click', async (e) => {
+		const btn = e.currentTarget
+		btn.disabled = true
+		btn.textContent = 'Zapisywanie...'
+		try {
+			await patchProperty(property.id, {
+				title: editEl.querySelector('.ep-title').value,
+				price: Number(editEl.querySelector('.ep-price').value),
+				status: editEl.querySelector('.ep-status').value,
+				description: editEl.querySelector('.ep-description').value || undefined,
+				videoUrls: videoRows.values().filter(Boolean),
+				highlights: highlightRows.values().filter(Boolean),
+			}, { focusId: property.id })
+			showToast('Zapisano zmiany.')
+		} catch (err) {
+			showToast(err.message, 'error')
+			btn.disabled = false
+			btn.textContent = 'Zapisz'
+		}
+	})
+}
+
+// ---------- Reviews (Opinie) ----------
+
+const loadReviews = async () => { state.reviews = await api('/api/reviews') }
+
+const ratingPicker = (id, value = 5) => `
+	<div id="${id}" class="rating-picker inline-flex items-center gap-1" data-value="${value}" role="radiogroup" aria-label="Ocena">
+		${[1, 2, 3, 4, 5].map((i) => `
+			<button type="button" data-rate="${i}" class="rating-star p-1.5 rounded-lg hover:bg-gold-500/10 transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand-700" role="radio" aria-checked="${i === value}" aria-label="${i} z 5">
+				${starsSvg(i <= value)}
+			</button>
+		`).join('')}
+	</div>
+`
+const wireRatingPicker = (root) => {
+	const picker = root.querySelector('.rating-picker')
+	picker.querySelectorAll('.rating-star').forEach((btn) => {
+		btn.addEventListener('click', () => {
+			const value = Number(btn.dataset.rate)
+			picker.dataset.value = String(value)
+			picker.querySelectorAll('.rating-star').forEach((b) => {
+				const filled = Number(b.dataset.rate) <= value
+				b.setAttribute('aria-checked', String(Number(b.dataset.rate) === value))
+				b.innerHTML = starsSvg(filled)
+			})
+		})
+	})
+	return picker
+}
+
+const renderReviews = () => {
+	const el = $('#tab-reviews')
+	el.innerHTML = `
+		<div class="flex items-center justify-between mb-6">
+			<div>
+				<h1 class="font-display text-2xl font-semibold text-brand-900">Opinie</h1>
+				<p class="text-slate-500">${state.reviews.length} opinii</p>
+			</div>
+			<button id="new-review-btn" class="bg-brand-700 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-brand-600 active:bg-brand-800 transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700 min-h-[44px]">
+				+ Dodaj opinię
+			</button>
+		</div>
+		<div id="review-form-slot" class="mb-6"></div>
+		<div id="review-list" class="grid gap-4 sm:grid-cols-2"></div>
+	`
+	$('#new-review-btn').addEventListener('click', () => renderReviewForm())
+	const list = $('#review-list')
+	if (state.reviews.length === 0) {
+		list.innerHTML = `<div class="sm:col-span-2 bg-white rounded-2xl shadow-soft p-10 text-center text-slate-500">Brak opinii. Kliknij „Dodaj opinię”, aby dodać pierwszą.</div>`
+		return
+	}
+	for (const review of state.reviews) list.appendChild(renderReviewCard(review))
+}
+
+const renderReviewForm = () => {
+	const slot = $('#review-form-slot')
+	slot.innerHTML = `
+		<form id="create-review-form" class="bg-white rounded-2xl shadow-soft p-6 anim-fade-in-up space-y-4">
+			<h2 class="font-display text-lg font-semibold text-brand-900">Nowa opinia</h2>
+			<div class="grid sm:grid-cols-2 gap-4">
+				<div>
+					<label class="block text-sm font-medium text-slate-700 mb-1.5" for="cr-author">Imię i nazwisko *</label>
+					<input id="cr-author" required class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+				</div>
+				<div>
+					<label class="block text-sm font-medium text-slate-700 mb-1.5">Ocena *</label>
+					${ratingPicker('cr-rating', 5)}
+				</div>
+				<div class="sm:col-span-2">
+					<label class="block text-sm font-medium text-slate-700 mb-1.5" for="cr-content">Treść opinii *</label>
+					<textarea id="cr-content" rows="4" required class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30"></textarea>
+				</div>
+			</div>
+			<label class="flex items-center gap-2 text-sm text-slate-700">
+				<input id="cr-published" type="checkbox" checked class="w-4 h-4 rounded border-slate-300 text-brand-700 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+				Opublikuj od razu
+			</label>
+			<div class="flex items-center gap-2 pt-1">
+				<button type="submit" id="cr-submit" class="bg-brand-700 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-brand-600 active:bg-brand-800 transition-colors duration-150 disabled:opacity-50 min-h-[44px]">Zapisz opinię</button>
+				<button type="button" id="cr-cancel" class="px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors duration-150 min-h-[44px]">Anuluj</button>
+			</div>
+		</form>
+	`
+	wireRatingPicker(slot)
+	$('#cr-cancel').addEventListener('click', () => { slot.innerHTML = '' })
+	$('#create-review-form').addEventListener('submit', async (e) => {
+		e.preventDefault()
+		const submitBtn = $('#cr-submit')
+		submitBtn.disabled = true
+		submitBtn.textContent = 'Zapisywanie...'
+		try {
+			const created = await api('/api/reviews', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					authorName: $('#cr-author').value,
+					rating: Number($('#cr-rating').dataset.value),
+					content: $('#cr-content').value,
+					published: $('#cr-published').checked,
+				}),
+			})
+			showToast('Opinia dodana. Możesz od razu ją edytować.')
+			slot.innerHTML = ''
+			await refreshReviews({ openId: created.id })
+		} catch (err) {
+			showToast(err.message, 'error')
+			submitBtn.disabled = false
+			submitBtn.textContent = 'Zapisz opinię'
+		}
+	})
+}
+
+const renderReviewCard = (review) => {
+	const card = document.createElement('div')
+	card.className = 'bg-white rounded-2xl shadow-soft p-5 anim-fade-in-up'
+	card.dataset.recordId = review.id
+	card.innerHTML = `
+		<div class="view-mode">
+			<div class="flex items-start justify-between gap-3 mb-2">
+				<h3 class="font-display text-lg font-semibold text-slate-900 truncate">${escapeHtml(review.authorName)}</h3>
+				<span class="shrink-0 text-xs font-medium px-2.5 py-1 rounded-full ${review.published ? 'bg-brand-100 text-brand-800' : 'bg-slate-200 text-slate-600'}">${review.published ? 'Opublikowana' : 'Ukryta'}</span>
+			</div>
+			${renderStars(review.rating)}
+			<p class="text-sm text-slate-600 mt-2.5 whitespace-pre-line">${escapeHtml(review.content)}</p>
+			<p class="text-xs text-slate-400 mt-2">${fmtDate(review.createdAt)}</p>
+			<div class="flex items-center gap-2 mt-3">
+				<button data-action="edit" class="text-sm font-medium text-brand-700 hover:text-brand-800 px-2.5 py-1.5 rounded-lg hover:bg-brand-50 transition-colors duration-150 min-h-[44px]">Edytuj</button>
+				<button data-action="toggle-published" class="text-sm font-medium text-slate-600 hover:text-slate-800 px-2.5 py-1.5 rounded-lg hover:bg-slate-100 transition-colors duration-150 min-h-[44px]">${review.published ? 'Ukryj' : 'Opublikuj'}</button>
+				<button data-action="delete" class="text-sm font-medium text-rose-600 hover:text-rose-700 px-2.5 py-1.5 rounded-lg hover:bg-rose-50 transition-colors duration-150 min-h-[44px]">Usuń</button>
+			</div>
+		</div>
+		<div class="edit-mode hidden space-y-3"></div>
+	`
+
+	card.querySelector('[data-action="toggle-published"]').addEventListener('click', async () => {
+		try {
+			await api(`/api/reviews/${review.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ published: !review.published }) })
+			showToast(review.published ? 'Opinia ukryta.' : 'Opinia opublikowana.')
+			await refreshReviews()
+		} catch (err) {
+			showToast(err.message, 'error')
+		}
+	})
+
+	card.querySelector('[data-action="delete"]').addEventListener('click', async () => {
+		const ok = await confirmDialog(`Usunąć opinię „${escapeHtml(review.authorName)}”? Tej operacji nie można cofnąć.`)
+		if (!ok) return
+		try {
+			await api(`/api/reviews/${review.id}`, { method: 'DELETE' })
+			showToast('Opinia usunięta.')
+			await refreshReviews({ focusId: review.id })
+		} catch (err) {
+			showToast(err.message, 'error')
+		}
+	})
+
+	card.querySelector('[data-action="edit"]').addEventListener('click', () => renderReviewEditForm(card, review))
+
+	return card
+}
+
+const renderReviewEditForm = (card, review) => {
+	card.querySelector('.view-mode').classList.add('hidden')
+	const editEl = card.querySelector('.edit-mode')
+	editEl.classList.remove('hidden')
+	editEl.innerHTML = `
+		<div>
+			<label class="block text-xs font-medium text-slate-600 mb-1">Imię i nazwisko</label>
+			<input class="er-author w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30" value="${escapeHtml(review.authorName)}">
+		</div>
+		<div>
+			<label class="block text-xs font-medium text-slate-600 mb-1">Ocena</label>
+			${ratingPicker('er-rating', review.rating)}
+		</div>
+		<div>
+			<label class="block text-xs font-medium text-slate-600 mb-1">Treść</label>
+			<textarea rows="4" class="er-content w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">${escapeHtml(review.content)}</textarea>
+		</div>
+		<div class="flex items-center gap-2">
+			<button data-action="save" class="bg-brand-700 text-white rounded-lg px-3.5 py-2 text-sm font-medium hover:bg-brand-600 transition-colors duration-150 disabled:opacity-50 min-h-[44px]">Zapisz</button>
+			<button data-action="cancel" class="px-3.5 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors duration-150 min-h-[44px]">Anuluj</button>
+		</div>
+	`
+	wireRatingPicker(editEl)
+	editEl.querySelector('[data-action="cancel"]').addEventListener('click', () => {
+		editEl.classList.add('hidden')
+		card.querySelector('.view-mode').classList.remove('hidden')
+	})
+	editEl.querySelector('[data-action="save"]').addEventListener('click', async (e) => {
+		const btn = e.currentTarget
+		btn.disabled = true
+		btn.textContent = 'Zapisywanie...'
+		try {
+			await api(`/api/reviews/${review.id}`, {
+				method: 'PATCH',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					authorName: editEl.querySelector('.er-author').value,
+					rating: Number(editEl.querySelector('#er-rating').dataset.value),
+					content: editEl.querySelector('.er-content').value,
+				}),
+			})
+			showToast('Zapisano zmiany.')
+			await refreshReviews({ focusId: review.id })
+		} catch (err) {
+			showToast(err.message, 'error')
+			btn.disabled = false
+			btn.textContent = 'Zapisz'
+		}
+	})
+}
+
+// ---------- Blog ----------
+
+const loadPosts = async () => { state.posts = await api('/api/posts') }
+
+const renderBlog = () => {
+	const el = $('#tab-blog')
+	el.innerHTML = `
+		<div class="flex items-center justify-between mb-6">
+			<div>
+				<h1 class="font-display text-2xl font-semibold text-brand-900">Blog</h1>
+				<p class="text-slate-500">${state.posts.length} wpisów</p>
+			</div>
+			<button id="new-post-btn" class="bg-brand-700 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-brand-600 active:bg-brand-800 transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700">
+				+ Nowy wpis
+			</button>
+		</div>
+		<div id="post-form-slot" class="mb-6"></div>
+		<div id="post-list" class="space-y-4"></div>
+	`
+	$('#new-post-btn').addEventListener('click', () => renderPostForm())
+	const list = $('#post-list')
+	if (state.posts.length === 0) {
+		list.innerHTML = `<div class="bg-white rounded-2xl shadow-soft p-10 text-center text-slate-500">Brak wpisów. Kliknij „Nowy wpis”, aby dodać pierwszy.</div>`
+		return
+	}
+	for (const post of state.posts) list.appendChild(renderPostCard(post))
+}
+
+const renderPostForm = () => {
+	const slot = $('#post-form-slot')
+	let coverUrl = ''
+	slot.innerHTML = `
+		<form id="create-post-form" class="bg-white rounded-2xl shadow-soft p-6 anim-fade-in-up space-y-4">
+			<h2 class="font-display text-lg font-semibold text-brand-900">Nowy wpis</h2>
+			<div>
+				<label class="block text-sm font-medium text-slate-700 mb-1.5" for="np-title">Tytuł *</label>
+				<input id="np-title" required class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+			</div>
+			<div>
+				<label class="block text-sm font-medium text-slate-700 mb-1.5" for="np-excerpt">Zajawka</label>
+				<input id="np-excerpt" class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+			</div>
+			<div>
+				<label class="block text-sm font-medium text-slate-700 mb-1.5" for="np-content">Treść *</label>
+				<textarea id="np-content" rows="6" required class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30"></textarea>
+			</div>
+			<div>
+				<label class="block text-sm font-medium text-slate-700 mb-1.5">Zdjęcie okładkowe</label>
+				<div id="np-dropzone-slot" class="max-w-xs"></div>
+				<div id="np-preview" class="mt-2"></div>
+			</div>
+			<label class="flex items-center gap-2 text-sm text-slate-700">
+				<input id="np-published" type="checkbox" checked class="w-4 h-4 rounded border-slate-300 text-brand-700 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+				Opublikuj od razu
+			</label>
+			<div class="flex items-center gap-2 pt-1">
+				<button type="submit" id="np-submit" class="bg-brand-700 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-brand-600 active:bg-brand-800 transition-colors duration-150 disabled:opacity-50">Zapisz wpis</button>
+				<button type="button" id="np-cancel" class="px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors duration-150">Anuluj</button>
+			</div>
+		</form>
+	`
+	const dz = wireDropzone($('#np-dropzone-slot'), {
+		multiple: false,
+		onUploaded: async ([url]) => {
+			coverUrl = url
+			$('#np-preview').innerHTML = `<img src="${safeUrl(url)}" alt="" class="w-24 h-24 object-cover rounded-lg border border-slate-200">`
+		},
+	})
+	dz.dataset.folder = 'posts'
+
+	$('#np-cancel').addEventListener('click', () => { slot.innerHTML = '' })
+
+	$('#create-post-form').addEventListener('submit', async (e) => {
+		e.preventDefault()
+		const submitBtn = $('#np-submit')
+		submitBtn.disabled = true
+		submitBtn.textContent = 'Zapisywanie...'
+		try {
+			const created = await api('/api/posts', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					title: $('#np-title').value,
+					excerpt: $('#np-excerpt').value || undefined,
+					content: $('#np-content').value,
+					coverImageUrl: coverUrl || undefined,
+					published: $('#np-published').checked,
+				}),
+			})
+			showToast('Wpis zapisany. Możesz od razu go edytować.')
+			slot.innerHTML = ''
+			await refreshPosts({ openId: created.id })
+		} catch (err) {
+			showToast(err.message, 'error')
+			submitBtn.disabled = false
+			submitBtn.textContent = 'Zapisz wpis'
+		}
+	})
+}
+
+const renderPostCard = (post) => {
+	const card = document.createElement('div')
+	card.className = 'bg-white rounded-2xl shadow-soft p-5 anim-fade-in-up'
+	card.dataset.recordId = post.id
+	card.innerHTML = `
+		<div class="view-mode flex items-start gap-4">
+			${post.coverImageUrl ? `<img src="${safeUrl(post.coverImageUrl)}" alt="" class="w-20 h-20 rounded-lg object-cover shrink-0 border border-slate-200">` : '<div class="w-20 h-20 rounded-lg bg-sand-100 shrink-0"></div>'}
+			<div class="min-w-0 flex-1">
+				<div class="flex items-start justify-between gap-3">
+					<h3 class="font-display text-lg font-semibold text-slate-900 truncate">${escapeHtml(post.title)}</h3>
+					<span class="shrink-0 text-xs font-medium px-2.5 py-1 rounded-full ${post.published ? 'bg-brand-100 text-brand-800' : 'bg-slate-200 text-slate-600'}">${post.published ? 'Opublikowany' : 'Szkic'}</span>
+				</div>
+				${post.excerpt ? `<p class="text-sm text-slate-500 mt-1 line-clamp-2">${escapeHtml(post.excerpt)}</p>` : ''}
+				<p class="text-xs text-slate-400 mt-1">${fmtDate(post.createdAt)} · /${escapeHtml(post.slug)}</p>
+				<div class="flex items-center gap-2 mt-3">
+					<button data-action="edit" class="text-sm font-medium text-brand-700 hover:text-brand-800 px-2.5 py-1.5 rounded-lg hover:bg-brand-50 transition-colors duration-150">Edytuj</button>
+					<button data-action="toggle-published" class="text-sm font-medium text-slate-600 hover:text-slate-800 px-2.5 py-1.5 rounded-lg hover:bg-slate-100 transition-colors duration-150">${post.published ? 'Cofnij do szkicu' : 'Opublikuj'}</button>
+					<button data-action="delete" class="text-sm font-medium text-rose-600 hover:text-rose-700 px-2.5 py-1.5 rounded-lg hover:bg-rose-50 transition-colors duration-150">Usuń</button>
+				</div>
+			</div>
+		</div>
+		<div class="edit-mode hidden space-y-3"></div>
+	`
+
+	card.querySelector('[data-action="toggle-published"]').addEventListener('click', async () => {
+		try {
+			await api(`/api/posts/${post.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ published: !post.published }) })
+			showToast(post.published ? 'Cofnięto do szkicu.' : 'Wpis opublikowany.')
+			await refreshPosts()
+		} catch (err) {
+			showToast(err.message, 'error')
+		}
+	})
+
+	card.querySelector('[data-action="delete"]').addEventListener('click', async () => {
+		const ok = await confirmDialog(`Usunąć wpis „${escapeHtml(post.title)}”? Tej operacji nie można cofnąć.`)
+		if (!ok) return
+		try {
+			await api(`/api/posts/${post.id}`, { method: 'DELETE' })
+			showToast('Wpis usunięty.')
+			await refreshPosts({ focusId: post.id })
+		} catch (err) {
+			showToast(err.message, 'error')
+		}
+	})
+
+	card.querySelector('[data-action="edit"]').addEventListener('click', () => renderPostEditForm(card, post))
+
+	return card
+}
+
+const renderPostEditForm = (card, post) => {
+	card.querySelector('.view-mode').classList.add('hidden')
+	const editEl = card.querySelector('.edit-mode')
+	editEl.classList.remove('hidden')
+	editEl.innerHTML = `
+		<div>
+			<label class="block text-xs font-medium text-slate-600 mb-1">Tytuł</label>
+			<input class="pe-title w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30" value="${escapeHtml(post.title)}">
+		</div>
+		<div>
+			<label class="block text-xs font-medium text-slate-600 mb-1">Zajawka</label>
+			<input class="pe-excerpt w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30" value="${escapeHtml(post.excerpt)}">
+		</div>
+		<div>
+			<label class="block text-xs font-medium text-slate-600 mb-1">Treść</label>
+			<textarea rows="6" class="pe-content w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">${escapeHtml(post.content)}</textarea>
+		</div>
+		<div class="flex items-center gap-2">
+			<button data-action="save" class="bg-brand-700 text-white rounded-lg px-3.5 py-2 text-sm font-medium hover:bg-brand-600 transition-colors duration-150 disabled:opacity-50">Zapisz</button>
+			<button data-action="cancel" class="px-3.5 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors duration-150">Anuluj</button>
+		</div>
+	`
+	editEl.querySelector('[data-action="cancel"]').addEventListener('click', () => {
+		editEl.classList.add('hidden')
+		card.querySelector('.view-mode').classList.remove('hidden')
+	})
+	editEl.querySelector('[data-action="save"]').addEventListener('click', async (e) => {
+		const btn = e.currentTarget
+		btn.disabled = true
+		btn.textContent = 'Zapisywanie...'
+		try {
+			await api(`/api/posts/${post.id}`, {
+				method: 'PATCH',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					title: editEl.querySelector('.pe-title').value,
+					excerpt: editEl.querySelector('.pe-excerpt').value || undefined,
+					content: editEl.querySelector('.pe-content').value,
+				}),
+			})
+			showToast('Zapisano zmiany.')
+			await refreshPosts({ focusId: post.id })
+		} catch (err) {
+			showToast(err.message, 'error')
+			btn.disabled = false
+			btn.textContent = 'Zapisz'
+		}
+	})
+}
+
+// ---------- Chatbot AI ----------
+
+const loadChatbot = async () => {
+	const [config, docs] = await Promise.all([api('/api/chatbot/config'), api('/api/chatbot/documents')])
+	state.chatbotConfig = config
+	state.chatbotDocs = docs
+}
+
+const testChatLog = []
+
+const renderChatbot = () => {
+	const el = $('#tab-chatbot')
+	const c = state.chatbotConfig || {}
+	el.innerHTML = `
+		<div class="mb-6">
+			<h1 class="font-display text-2xl font-semibold text-brand-900">Chatbot AI</h1>
+			<p class="text-slate-500">Ustaw osobowość, prompt i bazę wiedzy asystenta.</p>
+		</div>
+		<div class="grid lg:grid-cols-5 gap-6 items-start">
+			<div class="lg:col-span-3 space-y-6">
+				<form id="cb-config-form" class="bg-white rounded-2xl shadow-soft p-6 space-y-4 anim-fade-in-up">
+					<div class="flex items-center justify-between">
+						<h2 class="font-display text-lg font-semibold text-brand-900">Konfiguracja</h2>
+						<label class="flex items-center gap-2 text-sm font-medium text-slate-700">
+							<input id="cb-enabled" type="checkbox" class="w-4 h-4 rounded border-slate-300 text-brand-700 focus-visible:ring-2 focus-visible:ring-brand-500/30" ${c.enabled ? 'checked' : ''}>
+							Aktywny
+						</label>
+					</div>
+					<div class="grid sm:grid-cols-2 gap-4">
+						<div>
+							<label class="block text-sm font-medium text-slate-700 mb-1.5" for="cb-name">Nazwa asystenta</label>
+							<input id="cb-name" value="${escapeHtml(c.name)}" class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+						</div>
+						<div>
+							<label class="block text-sm font-medium text-slate-700 mb-1.5" for="cb-greeting">Powitanie</label>
+							<input id="cb-greeting" value="${escapeHtml(c.greeting)}" class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+						</div>
+						<div>
+							<label class="block text-sm font-medium text-slate-700 mb-1.5" for="cb-model">Model</label>
+							<input id="cb-model" value="${escapeHtml(c.model)}" class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] font-mono outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+							<p class="text-xs text-slate-400 mt-1">Np. @cf/meta/llama-3.1-8b-instruct</p>
+						</div>
+						<div>
+							<label class="block text-sm font-medium text-slate-700 mb-1.5" for="cb-temperature">Temperatura: <span id="cb-temp-val" class="tabular font-semibold text-brand-800">${c.temperature ?? 0.7}</span></label>
+							<input id="cb-temperature" type="range" min="0" max="2" step="0.1" value="${c.temperature ?? 0.7}" class="w-full accent-brand-600 mt-2.5">
+							<p class="text-xs text-slate-400 mt-1">Niżej = precyzyjniej, wyżej = kreatywniej.</p>
+						</div>
+					</div>
+					<div>
+						<label class="block text-sm font-medium text-slate-700 mb-1.5" for="cb-prompt">Prompt systemowy</label>
+						<textarea id="cb-prompt" rows="8" placeholder="Opisz kim jest asystent, jak ma się zachowywać i czego ma nie robić..." class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] leading-relaxed outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">${escapeHtml(c.systemPrompt)}</textarea>
+					</div>
+					<div class="flex items-center gap-2 pt-1">
+						<button type="submit" id="cb-save" class="bg-brand-700 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-brand-600 active:bg-brand-800 transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed">Zapisz konfigurację</button>
+					</div>
+				</form>
+
+				<div class="bg-white rounded-2xl shadow-soft p-6 anim-fade-in-up">
+					<div class="flex items-center justify-between mb-4">
+						<div>
+							<h2 class="font-display text-lg font-semibold text-brand-900">Baza wiedzy</h2>
+							<p class="text-sm text-slate-500">${state.chatbotDocs.length} dokumentów — asystent odpowiada na ich podstawie.</p>
+						</div>
+						<button id="cb-new-doc" class="bg-brand-700 text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-brand-600 active:bg-brand-800 transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700">+ Dokument</button>
+					</div>
+					<div id="cb-doc-form-slot" class="mb-4"></div>
+					<div id="cb-doc-list" class="space-y-3"></div>
+				</div>
+			</div>
+
+			<div class="lg:col-span-2">
+				<div class="bg-white rounded-2xl shadow-soft p-6 anim-fade-in-up lg:sticky lg:top-24">
+					<div class="flex items-center gap-2 mb-3">
+						<span class="w-2 h-2 rounded-full bg-brand-500"></span>
+						<h2 class="font-display text-lg font-semibold text-brand-900">Test rozmowy</h2>
+					</div>
+					<div id="cb-chat-log" class="h-72 overflow-y-auto rounded-xl bg-sand-50 border border-slate-100 p-3 space-y-2 text-sm"></div>
+					<form id="cb-chat-form" class="flex items-center gap-2 mt-3">
+						<input id="cb-chat-input" placeholder="Napisz wiadomość..." class="flex-1 border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+						<button type="submit" id="cb-chat-send" class="bg-brand-700 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-brand-600 active:bg-brand-800 transition-colors duration-150 disabled:opacity-50">Wyślij</button>
+					</form>
+					<p class="text-xs text-slate-400 mt-2">Wymaga bindingu Workers AI. Zobacz docs/06-CHATBOT-MODULE.md.</p>
+				</div>
+			</div>
+		</div>
+	`
+
+	const tempInput = $('#cb-temperature')
+	tempInput.addEventListener('input', () => { $('#cb-temp-val').textContent = tempInput.value })
+
+	$('#cb-config-form').addEventListener('submit', async (e) => {
+		e.preventDefault()
+		const btn = $('#cb-save')
+		btn.disabled = true
+		btn.textContent = 'Zapisywanie...'
+		try {
+			await api('/api/chatbot/config', {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					name: $('#cb-name').value,
+					greeting: $('#cb-greeting').value,
+					model: $('#cb-model').value,
+					temperature: Number(tempInput.value),
+					enabled: $('#cb-enabled').checked,
+					systemPrompt: $('#cb-prompt').value,
+				}),
+			})
+			state.chatbotConfig = await api('/api/chatbot/config')
+			showToast('Konfiguracja zapisana.')
+		} catch (err) {
+			showToast(err.message, 'error')
+		} finally {
+			btn.disabled = false
+			btn.textContent = 'Zapisz konfigurację'
+		}
+	})
+
+	$('#cb-new-doc').addEventListener('click', () => renderDocForm())
+	renderKnowledgeList()
+	renderTestChat()
+}
+
+const renderKnowledgeList = () => {
+	const list = $('#cb-doc-list')
+	if (state.chatbotDocs.length === 0) {
+		list.innerHTML = `<div class="rounded-xl border border-dashed border-slate-200 p-6 text-center text-sm text-slate-500">Brak dokumentów. Dodaj wiedzę, z której korzysta asystent.</div>`
+		return
+	}
+	list.innerHTML = ''
+	for (const doc of state.chatbotDocs) list.appendChild(renderDocCard(doc))
+}
+
+const renderDocForm = () => {
+	const slot = $('#cb-doc-form-slot')
+	let fileUrl = ''
+	let fileName = ''
+	slot.innerHTML = `
+		<form id="cb-doc-form" class="rounded-xl border border-slate-200 p-4 space-y-3 anim-fade-in-up">
+			<div>
+				<label class="block text-sm font-medium text-slate-700 mb-1.5" for="cd-title">Tytuł *</label>
+				<input id="cd-title" required class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">
+			</div>
+			<div>
+				<label class="block text-sm font-medium text-slate-700 mb-1.5" for="cd-content">Treść</label>
+				<textarea id="cd-content" rows="4" placeholder="Wklej tekst wiedzy (FAQ, oferta, zasady...)." class="w-full border border-slate-300 rounded-lg px-3.5 py-2.5 text-[15px] outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30"></textarea>
+			</div>
+			<div>
+				<label class="block text-sm font-medium text-slate-700 mb-1.5">Załącznik (opcjonalnie)</label>
+				<div id="cd-dropzone-slot" class="max-w-xs"></div>
+				<div id="cd-file" class="text-xs text-slate-500 mt-1.5"></div>
+			</div>
+			<div class="flex items-center gap-2">
+				<button type="submit" id="cd-submit" class="bg-brand-700 text-white rounded-lg px-4 py-2.5 text-sm font-medium hover:bg-brand-600 active:bg-brand-800 transition-colors duration-150 disabled:opacity-50">Zapisz dokument</button>
+				<button type="button" id="cd-cancel" class="px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors duration-150">Anuluj</button>
+			</div>
+		</form>
+	`
+	const dz = wireDropzone($('#cd-dropzone-slot'), {
+		multiple: false,
+		onUploaded: async ([url]) => {
+			fileUrl = url
+			fileName = url.split('/').pop()
+			$('#cd-file').textContent = `Załączono: ${fileName}`
+		},
+	})
+	dz.dataset.folder = 'chatbot'
+
+	$('#cd-cancel').addEventListener('click', () => { slot.innerHTML = '' })
+
+	$('#cb-doc-form').addEventListener('submit', async (e) => {
+		e.preventDefault()
+		const btn = $('#cd-submit')
+		btn.disabled = true
+		btn.textContent = 'Zapisywanie...'
+		try {
+			const created = await api('/api/chatbot/documents', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					title: $('#cd-title').value,
+					content: $('#cd-content').value || undefined,
+					fileUrl: fileUrl || undefined,
+					fileName: fileName || undefined,
+				}),
+			})
+			showToast('Dokument dodany. Możesz od razu go edytować.')
+			slot.innerHTML = ''
+			await refreshChatbot({ openId: created.id })
+		} catch (err) {
+			showToast(err.message, 'error')
+			btn.disabled = false
+			btn.textContent = 'Zapisz dokument'
+		}
+	})
+}
+
+const renderDocCard = (doc) => {
+	const card = document.createElement('div')
+	card.className = 'rounded-xl border border-slate-200 p-4 anim-fade-in-up'
+	card.dataset.recordId = doc.id
+	card.innerHTML = `
+		<div class="view-mode flex items-start justify-between gap-3">
+			<div class="min-w-0">
+				<div class="flex items-center gap-2">
+					<h3 class="font-medium text-slate-900 truncate">${escapeHtml(doc.title)}</h3>
+					<span class="shrink-0 text-xs font-medium px-2 py-0.5 rounded-full ${doc.enabled ? 'bg-brand-100 text-brand-800' : 'bg-slate-200 text-slate-600'}">${doc.enabled ? 'Aktywny' : 'Wyłączony'}</span>
+				</div>
+				${doc.content ? `<p class="text-sm text-slate-500 mt-1 line-clamp-2">${escapeHtml(doc.content)}</p>` : ''}
+				${doc.fileName ? `<a href="${safeUrl(doc.fileUrl)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-xs text-brand-700 hover:text-brand-800 mt-1.5">📎 ${escapeHtml(doc.fileName)}</a>` : ''}
+				<div class="flex items-center gap-2 mt-3">
+					<button data-action="edit" class="text-sm font-medium text-brand-700 hover:text-brand-800 px-2.5 py-1.5 rounded-lg hover:bg-brand-50 transition-colors duration-150">Edytuj</button>
+					<button data-action="toggle" class="text-sm font-medium text-slate-600 hover:text-slate-800 px-2.5 py-1.5 rounded-lg hover:bg-slate-100 transition-colors duration-150">${doc.enabled ? 'Wyłącz' : 'Włącz'}</button>
+					<button data-action="delete" class="text-sm font-medium text-rose-600 hover:text-rose-700 px-2.5 py-1.5 rounded-lg hover:bg-rose-50 transition-colors duration-150">Usuń</button>
+				</div>
+			</div>
+		</div>
+		<div class="edit-mode hidden space-y-3"></div>
+	`
+
+	card.querySelector('[data-action="toggle"]').addEventListener('click', async () => {
+		try {
+			await api(`/api/chatbot/documents/${doc.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ enabled: !doc.enabled }) })
+			await refreshChatbot()
+		} catch (err) {
+			showToast(err.message, 'error')
+		}
+	})
+
+	card.querySelector('[data-action="delete"]').addEventListener('click', async () => {
+		const ok = await confirmDialog(`Usunąć dokument „${escapeHtml(doc.title)}”?`)
+		if (!ok) return
+		try {
+			await api(`/api/chatbot/documents/${doc.id}`, { method: 'DELETE' })
+			showToast('Dokument usunięty.')
+			await refreshChatbot({ focusId: doc.id })
+		} catch (err) {
+			showToast(err.message, 'error')
+		}
+	})
+
+	card.querySelector('[data-action="edit"]').addEventListener('click', () => renderDocEditForm(card, doc))
+
+	return card
+}
+
+const renderDocEditForm = (card, doc) => {
+	card.querySelector('.view-mode').classList.add('hidden')
+	const editEl = card.querySelector('.edit-mode')
+	editEl.classList.remove('hidden')
+	editEl.innerHTML = `
+		<div>
+			<label class="block text-xs font-medium text-slate-600 mb-1">Tytuł</label>
+			<input class="de-title w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30" value="${escapeHtml(doc.title)}">
+		</div>
+		<div>
+			<label class="block text-xs font-medium text-slate-600 mb-1">Treść</label>
+			<textarea rows="5" class="de-content w-full border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus-visible:border-brand-500 focus-visible:ring-2 focus-visible:ring-brand-500/30">${escapeHtml(doc.content)}</textarea>
+		</div>
+		<div class="flex items-center gap-2">
+			<button data-action="save" class="bg-brand-700 text-white rounded-lg px-3.5 py-2 text-sm font-medium hover:bg-brand-600 transition-colors duration-150 disabled:opacity-50">Zapisz</button>
+			<button data-action="cancel" class="px-3.5 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition-colors duration-150">Anuluj</button>
+		</div>
+	`
+	editEl.querySelector('[data-action="cancel"]').addEventListener('click', () => {
+		editEl.classList.add('hidden')
+		card.querySelector('.view-mode').classList.remove('hidden')
+	})
+	editEl.querySelector('[data-action="save"]').addEventListener('click', async (e) => {
+		const btn = e.currentTarget
+		btn.disabled = true
+		btn.textContent = 'Zapisywanie...'
+		try {
+			await api(`/api/chatbot/documents/${doc.id}`, {
+				method: 'PATCH',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ title: editEl.querySelector('.de-title').value, content: editEl.querySelector('.de-content').value || undefined }),
+			})
+			showToast('Zapisano zmiany.')
+			await refreshChatbot({ focusId: doc.id })
+		} catch (err) {
+			showToast(err.message, 'error')
+			btn.disabled = false
+			btn.textContent = 'Zapisz'
+		}
+	})
+}
+
+const refreshChatbot = async ({ openId, focusId } = {}) => {
+	await loadChatbot()
+	if (activeTab === 'chatbot') renderChatbot()
+	focusRecord(focusId)
+	openCreatedRecord(openId)
+}
+
+const appendChatMessage = (role, content) => {
+	const log = $('#cb-chat-log')
+	if (!log) return
+	const wrap = document.createElement('div')
+	const mine = role === 'user'
+	wrap.className = `flex ${mine ? 'justify-end' : 'justify-start'}`
+	wrap.innerHTML = `<div class="max-w-[85%] rounded-2xl px-3.5 py-2 ${mine ? 'bg-brand-700 text-white' : 'bg-white border border-slate-200 text-slate-800'}">${escapeHtml(content)}</div>`
+	log.appendChild(wrap)
+	log.scrollTop = log.scrollHeight
+}
+
+const renderTestChat = () => {
+	const log = $('#cb-chat-log')
+	log.innerHTML = ''
+	const greeting = state.chatbotConfig?.greeting
+	if (testChatLog.length === 0 && greeting) appendChatMessage('assistant', greeting)
+	for (const m of testChatLog) appendChatMessage(m.role, m.content)
+
+	$('#cb-chat-form').addEventListener('submit', async (e) => {
+		e.preventDefault()
+		const input = $('#cb-chat-input')
+		const text = input.value.trim()
+		if (!text) return
+		input.value = ''
+		testChatLog.push({ role: 'user', content: text })
+		appendChatMessage('user', text)
+		const btn = $('#cb-chat-send')
+		btn.disabled = true
+		try {
+			const data = await api('/api/chatbot/test-chat', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ messages: testChatLog }),
+			})
+			testChatLog.push({ role: 'assistant', content: data.reply })
+			appendChatMessage('assistant', data.reply)
+		} catch (err) {
+			appendChatMessage('assistant', `⚠️ ${err.message}`)
+		} finally {
+			btn.disabled = false
+		}
+	})
+}
+
+// ---------- Bootstrap ----------
+
+const render = () => {
+	if (activeTab === 'dashboard') renderDashboard()
+	if (activeTab === 'properties') renderProperties()
+	if (activeTab === 'reviews') renderReviews()
+	if (activeTab === 'blog') renderBlog()
+	if (activeTab === 'chatbot') renderChatbot()
+}
+
+const refreshAll = async () => {
+	await Promise.all([loadProperties(), loadPosts(), loadReviews(), loadChatbot()])
+	render()
+}
+
+const openCreatedRecord = (id) => {
+	if (!id) return
+	requestAnimationFrame(() => {
+		const card = focusRecord(id)
+		if (!card) return
+		card.querySelector('[data-action="edit"]')?.click()
+	})
+}
+
+const focusRecord = (id) => {
+	if (!id) return null
+	const card = document.querySelector(`[data-record-id="${CSS.escape(id)}"]`)
+	if (!card) return null
+	card.scrollIntoView({ behavior: 'smooth', block: 'center' })
+	card.classList.add('ring-2', 'ring-brand-400', 'ring-offset-2')
+	setTimeout(() => card.classList.remove('ring-2', 'ring-brand-400', 'ring-offset-2'), 1800)
+	return card
+}
+
+const refreshProperties = async ({ openId, focusId } = {}) => {
+	await loadProperties()
+	render()
+	focusRecord(focusId)
+	openCreatedRecord(openId)
+}
+
+const refreshReviews = async ({ openId, focusId } = {}) => {
+	await loadReviews()
+	render()
+	focusRecord(focusId)
+	openCreatedRecord(openId)
+}
+
+const refreshPosts = async ({ openId, focusId } = {}) => {
+	await loadPosts()
+	render()
+	focusRecord(focusId)
+	openCreatedRecord(openId)
+}
+
+$('#login-form').addEventListener('submit', async (event) => {
+	event.preventDefault()
+	const errorEl = $('#login-error')
+	const submitBtn = $('#login-submit')
+	errorEl.classList.add('hidden')
+	submitBtn.disabled = true
+	submitBtn.textContent = 'Logowanie...'
+	try {
+		const response = await fetch('/api/login', {
+			method: 'POST',
+			credentials: 'include',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ email: $('#login-email').value, password: $('#login-password').value }),
+		})
+		if (!response.ok) throw new Error()
+		const data = await response.json()
+		state.userEmail = data.user?.email || $('#login-email').value
+		showPanelShell()
+		setActiveTab('dashboard')
+		await refreshAll()
+	} catch {
+		errorEl.textContent = 'Nieprawidłowy email lub hasło.'
+		errorEl.classList.remove('hidden')
+	} finally {
+		submitBtn.disabled = false
+		submitBtn.textContent = 'Zaloguj się'
+	}
+})
+
+$('#logout-btn').addEventListener('click', async () => {
+	await fetch('/api/logout', { method: 'POST', credentials: 'include' })
+	showLogin()
+})
+
+;(async () => {
+	try {
+		const me = await fetch('/api/me', { credentials: 'include', cache: 'no-store' })
+		if (me.status === 401) { showLogin(); return }
+		const meData = await me.json()
+		state.userEmail = meData.email
+		await refreshAll()
+		showPanelShell()
+		setActiveTab('dashboard')
+	} catch {
+		showLogin()
+	}
+})()
+</script>
+</body>
+</html>

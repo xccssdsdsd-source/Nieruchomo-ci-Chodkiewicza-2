@@ -1,0 +1,55 @@
+/**
+ * Wrangler configuration. See docs/02-CLOUDFLARE-NEON-SETUP.md for a full walkthrough.
+ * Replace every replace-me value below before deploying a new project.
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	// Worker name — becomes the *.workers.dev subdomain. Use a unique name per project.
+	"name": "replace-me-admin-panel",
+	"main": "src/index.ts",
+	"workers_dev": true,
+	"compatibility_date": "2026-07-24",
+	"compatibility_flags": ["nodejs_compat"],
+	// Static assets (admin.html, index.html) served from /public.
+	"assets": {
+		"directory": "./public"
+	},
+	"observability": {
+		"enabled": true
+	},
+	"upload_source_maps": true,
+	// Hyperdrive → your isolated Neon branch. Create it in a trusted local
+	// session/dashboard without sharing the database credential with an agent,
+	// then paste only the non-secret returned id here.
+	"hyperdrive": [
+		{
+			"binding": "HYPERDRIVE",
+			"id": "00000000000000000000000000000000"
+		}
+	],
+	// R2 bucket for uploaded images/files. Create with:
+	//   npx wrangler r2 bucket create replace-me-admin-assets
+	"r2_buckets": [
+		{
+			"binding": "IMAGES",
+			"bucket_name": "replace-me-admin-assets"
+		}
+	],
+	"secrets": {
+		"required": ["BETTER_AUTH_SECRET", "APP_ORIGIN", "ADMIN_EMAIL", "PUBLIC_SITE_ORIGIN"]
+	},
+	/**
+	 * OPTIONAL — Workers AI, only needed for the chatbot module's live chat.
+	 * Uncomment to enable c.env.AI (see docs/06-CHATBOT-MODULE.md):
+	 */
+	// ,"ai": { "binding": "AI" }
+	/**
+	 * REQUIRED — edge-level rate limiting on login and the public chatbot.
+	 * Keep enabled. Use namespace IDs unique within the Cloudflare account.
+	 */
+	"ratelimits": [
+		{ "name": "LOGIN_RATE_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } },
+		{ "name": "CHAT_RATE_LIMITER", "namespace_id": "1002", "simple": { "limit": 20, "period": 60 } }
+	]
+}
