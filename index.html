@@ -245,6 +245,114 @@ input:focus,textarea:focus{
 
 .text-placeholder{filter:blur(5px); user-select:none; pointer-events:none}
 
+.property-showcase{position:relative}
+.property-showcase::before{
+  content:'';position:absolute;inset:-34px -42px;pointer-events:none;
+  background:
+    radial-gradient(circle at 12% 22%,hsl(var(--accent)/0.11),transparent 25%),
+    radial-gradient(circle at 88% 78%,hsl(var(--primary)/0.09),transparent 28%);
+  filter:blur(12px);
+}
+.property-grid{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;perspective:1200px}
+.property-card{
+  position:relative;overflow:hidden;isolation:isolate;background:hsl(var(--bg));
+  border:1px solid hsl(var(--primary)/0.11);
+  box-shadow:0 14px 34px -25px hsl(var(--text)/0.44);
+  transition:box-shadow 260ms cubic-bezier(.23,1,.32,1),border-color 220ms ease;
+}
+.property-card::before{
+  content:'';position:absolute;z-index:4;inset:0;pointer-events:none;opacity:0;
+  background:linear-gradient(135deg,hsl(var(--accent)/0.16),transparent 34%,transparent 68%,hsl(var(--primary)/0.12));
+  transition:opacity 260ms ease;
+}
+.property-card::after{
+  content:'';position:absolute;z-index:5;top:0;left:0;width:100%;height:2px;
+  background:linear-gradient(90deg,transparent,hsl(var(--accent)),hsl(var(--primary)/0.65),transparent);
+  transform:scaleX(0);transform-origin:center;transition:transform 420ms cubic-bezier(.23,1,.32,1);
+}
+.property-photo{
+  position:relative;z-index:1;aspect-ratio:4/3;overflow:hidden;
+  background:
+    linear-gradient(135deg,transparent 0 49.5%,hsl(var(--primary)/0.07) 49.7%,hsl(var(--primary)/0.07) 50.3%,transparent 50.5%),
+    linear-gradient(45deg,transparent 0 49.5%,hsl(var(--accent)/0.065) 49.7%,hsl(var(--accent)/0.065) 50.3%,transparent 50.5%),
+    radial-gradient(circle at 50% 48%,hsl(38 52% 98%/0.92),transparent 38%),
+    linear-gradient(145deg,hsl(var(--surface)) 0%,hsl(35 34% 94%) 54%,hsl(var(--surface-2)/0.78) 100%);
+  border-bottom:1px solid hsl(var(--text)/0.075);
+  transform:scale(1);
+  transition:transform 700ms cubic-bezier(.23,1,.32,1),filter 350ms ease;
+}
+.property-photo::before{
+  content:'';position:absolute;z-index:1;inset:15px;border:1px solid hsl(var(--primary)/0.14);
+  box-shadow:inset 0 0 0 6px hsl(38 40% 98%/0.16);
+  transition:inset 500ms cubic-bezier(.23,1,.32,1),border-color 250ms ease;
+}
+.property-photo::after{
+  content:'';position:absolute;z-index:1;left:15px;right:15px;top:16%;height:1px;
+  background:linear-gradient(90deg,transparent,hsl(var(--accent)/0.8),hsl(38 60% 98%/0.9),transparent);
+  box-shadow:0 0 18px hsl(var(--accent)/0.32);
+  animation:propertyScan 4.8s cubic-bezier(.77,0,.175,1) infinite;
+}
+.property-card:nth-child(2) .property-photo::after{animation-delay:-.8s}
+.property-card:nth-child(3) .property-photo::after{animation-delay:-1.6s}
+.property-card:nth-child(4) .property-photo::after{animation-delay:-2.4s}
+.property-card:nth-child(5) .property-photo::after{animation-delay:-3.2s}
+.property-card:nth-child(6) .property-photo::after{animation-delay:-4s}
+@keyframes propertyScan{0%,10%{transform:translateY(0);opacity:0}22%{opacity:1}72%{opacity:.75}88%,100%{transform:translateY(210px);opacity:0}}
+.property-number{
+  position:absolute;z-index:2;top:24px;left:24px;font-size:10px;font-weight:800;
+  letter-spacing:.2em;color:hsl(var(--primary)/0.68);
+  transition:transform 300ms cubic-bezier(.23,1,.32,1),color 220ms ease;
+}
+.property-photo-label{
+  position:absolute;z-index:2;inset:0;display:flex;align-items:center;justify-content:center;
+  margin:auto;width:max-content;height:34px;padding:0 14px;
+  font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:hsl(var(--primary)/0.58);
+  background:hsl(38 42% 97%/0.7);border:1px solid hsl(var(--primary)/0.1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  box-shadow:0 10px 28px -18px hsl(var(--primary)/0.5);
+  transition:transform 300ms cubic-bezier(.23,1,.32,1),color 220ms ease,background-color 220ms ease;
+}
+.property-photo-label::before,.property-photo-label::after{
+  content:'';position:absolute;width:9px;height:9px;
+  transition:width 300ms cubic-bezier(.23,1,.32,1),height 300ms cubic-bezier(.23,1,.32,1);
+}
+.property-photo-label::before{left:-6px;top:-6px;border-left:1px solid hsl(var(--accent));border-top:1px solid hsl(var(--accent))}
+.property-photo-label::after{right:-6px;bottom:-6px;border-right:1px solid hsl(var(--accent));border-bottom:1px solid hsl(var(--accent))}
+.property-meta{position:relative;z-index:2;padding:18px 22px 22px;background:hsl(var(--bg)/0.96)}
+.property-meta-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.property-name{font-family:'Fraunces',serif;font-size:17px;font-weight:600;letter-spacing:-.025em;color:hsl(var(--primary))}
+.property-status{display:inline-flex;align-items:center;gap:7px;font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:hsl(var(--accent))}
+.property-status i{position:relative;width:6px;height:6px;border-radius:50%;background:hsl(var(--accent));box-shadow:0 0 0 4px hsl(var(--accent)/0.12)}
+.property-status i::after{content:'';position:absolute;inset:-4px;border:1px solid hsl(var(--accent)/0.45);border-radius:50%;animation:availabilityPulse 2.4s ease-out infinite}
+@keyframes availabilityPulse{0%{transform:scale(.65);opacity:.9}75%,100%{transform:scale(1.9);opacity:0}}
+.property-line{height:9px;border-radius:999px;background:hsl(var(--primary)/0.14);filter:blur(3.5px)}
+.property-line + .property-line{margin-top:10px}
+.property-line.short{width:58%;background:hsl(var(--muted)/0.16)}
+.property-cta{
+  position:relative;margin-top:34px;padding:24px 26px;display:flex;align-items:center;justify-content:space-between;gap:24px;
+  border:1px solid hsl(var(--primary)/0.1);background:hsl(var(--bg)/0.72);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.property-cta::before{content:'';position:absolute;top:-1px;left:26px;width:52px;height:2px;background:hsl(var(--accent))}
+@media (hover:hover) and (pointer:fine){
+  .property-card:hover{
+    border-color:hsl(var(--accent)/0.38);
+    box-shadow:0 34px 64px -34px hsl(var(--primary)/0.62);
+  }
+  .property-card:hover::before{opacity:1}
+  .property-card:hover::after{transform:scaleX(1)}
+  .property-card:hover .property-photo{transform:scale(1.045);filter:saturate(1.06)}
+  .property-card:hover .property-photo::before{inset:10px;border-color:hsl(var(--accent)/0.34)}
+  .property-card:hover .property-photo-label{transform:translateY(-5px);color:hsl(var(--primary)/0.82);background:hsl(38 42% 98%/0.86)}
+  .property-card:hover .property-photo-label::before,.property-card:hover .property-photo-label::after{width:14px;height:14px}
+  .property-card:hover .property-number{transform:translateX(3px);color:hsl(var(--accent))}
+}
+@media (max-width:900px){.property-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){
+  .property-grid{grid-template-columns:1fr;gap:18px}.property-meta{padding:17px 20px 20px}
+  .property-cta{align-items:flex-start;flex-direction:column}
+}
+
 .bg-accent-blob{position:absolute; border-radius:50%; filter:blur(92px); opacity:.72; pointer-events:none; z-index:0; will-change:transform}
 .section-relative{position:relative; overflow:hidden; isolation:isolate; border-top:1px solid hsl(var(--primary)/0.07)}
 .section-relative > .max-w-6xl,.section-relative > .max-w-2xl{position:relative; z-index:1}
@@ -347,8 +455,11 @@ input:focus,textarea:focus{
         Zaufany wynajem lokali użytkowych w sercu Sieradza.
       </p>
       <div class="max-w-xl mb-10 pl-5 py-1" style="border-left:2px solid hsl(var(--accent)/0.45)" data-reveal>
+        <p class="text-placeholder text-[15px] leading-relaxed mb-4" style="color:hsl(var(--muted))">
+          Od lat tworzymy w Sieradzu przestrzeń dla lokalnych przedsiębiorców, usług i handlu. Znamy potrzeby najemców i wiemy, jak ważne są przejrzyste zasady, sprawny kontakt oraz lokal dopasowany do charakteru prowadzonej działalności.
+        </p>
         <p class="text-placeholder text-[15px] leading-relaxed" style="color:hsl(var(--muted))">
-          Pełny opis firmy — historia, doświadczenie i podejście do najemców — pojawi się w tym miejscu po ustaleniu szczegółów z Państwem.
+          Stawiamy na spokojną, długofalową współpracę — od pierwszej rozmowy i obejrzenia powierzchni, przez ustalenie warunków, aż po codzienne funkcjonowanie w budynku. Każde zapytanie traktujemy indywidualnie, pomagając znaleźć rozwiązanie wygodne dla obu stron.
         </p>
       </div>
       <a href="#kontakt" class="inline-block rounded-sm px-7 py-3.5 text-[15px] font-semibold btn-primary" data-reveal>Skontaktuj się</a>
@@ -523,20 +634,45 @@ input:focus,textarea:focus{
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-14" data-reveal>
       <div>
+        <p class="uppercase text-[10px] font-bold tracking-[0.28em] mb-4" style="color:hsl(var(--accent))">Przestrzeń dla Twojego biznesu</p>
         <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--primary))">Aktualnie dostępne lokale</h2>
       </div>
       <p class="text-placeholder w-full max-w-sm text-[15px]" style="color:hsl(var(--muted))">Pełna oferta pojawi się tutaj wkrótce — zapytaj już teraz, a poinformujemy Cię jako pierwszych.</p>
     </div>
 
-    <div class="max-w-2xl mx-auto">
-      <div class="card-top card-lift tilt-card rounded-none card-border shadow-soft-lg text-center p-10 sm:p-16" style="background:hsl(var(--bg))" data-reveal data-tilt>
-        <div class="w-16 h-16 mx-auto mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--accent)/0.12); color:hsl(var(--accent))">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 21H3"/><path d="M6 21V8l6-4 6 4v13"/><path d="M10 21v-6h4v6"/></svg>
+    <div class="property-showcase">
+      <div class="property-grid" aria-label="Miejsce na sześć ofert dostępnych lokali">
+        <article class="property-card" data-reveal>
+          <div class="property-photo"><span class="property-number">01 / 06</span><span class="property-photo-label">Miejsce na zdjęcie</span></div>
+          <div class="property-meta"><div class="property-meta-top"><span class="property-name">Lokal 01</span><span class="property-status"><i></i>Oferta</span></div><div aria-hidden="true"><div class="property-line"></div><div class="property-line short"></div></div></div>
+        </article>
+        <article class="property-card" data-reveal>
+          <div class="property-photo"><span class="property-number">02 / 06</span><span class="property-photo-label">Miejsce na zdjęcie</span></div>
+          <div class="property-meta"><div class="property-meta-top"><span class="property-name">Lokal 02</span><span class="property-status"><i></i>Oferta</span></div><div aria-hidden="true"><div class="property-line"></div><div class="property-line short"></div></div></div>
+        </article>
+        <article class="property-card" data-reveal>
+          <div class="property-photo"><span class="property-number">03 / 06</span><span class="property-photo-label">Miejsce na zdjęcie</span></div>
+          <div class="property-meta"><div class="property-meta-top"><span class="property-name">Lokal 03</span><span class="property-status"><i></i>Oferta</span></div><div aria-hidden="true"><div class="property-line"></div><div class="property-line short"></div></div></div>
+        </article>
+        <article class="property-card" data-reveal>
+          <div class="property-photo"><span class="property-number">04 / 06</span><span class="property-photo-label">Miejsce na zdjęcie</span></div>
+          <div class="property-meta"><div class="property-meta-top"><span class="property-name">Lokal 04</span><span class="property-status"><i></i>Oferta</span></div><div aria-hidden="true"><div class="property-line"></div><div class="property-line short"></div></div></div>
+        </article>
+        <article class="property-card" data-reveal>
+          <div class="property-photo"><span class="property-number">05 / 06</span><span class="property-photo-label">Miejsce na zdjęcie</span></div>
+          <div class="property-meta"><div class="property-meta-top"><span class="property-name">Lokal 05</span><span class="property-status"><i></i>Oferta</span></div><div aria-hidden="true"><div class="property-line"></div><div class="property-line short"></div></div></div>
+        </article>
+        <article class="property-card" data-reveal>
+          <div class="property-photo"><span class="property-number">06 / 06</span><span class="property-photo-label">Miejsce na zdjęcie</span></div>
+          <div class="property-meta"><div class="property-meta-top"><span class="property-name">Lokal 06</span><span class="property-status"><i></i>Oferta</span></div><div aria-hidden="true"><div class="property-line"></div><div class="property-line short"></div></div></div>
+        </article>
+      </div>
+      <div class="property-cta shadow-soft" data-reveal>
+        <div>
+          <p class="font-display text-xl sm:text-2xl font-semibold tracking-tightish" style="color:hsl(var(--primary))">Szukasz konkretnej powierzchni?</p>
+          <p class="text-placeholder text-[13px] mt-1 max-w-xl" style="color:hsl(var(--muted))">Opowiedz nam o swojej działalności, a pomożemy znaleźć lokal dopasowany do Twoich potrzeb.</p>
         </div>
-        <span class="text-placeholder inline-block text-[11px] font-semibold uppercase tracking-wide px-3 py-1 rounded-sm mb-4" style="background:hsl(var(--accent)/0.15); color:hsl(var(--accent))">Wkrótce</span>
-        <h3 class="text-placeholder font-display text-2xl sm:text-3xl font-semibold tracking-tightish mb-3" style="color:hsl(var(--primary))">Nowe lokale w przygotowaniu</h3>
-        <p class="text-placeholder text-[15px] max-w-md mx-auto mb-8" style="color:hsl(var(--muted))">Kompletujemy pełną ofertę dostępnych lokali użytkowych. Zostaw kontakt, a odezwiemy się, gdy tylko będzie gotowa — lub zapytaj już dziś o dostępność.</p>
-        <a href="#kontakt" class="inline-block rounded-sm px-7 py-3.5 text-[15px] font-semibold btn-primary">Zapytaj o dostępność</a>
+        <a href="#kontakt" class="magnetic shrink-0 inline-block rounded-sm px-7 py-3.5 text-[14px] font-semibold btn-primary">Zapytaj o lokal</a>
       </div>
     </div>
   </div>
