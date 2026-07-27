@@ -1,0 +1,45 @@
+{
+  "name": "admin-panel-starter",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+	"scripts": {
+		"build:css": "tailwindcss -i ./src/styles.css -o ./public/admin.css --minify",
+		"build": "npm run build:css && npm run typecheck",
+		"deploy": "npm run build && wrangler deploy",
+		"dev": "npm run build:css && wrangler dev",
+		"start": "npm run dev",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint:security": "eslint \"src/**/*.ts\" \"scripts/**/*.ts\"",
+		"security:audit": "npm audit --audit-level=moderate && npm run lint:security && npm run build && npm test",
+    "cf-typegen": "wrangler types",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "seed:admin": "node --env-file=.env scripts/seed-admin.ts"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "@types/node": "^26.1.1",
+    "@typescript-eslint/parser": "^8.65.0",
+    "drizzle-kit": "^0.31.10",
+    "eslint": "^10.8.0",
+    "eslint-plugin-security": "^4.0.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.5.2",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.114.0"
+  },
+  "dependencies": {
+    "better-auth": "^1.6.25",
+    "drizzle-orm": "^0.45.2",
+    "hono": "^4.12.32",
+    "postgres": "^3.4.9",
+    "zod": "^4.4.3"
+  },
+  "overrides": {
+    "@esbuild-kit/core-utils": {
+      "esbuild": "^0.25.0"
+    }
+  }
+}
