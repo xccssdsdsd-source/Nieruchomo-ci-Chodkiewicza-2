@@ -254,11 +254,18 @@ input:focus,textarea:focus{
   filter:blur(18px);
 }
 .property-grid{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;perspective:1200px}
+.property-grid--quad{grid-template-columns:repeat(4,minmax(0,1fr))}
+.property-photo img{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;transition:filter 260ms ease}
+.property-photo--muted img{filter:grayscale(0.55) brightness(0.82)}
+.property-status--muted{color:hsl(var(--muted))}
+.property-status--muted i{background:hsl(var(--muted));box-shadow:0 0 0 3px hsl(var(--muted)/0.14)}
+.property-card--link{display:block;cursor:pointer}
 .property-card{
   position:relative;overflow:hidden;isolation:isolate;background:hsl(var(--bg));
   border:1px solid hsl(var(--primary)/0.13);
   box-shadow:0 12px 28px -24px hsl(var(--text)/0.34);
   transition:box-shadow 260ms cubic-bezier(.23,1,.32,1),border-color 220ms ease;
+  color:inherit;text-decoration:none;
 }
 .property-card::before{
   content:'';position:absolute;z-index:4;inset:0;pointer-events:none;opacity:0;
@@ -304,29 +311,11 @@ input:focus,textarea:focus{
   letter-spacing:.2em;color:hsl(var(--primary)/0.68);
   transition:transform 300ms cubic-bezier(.23,1,.32,1),color 220ms ease;
 }
-.property-photo-label{
-  position:absolute;z-index:2;inset:0;display:flex;align-items:center;justify-content:center;
-  margin:auto;width:max-content;height:34px;padding:0 14px;
-  font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:hsl(var(--primary)/0.58);
-  background:hsl(38 42% 97%/0.7);border:1px solid hsl(var(--primary)/0.1);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  box-shadow:0 10px 28px -18px hsl(var(--primary)/0.5);
-  transition:transform 300ms cubic-bezier(.23,1,.32,1),color 220ms ease,background-color 220ms ease;
-}
-.property-photo-label::before,.property-photo-label::after{
-  content:'';position:absolute;width:9px;height:9px;
-  transition:width 300ms cubic-bezier(.23,1,.32,1),height 300ms cubic-bezier(.23,1,.32,1);
-}
-.property-photo-label::before{left:-6px;top:-6px;border-left:1px solid hsl(var(--accent));border-top:1px solid hsl(var(--accent))}
-.property-photo-label::after{right:-6px;bottom:-6px;border-right:1px solid hsl(var(--accent));border-bottom:1px solid hsl(var(--accent))}
 .property-meta{position:relative;z-index:2;padding:18px 22px 22px;background:hsl(var(--bg)/0.96)}
-.property-meta-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.property-meta-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
 .property-name{font-family:'Fraunces',serif;font-size:17px;font-weight:600;letter-spacing:-.025em;color:hsl(var(--primary))}
 .property-status{display:inline-flex;align-items:center;gap:7px;font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:hsl(var(--accent))}
 .property-status i{position:relative;width:6px;height:6px;border-radius:50%;background:hsl(var(--accent));box-shadow:0 0 0 3px hsl(var(--accent)/0.1)}
-.property-line{height:9px;border-radius:999px;background:hsl(var(--primary)/0.14);filter:blur(3.5px)}
-.property-line + .property-line{margin-top:10px}
-.property-line.short{width:58%;background:hsl(var(--muted)/0.16)}
 .property-cta{
   position:relative;margin-top:34px;padding:24px 26px;display:flex;align-items:center;justify-content:space-between;gap:24px;
   border:1px solid hsl(var(--primary)/0.12);background:hsl(var(--bg));
@@ -341,8 +330,6 @@ input:focus,textarea:focus{
   .property-card:hover::after{transform:scaleX(1)}
   .property-card:hover .property-photo{transform:scale(1.018);filter:saturate(1.03)}
   .property-card:hover .property-photo::before{inset:10px;border-color:hsl(var(--accent)/0.34)}
-  .property-card:hover .property-photo-label{transform:translateY(-5px);color:hsl(var(--primary)/0.82);background:hsl(38 42% 98%/0.86)}
-  .property-card:hover .property-photo-label::before,.property-card:hover .property-photo-label::after{width:14px;height:14px}
   .property-card:hover .property-number{transform:translateX(3px);color:hsl(var(--accent))}
 }
 @media (max-width:900px){.property-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -372,7 +359,7 @@ input:focus,textarea:focus{
     linear-gradient(90deg,transparent,hsl(var(--accent)/0.42),transparent) center top / min(180px,28vw) 1px no-repeat;
 }
 .section-relative::after{
-  content:attr(data-scene) ' / 06';position:absolute;z-index:0;pointer-events:none;
+  content:attr(data-scene) ' / 07';position:absolute;z-index:0;pointer-events:none;
   right:clamp(28px,5vw,76px);top:clamp(28px,4vw,52px);
   padding-left:46px;
   font-family:'Manrope',sans-serif;font-size:9px;line-height:1;
@@ -414,11 +401,11 @@ input:focus,textarea:focus{
       Chodkiewicza <span style="color:hsl(var(--accent))">2</span>
     </a>
     <div class="hidden md:flex items-center gap-9 text-[15px] font-medium">
+      <a href="#apartament" class="link-underline nav-link">Apartament na sprzedaż</a>
+      <a href="#lokal1" class="link-underline nav-link">Lokal do wynajęcia</a>
       <a href="#o-nas" class="link-underline nav-link">O nas</a>
-      <a href="#czym-sie-zajmujemy" class="link-underline nav-link">Oferta</a>
-      <a href="#dlaczego-my" class="link-underline nav-link">Dlaczego my</a>
       <a href="#gwarancje" class="link-underline nav-link">Gwarancje</a>
-      <a href="#lokale" class="link-underline nav-link">Lokale</a>
+      <a href="#lokale" class="link-underline nav-link">Wszystkie nieruchomości</a>
     </div>
     <a href="#kontakt" class="magnetic hidden md:inline-flex items-center gap-2 rounded-sm px-6 py-2.5 text-[15px] font-semibold btn-primary">
       Kontakt
@@ -428,31 +415,32 @@ input:focus,textarea:focus{
     </button>
   </div>
   <div id="mobileMenu" class="md:hidden hidden nav-blur card-border border-t px-5 py-5 flex flex-col gap-4 text-[15px] font-medium">
+    <a href="#apartament">Apartament na sprzedaż</a>
+    <a href="#lokal1">Lokal do wynajęcia</a>
     <a href="#o-nas">O nas</a>
-    <a href="#czym-sie-zajmujemy">Oferta</a>
-    <a href="#dlaczego-my">Dlaczego my</a>
     <a href="#gwarancje">Gwarancje</a>
-    <a href="#lokale">Lokale</a>
+    <a href="#lokale">Wszystkie nieruchomości</a>
     <a href="#kontakt" class="inline-flex w-fit items-center gap-2 rounded-sm px-5 py-2.5 font-semibold btn-primary">Kontakt</a>
   </div>
 </nav>
 
 <header id="top" class="relative min-h-[100svh] flex items-end overflow-hidden glow-parent">
   <div class="absolute inset-0" data-hero-bg>
-    <img src="image.png" alt="Siedziba firmy Nieruchomości Chodkiewicza 2" class="hero-kenburns w-full h-full object-cover" style="filter:brightness(1.2) saturate(1.05)" loading="eager">
+    <img src="assets/apartament/3.jpg" alt="Budynek na Osiedlu Hetmańskim w Sieradzu" class="hero-kenburns w-full h-full object-cover" style="filter:brightness(1.2) saturate(1.05)" loading="eager">
     <div class="absolute inset-0 hero-shade"></div>
     <div class="absolute inset-0 hero-warmth"></div>
   </div>
   <div class="glow-spot"></div>
 
   <div class="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-8 pb-16 sm:pb-24 pt-40" data-hero>
-    <p class="uppercase text-xs sm:text-sm font-semibold tracking-[0.25em] mb-5" style="color:hsl(34 40% 88%)">Chodkiewicza 2 · 98-200 Sieradz</p>
-    <h1 class="font-display text-white text-[13vw] sm:text-6xl md:text-7xl font-semibold tracking-tightish leading-[0.98] max-w-3xl">
-      <span class="hero-word-mask"><span class="hero-word">Wynajem</span></span> <span class="hero-word-mask"><span class="hero-word">lokali</span></span><br><span class="hero-word-mask"><span class="hero-word">użytkowych</span></span>
+    <p class="uppercase text-xs sm:text-sm font-semibold tracking-[0.25em] mb-5" style="color:hsl(34 40% 88%)">Osiedle Hetmańskie · ul. Chodkiewicza · 98-200 Sieradz</p>
+    <h1 class="font-display text-white text-[11vw] sm:text-6xl md:text-7xl font-semibold tracking-tightish leading-[0.98] max-w-3xl">
+      <span class="hero-word-mask"><span class="hero-word">Apartament</span></span> <span class="hero-word-mask"><span class="hero-word">na</span></span> <span class="hero-word-mask"><span class="hero-word">sprzedaż</span></span>
     </h1>
+    <p class="mt-6 max-w-xl text-[16px] sm:text-lg" style="color:hsl(34 30% 92%)">105 m², stan deweloperski, 3 sypialnie, 2 łazienki — 498 750 zł. Obok: lokal użytkowy 86 m² do wynajęcia w tym samym budynku.</p>
     <div class="mt-10 flex flex-wrap gap-4">
-      <a href="#kontakt" class="magnetic cta-glow rounded-sm px-7 py-3.5 text-[15px] font-semibold btn-primary">Zapytaj o lokal</a>
-      <a href="#lokale" class="magnetic rounded-sm px-7 py-3.5 text-[15px] font-semibold btn-ghost">Zobacz dostępne lokale</a>
+      <a href="#apartament" class="magnetic cta-glow rounded-sm px-7 py-3.5 text-[15px] font-semibold btn-primary">Zobacz apartament</a>
+      <a href="#lokal1" class="magnetic rounded-sm px-7 py-3.5 text-[15px] font-semibold btn-ghost">Lokal do wynajęcia</a>
     </div>
   </div>
 
@@ -462,21 +450,169 @@ input:focus,textarea:focus{
   </a>
 </header>
 
-<section id="o-nas" class="py-24 sm:py-32 tint-clay section-relative" data-scene="01">
+<section id="apartament" class="py-24 sm:py-32 tint-rose section-relative" data-scene="01">
+  <div class="bg-accent-blob" data-blob style="width:400px; height:400px; left:-8%; top:-8%; background:hsl(var(--primary)/0.14)"></div>
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12" data-reveal>
+      <div>
+        <p class="uppercase text-[10px] font-bold tracking-[0.28em] mb-4" style="color:hsl(var(--accent))">Flagowa oferta · Sprzedaż</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--primary))">Apartament na sprzedaż</h2>
+        <p class="mt-3 text-[15px] sm:text-[16px] max-w-xl" style="color:hsl(var(--muted))">Osiedle Hetmańskie, ul. Chodkiewicza, Sieradz — 2 piętro, 105 m², stan deweloperski.</p>
+      </div>
+      <div class="shrink-0 text-right">
+        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--primary))">498 750 zł</p>
+        <p class="text-sm mt-1" style="color:hsl(var(--muted))">4 750 zł/m² · bezczynszowa własność</p>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-12 gap-4 mb-10" data-reveal>
+      <div class="lg:col-span-8 card-border shadow-soft-lg overflow-hidden" style="aspect-ratio:4/3">
+        <img src="assets/apartament/salon.png" alt="Salon z aneksem kuchennym w apartamencie na sprzedaż, Chodkiewicza 2" class="w-full h-full object-cover">
+      </div>
+      <div class="lg:col-span-4 grid grid-cols-2 lg:grid-cols-1 gap-4">
+        <div class="card-border shadow-soft overflow-hidden" style="aspect-ratio:4/3"><img src="assets/apartament/3.jpg" alt="Budynek na Osiedlu Hetmańskim, elewacja apartamentu" class="w-full h-full object-cover"></div>
+        <div class="card-border shadow-soft overflow-hidden" style="aspect-ratio:4/3"><img src="assets/apartament/pokoj1.png" alt="Sypialnia w apartamencie na sprzedaż" class="w-full h-full object-cover"></div>
+      </div>
+    </div>
+    <div class="grid grid-cols-3 sm:grid-cols-5 gap-4 mb-12" data-reveal>
+      <div class="card-border shadow-soft overflow-hidden" style="aspect-ratio:1"><img src="assets/apartament/pokoj2.png" alt="Sypialnia z widokiem, apartament Chodkiewicza 2" class="w-full h-full object-cover"></div>
+      <div class="card-border shadow-soft overflow-hidden" style="aspect-ratio:1"><img src="assets/apartament/pokoj3.png" alt="Sypialnia w apartamencie na sprzedaż" class="w-full h-full object-cover"></div>
+      <div class="card-border shadow-soft overflow-hidden" style="aspect-ratio:1"><img src="assets/apartament/lazienka.png" alt="Łazienka w apartamencie na sprzedaż" class="w-full h-full object-cover"></div>
+      <div class="card-border shadow-soft overflow-hidden" style="aspect-ratio:1"><img src="assets/apartament/1.jpg" alt="Ogrodzony teren i ogródek rekreacyjny przy budynku" class="w-full h-full object-cover"></div>
+      <div class="card-border shadow-soft overflow-hidden" style="aspect-ratio:1"><img src="assets/apartament/2.jpg" alt="Rzut poddasza apartamentu na sprzedaż, skala 1:100" class="w-full h-full object-cover" style="object-position:top"></div>
+    </div>
+
+    <div class="grid lg:grid-cols-12 gap-8">
+      <div class="lg:col-span-7 grid sm:grid-cols-2 gap-6" data-reveal>
+        <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))">
+          <h3 class="font-semibold text-[15px] mb-3" style="color:hsl(var(--text))">Rozkład i metraż</h3>
+          <ul class="space-y-2 text-[14px]" style="color:hsl(var(--muted))">
+            <li>105 m², 2 piętro</li>
+            <li>Salon z aneksem kuchennym — 30,5 m²</li>
+            <li>3 sypialnie + garderoba</li>
+            <li>2 łazienki, korytarz</li>
+          </ul>
+        </div>
+        <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))">
+          <h3 class="font-semibold text-[15px] mb-3" style="color:hsl(var(--text))">Media i wykończenie</h3>
+          <ul class="space-y-2 text-[14px]" style="color:hsl(var(--muted))">
+            <li>Ogrzewanie podłogowe — gaz ziemny</li>
+            <li>Prąd, woda, kanalizacja, światłowód</li>
+            <li>Okna KBE (3 szyby), tynki Knauf Diamant</li>
+            <li>Ocieplenie sufitu wełną Rockwool</li>
+          </ul>
+        </div>
+        <div class="card-top rounded-none p-6 card-border shadow-soft sm:col-span-2" style="background:hsl(var(--bg))">
+          <h3 class="font-semibold text-[15px] mb-3" style="color:hsl(var(--text))">Otoczenie</h3>
+          <p class="text-[14px]" style="color:hsl(var(--muted))">Teren ogrodzony z miejscami parkingowymi, pomieszczenie gospodarcze, ogródek rekreacyjny i prywatny parking przy budynku. Bezczynszowa własność z udziałem w nieruchomości gruntowej i częściach wspólnych.</p>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5" data-reveal>
+        <div class="card-top rounded-none p-7 card-border shadow-soft-lg h-full flex flex-col justify-between" style="background:hsl(var(--bg))">
+          <div>
+            <p class="text-[12px] leading-relaxed mb-6" style="color:hsl(var(--muted))">Zdjęcia wnętrz przedstawiają przykładową wizualizację możliwej aranżacji lokalu i mają charakter wyłącznie poglądowy — nie stanowią aktualnego stanu faktycznego.</p>
+            <p class="font-display text-3xl font-semibold tracking-tightish mb-1" style="color:hsl(var(--primary))">498 750 zł</p>
+            <p class="text-sm mb-6" style="color:hsl(var(--muted))">4 750 zł/m²</p>
+          </div>
+          <div class="space-y-3">
+            <a href="tel:503444134" class="magnetic cta-glow w-full inline-flex items-center justify-center gap-2 rounded-sm px-7 py-3.5 text-[15px] font-semibold btn-primary">Zadzwoń: 503 444 134</a>
+            <a href="#kontakt" class="w-full inline-flex items-center justify-center gap-2 rounded-sm px-7 py-3.5 text-[15px] font-semibold" style="border:1px solid hsl(var(--primary)/0.25); color:hsl(var(--primary))">Umów prezentację</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="lokal1" class="py-24 sm:py-32 tint-sand section-relative" data-scene="02">
+  <div class="grain-dots"></div>
+  <div class="bg-accent-blob" data-blob style="width:360px; height:360px; right:-8%; top:-10%; background:hsl(var(--accent)/0.16)"></div>
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12" data-reveal>
+      <div>
+        <p class="uppercase text-[10px] font-bold tracking-[0.28em] mb-4" style="color:hsl(var(--accent))">Lokal nr 1 · Do wynajęcia</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--primary))">Lokal użytkowy 86 m²</h2>
+        <p class="mt-3 text-[15px] sm:text-[16px] max-w-xl" style="color:hsl(var(--muted))">Sieradz, ul. Chodkiewicza 2 — parter, wejście od ul. Zagłoby. Osiedle Hetmańskie.</p>
+      </div>
+      <div class="shrink-0 text-right">
+        <p class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--primary))">2 800 zł</p>
+        <p class="text-sm mt-1" style="color:hsl(var(--muted))">miesięcznie</p>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-12 gap-4 mb-10" data-reveal>
+      <div class="lg:col-span-8 card-border shadow-soft-lg overflow-hidden" style="aspect-ratio:4/3">
+        <img src="assets/lokal1/4.jpg" alt="Wnętrze lokalu użytkowego 86 m² do wynajęcia, Chodkiewicza 2" class="w-full h-full object-cover">
+      </div>
+      <div class="lg:col-span-4 grid grid-cols-2 lg:grid-cols-1 gap-4">
+        <div class="card-border shadow-soft overflow-hidden" style="aspect-ratio:4/3"><img src="assets/lokal1/2.jpg" alt="Wejście do lokalu użytkowego od ul. Zagłoby" class="w-full h-full object-cover"></div>
+        <div class="card-border shadow-soft overflow-hidden" style="aspect-ratio:4/3"><img src="assets/lokal1/3.jpg" alt="Budynek mieszkalno-usługowy, Chodkiewicza 2, Sieradz" class="w-full h-full object-cover"></div>
+      </div>
+    </div>
+    <div class="grid grid-cols-3 sm:grid-cols-4 gap-4 mb-12" data-reveal>
+      <div class="card-border shadow-soft overflow-hidden" style="aspect-ratio:1"><img src="assets/lokal1/5.jpg" alt="Otwarta przestrzeń lokalu użytkowego, duże okna" class="w-full h-full object-cover"></div>
+      <div class="card-border shadow-soft overflow-hidden" style="aspect-ratio:1"><img src="assets/lokal1/1.jpg" alt="Węzeł sanitarny w lokalu użytkowym" class="w-full h-full object-cover"></div>
+      <div class="card-border shadow-soft overflow-hidden col-span-2 sm:col-span-2" style="aspect-ratio:16/9"><img src="assets/lokal1/rzut.jpg" alt="Rzut lokalu z propozycją wydzielenia pomieszczeń" class="w-full h-full object-cover" style="object-position:top"></div>
+    </div>
+
+    <div class="grid lg:grid-cols-12 gap-8">
+      <div class="lg:col-span-7 grid sm:grid-cols-2 gap-6" data-reveal>
+        <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))">
+          <h3 class="font-semibold text-[15px] mb-3" style="color:hsl(var(--text))">Powierzchnia i układ</h3>
+          <ul class="space-y-2 text-[14px]" style="color:hsl(var(--muted))">
+            <li>86 m², parter</li>
+            <li>Sala główna, część socjalna, WC</li>
+            <li>Możliwość wydzielenia dodatkowych pomieszczeń</li>
+            <li>Stan pod własną aranżację najemcy</li>
+          </ul>
+        </div>
+        <div class="card-top rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))">
+          <h3 class="font-semibold text-[15px] mb-3" style="color:hsl(var(--text))">Media i zabezpieczenia</h3>
+          <ul class="space-y-2 text-[14px]" style="color:hsl(var(--muted))">
+            <li>Ogrzewanie podłogowe — gaz ziemny</li>
+            <li>Woda, kanalizacja, internet światłowodowy</li>
+            <li>Okna PCV trzyszybowe KBE</li>
+            <li>Alarm, instalacja pod rolety zewnętrzne</li>
+          </ul>
+        </div>
+        <div class="card-top rounded-none p-6 card-border shadow-soft sm:col-span-2" style="background:hsl(var(--bg))">
+          <h3 class="font-semibold text-[15px] mb-3" style="color:hsl(var(--text))">Lokalizacja i parking</h3>
+          <p class="text-[14px]" style="color:hsl(var(--muted))">Prywatne miejsca parkingowe przy budynku, dobra ekspozycja i możliwość zewnętrznego oznakowania działalności. Blisko węzła Sieradz Zachód i drogi ekspresowej S8 w kierunku Łodzi i Wrocławia. Lokal odpowiedni pod działalność usługową, biurową lub handlową.</p>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5" data-reveal>
+        <div class="card-top rounded-none p-7 card-border shadow-soft-lg h-full flex flex-col justify-between" style="background:hsl(var(--bg))">
+          <div>
+            <p class="font-display text-3xl font-semibold tracking-tightish mb-1" style="color:hsl(var(--primary))">2 800 zł / mc</p>
+            <p class="text-sm mb-6" style="color:hsl(var(--muted))">Lokal dostępny do wynajęcia od zaraz.</p>
+          </div>
+          <div class="space-y-3">
+            <a href="tel:503444134" class="magnetic cta-glow w-full inline-flex items-center justify-center gap-2 rounded-sm px-7 py-3.5 text-[15px] font-semibold btn-primary">Zadzwoń: 503 444 134</a>
+            <a href="#kontakt" class="w-full inline-flex items-center justify-center gap-2 rounded-sm px-7 py-3.5 text-[15px] font-semibold" style="border:1px solid hsl(var(--primary)/0.25); color:hsl(var(--primary))">Umów obejrzenie lokalu</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="o-nas" class="py-24 sm:py-32 tint-clay section-relative" data-scene="03">
   <div class="bg-accent-blob" data-blob style="width:420px; height:420px; left:-10%; top:-8%; background:hsl(var(--accent)/0.16)"></div>
   <div class="bg-accent-blob" data-blob style="width:320px; height:320px; right:-6%; bottom:0%; background:hsl(var(--primary)/0.14)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
     <div>
       <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish mb-4" style="color:hsl(var(--primary))" data-reveal>O nas</h2>
       <p class="font-display italic text-xl sm:text-2xl max-w-xl mb-8" style="color:hsl(var(--primary-2))" data-reveal>
-        Zaufany wynajem lokali użytkowych w sercu Sieradza.
+        Apartament na sprzedaż i lokal użytkowy do wynajęcia — w jednym budynku na Osiedlu Hetmańskim.
       </p>
       <div class="max-w-xl mb-10 pl-5 py-1" style="border-left:2px solid hsl(var(--accent)/0.45)" data-reveal>
-        <p class="text-placeholder text-[15px] leading-relaxed mb-4" style="color:hsl(var(--muted))">
-          Od lat tworzymy w Sieradzu przestrzeń dla lokalnych przedsiębiorców, usług i handlu. Znamy potrzeby najemców i wiemy, jak ważne są przejrzyste zasady, sprawny kontakt oraz lokal dopasowany do charakteru prowadzonej działalności.
+        <p class="text-[15px] leading-relaxed mb-4" style="color:hsl(var(--muted))">
+          Budynek przy ul. Chodkiewicza 2 w Sieradzu mieści cztery lokale. Dwa znalazły już właścicieli — lokal nr 2 jest wynajęty, lokal nr 3 sprzedany. Aktualnie oferujemy apartament 105 m² na sprzedaż oraz lokal użytkowy nr 1 (86 m²) do wynajęcia.
         </p>
-        <p class="text-placeholder text-[15px] leading-relaxed" style="color:hsl(var(--muted))">
-          Stawiamy na spokojną, długofalową współpracę — od pierwszej rozmowy i obejrzenia powierzchni, przez ustalenie warunków, aż po codzienne funkcjonowanie w budynku. Każde zapytanie traktujemy indywidualnie, pomagając znaleźć rozwiązanie wygodne dla obu stron.
+        <p class="text-[15px] leading-relaxed" style="color:hsl(var(--muted))">
+          Każde zapytanie traktujemy indywidualnie — od pierwszej rozmowy i obejrzenia powierzchni, przez ustalenie warunków, aż po podpisanie umowy.
         </p>
       </div>
       <a href="#kontakt" class="inline-block rounded-sm px-7 py-3.5 text-[15px] font-semibold btn-primary" data-reveal>Skontaktuj się</a>
@@ -503,38 +639,7 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="czym-sie-zajmujemy" class="py-24 sm:py-32 tint-sand section-relative" data-scene="02">
-  <div class="grain-dots"></div>
-  <div class="bg-accent-blob" data-blob style="width:360px; height:360px; right:-8%; top:-10%; background:hsl(var(--accent)/0.16)"></div>
-  <div class="max-w-6xl mx-auto px-5 sm:px-8">
-    <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish mb-14" style="color:hsl(var(--primary))" data-reveal>Czym się zajmujemy</h2>
-    <div class="grid sm:grid-cols-3 gap-6">
-      <div class="card-top card-lift tilt-card rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal data-tilt>
-        <div class="w-11 h-11 mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--primary)/0.1); color:hsl(var(--primary))">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 21v-4h6v4"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/></svg>
-        </div>
-        <h3 class="font-semibold text-lg mb-2" style="color:hsl(var(--text))">Lokale handlowe i usługowe</h3>
-        <p class="text-placeholder text-[14px]" style="color:hsl(var(--muted))">Przestrzenie na parterze przy głównej drodze, gotowe pod działalność handlową lub usługową.</p>
-      </div>
-      <div class="card-top card-lift tilt-card rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal data-tilt>
-        <div class="w-11 h-11 mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--primary)/0.1); color:hsl(var(--primary))">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-        </div>
-        <h3 class="font-semibold text-lg mb-2" style="color:hsl(var(--text))">Lokale biurowe</h3>
-        <p class="text-placeholder text-[14px]" style="color:hsl(var(--muted))">Funkcjonalne powierzchnie biurowe w dogodnej lokalizacji, z miejscami parkingowymi.</p>
-      </div>
-      <div class="card-top card-lift tilt-card rounded-none p-6 card-border shadow-soft" style="background:hsl(var(--bg))" data-reveal data-tilt>
-        <div class="w-11 h-11 mb-6 rounded-none flex items-center justify-center" style="background:hsl(var(--primary)/0.1); color:hsl(var(--primary))">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-        </div>
-        <h3 class="font-semibold text-lg mb-2" style="color:hsl(var(--text))">Wsparcie najemcy</h3>
-        <p class="text-placeholder text-[14px]" style="color:hsl(var(--muted))">Pomoc na każdym etapie — od wyboru lokalu, przez umowę, po przekazanie kluczy.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="dlaczego-my" class="tint-umber py-24 sm:py-32 section-relative" data-scene="03">
+<section id="dlaczego-my" class="tint-umber py-24 sm:py-32 section-relative" data-scene="04">
   <div class="bg-accent-blob" data-blob style="width:400px; height:400px; left:-8%; bottom:-10%; background:hsl(var(--primary)/0.16)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <h2 class="font-display text-2xl sm:text-3xl font-semibold tracking-tightish mb-10" style="color:hsl(var(--primary))" data-reveal>Dlaczego my</h2>
@@ -594,7 +699,7 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="gwarancje" class="py-24 sm:py-32 tint-sand section-relative" data-scene="04">
+<section id="gwarancje" class="py-24 sm:py-32 tint-sand section-relative" data-scene="05">
   <div class="grain-dots"></div>
   <div class="bg-accent-blob" data-blob style="width:340px; height:340px; right:-10%; top:10%; background:hsl(var(--accent)/0.14)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
@@ -646,56 +751,60 @@ input:focus,textarea:focus{
   </div>
 </section>
 
-<section id="lokale" class="py-24 sm:py-32 tint-rose section-relative" data-scene="05">
+<section id="lokale" class="py-24 sm:py-32 tint-rose section-relative" data-scene="06">
   <div class="bg-accent-blob" data-blob style="width:380px; height:380px; left:-8%; top:-6%; background:hsl(var(--primary)/0.14)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-14" data-reveal>
       <div>
-        <p class="uppercase text-[10px] font-bold tracking-[0.28em] mb-4" style="color:hsl(var(--accent))">Lokale użytkowe</p>
-        <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--primary))">Aktualnie dostępne lokale</h2>
+        <p class="uppercase text-[10px] font-bold tracking-[0.28em] mb-4" style="color:hsl(var(--accent))">Chodkiewicza 2</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-semibold tracking-tightish" style="color:hsl(var(--primary))">Wszystkie nieruchomości</h2>
       </div>
-      <p class="text-placeholder w-full max-w-sm text-[15px]" style="color:hsl(var(--muted))">Pełna oferta pojawi się tutaj wkrótce — zapytaj już teraz, a poinformujemy Cię jako pierwszych.</p>
+      <p class="w-full max-w-sm text-[15px]" style="color:hsl(var(--muted))">Cztery lokale w jednym budynku na Osiedlu Hetmańskim — dwa już zajęte, dwa czekają na Ciebie.</p>
     </div>
 
     <div class="property-showcase">
-      <div class="property-grid" aria-label="Miejsce na sześć ofert dostępnych lokali">
+      <div class="property-grid property-grid--quad" aria-label="Cztery nieruchomości przy Chodkiewicza 2">
+        <a href="#apartament" class="property-card property-card--link" data-reveal>
+          <div class="property-photo"><span class="property-number">01</span><img src="assets/apartament/3.jpg" alt="Apartament na Osiedlu Hetmańskim — elewacja"></div>
+          <div class="property-meta">
+            <div class="property-meta-top"><span class="property-name">Apartament</span><span class="property-status"><i></i>Na sprzedaż</span></div>
+            <p class="text-[13px]" style="color:hsl(var(--muted))">105 m² · 498 750 zł</p>
+          </div>
+        </a>
+        <a href="#lokal1" class="property-card property-card--link" data-reveal>
+          <div class="property-photo"><span class="property-number">02</span><img src="assets/lokal1/2.jpg" alt="Lokal nr 1 — wejście od ul. Zagłoby"></div>
+          <div class="property-meta">
+            <div class="property-meta-top"><span class="property-name">Lokal nr 1</span><span class="property-status"><i></i>Do wynajęcia</span></div>
+            <p class="text-[13px]" style="color:hsl(var(--muted))">86 m² · 2 800 zł/mc</p>
+          </div>
+        </a>
         <article class="property-card" data-reveal>
-          <div class="property-photo"><span class="property-number">01</span><span class="property-photo-label">Miejsce na zdjęcie</span></div>
-          <div class="property-meta"><div class="property-meta-top"><span class="property-name">Lokal 01</span><span class="property-status"><i></i>Oferta</span></div><div aria-hidden="true"><div class="property-line"></div><div class="property-line short"></div></div></div>
+          <div class="property-photo property-photo--muted"><span class="property-number">03</span><img src="assets/lokal2/1.png" alt="Lokal nr 2 — lokal użytkowy, wynajęty"></div>
+          <div class="property-meta">
+            <div class="property-meta-top"><span class="property-name">Lokal nr 2</span><span class="property-status property-status--muted"><i></i>Wynajęty</span></div>
+            <p class="text-[13px]" style="color:hsl(var(--muted))">Lokal użytkowy</p>
+          </div>
         </article>
         <article class="property-card" data-reveal>
-          <div class="property-photo"><span class="property-number">02</span><span class="property-photo-label">Miejsce na zdjęcie</span></div>
-          <div class="property-meta"><div class="property-meta-top"><span class="property-name">Lokal 02</span><span class="property-status"><i></i>Oferta</span></div><div aria-hidden="true"><div class="property-line"></div><div class="property-line short"></div></div></div>
-        </article>
-        <article class="property-card" data-reveal>
-          <div class="property-photo"><span class="property-number">03</span><span class="property-photo-label">Miejsce na zdjęcie</span></div>
-          <div class="property-meta"><div class="property-meta-top"><span class="property-name">Lokal 03</span><span class="property-status"><i></i>Oferta</span></div><div aria-hidden="true"><div class="property-line"></div><div class="property-line short"></div></div></div>
-        </article>
-        <article class="property-card" data-reveal>
-          <div class="property-photo"><span class="property-number">04</span><span class="property-photo-label">Miejsce na zdjęcie</span></div>
-          <div class="property-meta"><div class="property-meta-top"><span class="property-name">Lokal 04</span><span class="property-status"><i></i>Oferta</span></div><div aria-hidden="true"><div class="property-line"></div><div class="property-line short"></div></div></div>
-        </article>
-        <article class="property-card" data-reveal>
-          <div class="property-photo"><span class="property-number">05</span><span class="property-photo-label">Miejsce na zdjęcie</span></div>
-          <div class="property-meta"><div class="property-meta-top"><span class="property-name">Lokal 05</span><span class="property-status"><i></i>Oferta</span></div><div aria-hidden="true"><div class="property-line"></div><div class="property-line short"></div></div></div>
-        </article>
-        <article class="property-card" data-reveal>
-          <div class="property-photo"><span class="property-number">06</span><span class="property-photo-label">Miejsce na zdjęcie</span></div>
-          <div class="property-meta"><div class="property-meta-top"><span class="property-name">Lokal 06</span><span class="property-status"><i></i>Oferta</span></div><div aria-hidden="true"><div class="property-line"></div><div class="property-line short"></div></div></div>
+          <div class="property-photo property-photo--muted"><span class="property-number">04</span><img src="assets/lokal3/1.png" alt="Lokal nr 3 — mieszkanie, sprzedane"></div>
+          <div class="property-meta">
+            <div class="property-meta-top"><span class="property-name">Lokal nr 3</span><span class="property-status property-status--muted"><i></i>Sprzedany</span></div>
+            <p class="text-[13px]" style="color:hsl(var(--muted))">Mieszkanie</p>
+          </div>
         </article>
       </div>
       <div class="property-cta shadow-soft" data-reveal>
         <div>
-          <p class="font-display text-xl sm:text-2xl font-semibold tracking-tightish" style="color:hsl(var(--primary))">Masz pytanie o dostępność?</p>
-          <p class="text-placeholder text-[13px] mt-1 max-w-xl" style="color:hsl(var(--muted))">Opowiedz nam o swojej działalności, a pomożemy znaleźć lokal dopasowany do Twoich potrzeb.</p>
+          <p class="font-display text-xl sm:text-2xl font-semibold tracking-tightish" style="color:hsl(var(--primary))">Apartament i Lokal nr 1 wciąż czekają</p>
+          <p class="text-[13px] mt-1 max-w-xl" style="color:hsl(var(--muted))">Zadzwoń, aby umówić prezentację apartamentu na sprzedaż lub obejrzenie lokalu nr 1 do wynajęcia.</p>
         </div>
-        <a href="#kontakt" class="magnetic shrink-0 inline-block rounded-sm px-7 py-3.5 text-[14px] font-semibold btn-primary">Zapytaj o lokal</a>
+        <a href="#kontakt" class="magnetic shrink-0 inline-block rounded-sm px-7 py-3.5 text-[14px] font-semibold btn-primary">Zapytaj teraz</a>
       </div>
     </div>
   </div>
 </section>
 
-<section id="kontakt" class="py-24 sm:py-32 tint-linen section-relative" data-scene="06">
+<section id="kontakt" class="py-24 sm:py-32 tint-linen section-relative" data-scene="07">
   <div class="bg-accent-blob" data-blob style="width:360px; height:360px; right:-8%; bottom:-8%; background:hsl(var(--accent)/0.14)"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
     <div class="mb-14" data-reveal>
@@ -804,7 +913,7 @@ input:focus,textarea:focus{
         </span>
         <div>
           <p class="font-semibold text-sm leading-tight">Asystent Chodkiewicza 2</p>
-          <p class="text-[11px] leading-tight" style="color:hsl(34 30% 96%/0.7)">Zapytaj o wynajem lokalu</p>
+          <p class="text-[11px] leading-tight" style="color:hsl(34 30% 96%/0.7)">Zapytaj o apartament lub lokal nr 1</p>
         </div>
       </div>
       <button id="chatClose" aria-label="Zamknij czat" class="w-8 h-8 rounded-none flex items-center justify-center hover:bg-white/10 transition-colors">
@@ -1038,15 +1147,20 @@ cfForm.addEventListener('submit', e => {
 const DEEPSEEK_KEY = 'sk-8a646db8b7bf49b8b3d7cef3e4268db9'
 const GROQ_KEY = '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'
 
-const SYSTEM_PROMPT = `Jesteś asystentem AI firmy "Chodkiewicza 2". Siedziba firmy i punkt kontaktowy znajdują się pod adresem Chodkiewicza 2, 98-200 Sieradz (tel. 503 444 134, e-mail robertsieradz@wp.pl), ale lokale użytkowe oferowane są w całej Polsce.
+const SYSTEM_PROMPT = `Jesteś asystentem AI firmy "Chodkiewicza 2" działającej pod adresem Chodkiewicza 2, 98-200 Sieradz, Osiedle Hetmańskie (tel. 503 444 134, e-mail robertsieradz@wp.pl). W budynku znajdują się cztery lokale:
+
+1. APARTAMENT NA SPRZEDAŻ (najważniejsza, flagowa oferta) — 2 piętro, 105 m², stan deweloperski. Salon z aneksem kuchennym 30,5 m², 3 sypialnie, garderoba, 2 łazienki, korytarz. Cena: 498 750 zł (4 750 zł/m²), bezczynszowa własność z udziałem w gruncie i częściach wspólnych. Ogrzewanie podłogowe gazem ziemnym, prąd, woda, kanalizacja, możliwość światłowodu. Okna KBE (3 szyby), tynki Knauf Diamant, ocieplenie sufitu wełną Rockwool. Teren ogrodzony z miejscami parkingowymi, pomieszczenie gospodarcze, ogródek rekreacyjny, prywatny parking. Zdjęcia wnętrz to przykładowa wizualizacja aranżacji — charakter poglądowy, nie stan faktyczny.
+2. LOKAL NR 1 DO WYNAJĘCIA — lokal użytkowy 86 m² na parterze, wejście od ul. Zagłoby. Czynsz najmu: 2 800 zł/miesiąc. Sala główna, część socjalna, WC, możliwość wydzielenia dodatkowych pomieszczeń (rzut w galerii na stronie). Okna PCV trzyszybowe KBE, alarm, instalacja pod rolety zewnętrzne, internet światłowodowy, ogrzewanie podłogowe gazem ziemnym, woda i kanalizacja. Prywatne miejsca parkingowe przy budynku, dobra ekspozycja pod szyld. Blisko węzła Sieradz Zachód i drogi S8. Odpowiedni pod działalność usługową, biurową lub handlową. Dostępny od zaraz.
+3. Lokal nr 2 (lokal użytkowy) — już WYNAJĘTY, niedostępny.
+4. Lokal nr 3 (mieszkanie) — już SPRZEDANY, niedostępny.
 
 Zasady odpowiedzi:
-- Odpowiadaj w języku, w którym pisze użytkownik — domyślnie po polsku, ale jeśli użytkownik pisze po angielsku, odpowiadaj płynnie po angielsku (i analogicznie w innych sytuacjach dopasuj się do jego języka). Odpowiadaj rzeczowo, ciepło i konkretnie, maksymalnie w kilku zdaniach.
-- Gdy użytkownik pyta o lokalizację firmy lub kontakt, wyjaśnij jasno, że siedziba firmy mieści się w Sieradzu przy Chodkiewicza 2, natomiast same lokale użytkowe mogą znajdować się w różnych miastach w Polsce.
-- Nigdy nie zmyślaj konkretnych metraży, cen czynszu, miast ani dat dostępności lokali — te informacje nie są jeszcze opublikowane. Gdy ktoś pyta o konkretną ofertę, cenę, miasto lub dostępność, powiedz to wprost i zaproponuj kontakt telefoniczny (503 444 134) lub formularz na stronie.
-- Możesz swobodnie dzielić się rzeczową, ogólną wiedzą o wynajmie lokali użytkowych w Polsce, np.: typowe elementy umowy najmu (czynsz, opłaty za media i część wspólną, kaucja zabezpieczająca zwykle 1-3 miesięczne czynsze, czas trwania umowy, okres wypowiedzenia, waloryzacja czynszu wskaźnikiem inflacji GUS, protokół zdawczo-odbiorczy), różnice względem najmu mieszkalnego (brak ochrony lokatorskiej, zwykle najem opodatkowany VAT, możliwość wystawiania faktur), oraz na co zwrócić uwagę wybierając lokal (widoczność i ruch pieszy, parking, dopuszczalne moce przyłączy, wymogi sanepidu/ppoż dla gastronomii, możliwość adaptacji wnętrza).
-- Jeśli pytanie nie dotyczy nieruchomości ani wynajmu, uprzejmie skieruj rozmowę z powrotem na temat wynajmu lokali użytkowych i kontaktu z firmą Chodkiewicza 2.
-- Jeśli użytkownik pyta o konkretną cenę, metraż, termin dostępności, miasto lub wprost mówi, że jest zainteresowany najmem, zawsze zakończ odpowiedź krótkim zaproszeniem do kontaktu — telefon 503 444 134 lub formularz na stronie — jako najszybszej drogi do konkretów i umówienia konsultacji.
+- Odpowiadaj w języku, w którym pisze użytkownik — domyślnie po polsku, ale jeśli użytkownik pisze po angielsku, odpowiadaj płynnie po angielsku (analogicznie w innych językach). Odpowiadaj rzeczowo, ciepło i konkretnie, maksymalnie w kilku zdaniach.
+- Gdy ktoś pyta o dostępne oferty, zawsze w pierwszej kolejności wymień apartament na sprzedaż, a następnie lokal nr 1 do wynajęcia — to jedyne dwie aktualnie dostępne nieruchomości. Jasno mów, że lokal nr 2 i nr 3 nie są już dostępne (odpowiednio: wynajęty i sprzedany).
+- Możesz swobodnie podawać wszystkie powyższe konkretne dane (metraże, ceny, adres, wyposażenie) — są aktualne i opublikowane na stronie.
+- Jeśli ktoś pyta o coś, czego nie ma w powyższych danych (np. dokładny numer działki, dokumentację, termin wolny do wglądu), powiedz to wprost i zaproponuj kontakt telefoniczny (503 444 134) lub formularz na stronie.
+- Jeśli pytanie nie dotyczy nieruchomości, uprzejmie skieruj rozmowę z powrotem na temat apartamentu na sprzedaż lub lokalu nr 1 do wynajęcia.
+- Gdy użytkownik wyraża zainteresowanie zakupem lub najmem, zawsze zakończ odpowiedź krótkim zaproszeniem do kontaktu — telefon 503 444 134 lub formularz na stronie — w celu umówienia prezentacji.
 - Nie podawaj się za człowieka, jeśli zapytają — jesteś asystentem AI tej strony.`
 
 async function callDeepSeek(messages) {
@@ -1083,8 +1197,8 @@ async function getReply(messages) {
   }
 }
 
-const GREETING = 'Dzień dobry! Jestem asystentem AI firmy Chodkiewicza 2. Pomagam w kontakcie z siedzibą w Sieradzu i odpowiadam na pytania o lokale użytkowe dostępne w całej Polsce.'
-const SUGGESTIONS = ['W jakich miastach są lokale?', 'Jak wygląda proces wynajmu?', 'Chcę skontaktować się z siedzibą']
+const GREETING = 'Dzień dobry! Jestem asystentem AI Chodkiewicza 2. Mamy dwie aktualne oferty: apartament 105 m² na sprzedaż i lokal użytkowy nr 1 (86 m²) do wynajęcia. W czym mogę pomóc?'
+const SUGGESTIONS = ['Ile kosztuje apartament?', 'Jakie są warunki najmu lokalu nr 1?', 'Chcę umówić prezentację']
 
 function createChatWidget({ messagesEl, formEl, inputEl, greetOnInit }) {
   const history = [{ role: 'system', content: SYSTEM_PROMPT }]
