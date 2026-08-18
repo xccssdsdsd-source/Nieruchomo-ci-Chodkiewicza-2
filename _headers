@@ -1,0 +1,30 @@
+/assets/img/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*
+  Cache-Control: public, max-age=604800
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Katalogi z oryginałami zdjęć i starter panelu — dostępne, ale poza indeksem
+/Apartamentnasprzedaż/*
+  X-Robots-Tag: noindex, nofollow
+
+/Lokal nr1/*
+  X-Robots-Tag: noindex, nofollow
+
+/Lokalnr3sprzeedany/*
+  X-Robots-Tag: noindex, nofollow
+
+/Lokalużytkowynr2wynajęty/*
+  X-Robots-Tag: noindex, nofollow
+
+/admin-panel-starter/*
+  X-Robots-Tag: noindex, nofollow

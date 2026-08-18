@@ -2,7 +2,7 @@ import { createServer } from 'http'
 import { readFile } from 'fs/promises'
 import { extname, join } from 'path'
 
-const port = 3001
+const port = Number(process.env.PORT) || 3000
 const root = process.cwd()
 
 const types = {
@@ -12,6 +12,11 @@ const types = {
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
   '.png': 'image/png',
+  '.webp': 'image/webp',
+  '.avif': 'image/avif',
+  '.txt': 'text/plain; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
   '.svg': 'image/svg+xml',
   '.ico': 'image/x-icon'
 }

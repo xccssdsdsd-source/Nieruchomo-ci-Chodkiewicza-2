@@ -5,9 +5,8 @@ const url = process.argv[2] || 'http://localhost:3000'
 const dir = './temporary screenshots'
 mkdirSync(dir, { recursive: true })
 
-const browser = await chromium.launch({
-  executablePath: 'C:/Users/kajet/AppData/Local/ms-playwright/chromium-1228/chrome-win64/chrome.exe'
-})
+const launchOpts = process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}
+const browser = await chromium.launch(launchOpts)
 
 async function autoScroll(page) {
   const height = await page.evaluate(() => document.body.scrollHeight)

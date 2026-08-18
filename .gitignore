@@ -1,1 +1,5 @@
 /MAIN_SKILL.md
+node_modules/
+temporary screenshots/
+.DS_Store
+.wrangler/

@@ -1,0 +1,15 @@
+{
+  "name": "chodkiewicza-2",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Strona ofertowa nieruchomości przy ul. Chodkiewicza 2 w Sieradzu — statyczny HTML + funkcje Cloudflare Pages.",
+  "type": "module",
+  "scripts": {
+    "dev": "node serve.mjs",
+    "shots": "node screenshot.mjs http://localhost:3000"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0",
+    "sharp": "^0.33.5"
+  }
+}
