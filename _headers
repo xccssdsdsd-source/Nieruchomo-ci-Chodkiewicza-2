@@ -1,21 +1,32 @@
+# Reguły od ogólnych do szczegółowych — przy nakładających się wzorcach
+# ta zapisana niżej ma ostatnie słowo.
+/assets/*
+  Cache-Control: public, max-age=604800
+
+# Czcionki i obrazy mają nazwy stałe w czasie, więc rok cache i „immutable”.
+/assets/img/*
+  Cache-Control: public, max-age=31536000, immutable
+
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
   Access-Control-Allow-Origin: *
 
-/assets/img/*
-  Cache-Control: public, max-age=31536000, immutable
-
-/assets/*
-  Cache-Control: public, max-age=604800
-
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: geolocation=(), microphone=(), camera=()
-  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
+  X-Frame-Options: DENY
+  Cross-Origin-Opener-Policy: same-origin
+  # Strona nie ładuje żadnych skryptów ani stylów z zewnątrz. Wyjątkiem jest
+  # ramka z mapą Google w sekcji „Lokalizacja”. Styl i skrypt są wpisane
+  # bezpośrednio w dokument, stąd 'unsafe-inline' — reszta jest zamknięta.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://www.google.com; form-action 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests
 
 /
   Cache-Control: public, max-age=0, must-revalidate
 
 /index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/404.html
   Cache-Control: public, max-age=0, must-revalidate

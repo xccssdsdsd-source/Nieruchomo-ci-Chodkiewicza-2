@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nie znaleziono strony — Chodkiewicza 2, Sieradz</title>
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#3d222a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%233d222a'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%23c07a2e' text-anchor='middle'%3E2%3C/text%3E%3C/svg%3E">
+<style>
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:500 700;font-display:swap;src:url(/assets/fonts/fraunces-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:500 700;font-display:swap;src:url(/assets/fonts/fraunces-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:400 800;font-display:swap;src:url(/assets/fonts/manrope-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:400 800;font-display:swap;src:url(/assets/fonts/manrope-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+:root{
+  --bg:37 38% 97%; --surface:34 32% 94%; --primary:356 48% 26%; --primary-2:356 40% 37%;
+  --accent:28 62% 46%; --accent-2:30 68% 56%; --text:20 20% 13%; --muted:22 10% 40%;
+  --line:24 16% 84%; --r:3px;
+  --ease:cubic-bezier(.23,1,.32,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+*{margin:0}
+body{
+  min-height:100svh;display:grid;place-items:center;
+  background:hsl(var(--bg));color:hsl(var(--text));
+  font-family:'Manrope',ui-sans-serif,system-ui,sans-serif;font-size:16px;line-height:1.7;
+  padding:clamp(1.5rem,6vw,4rem);-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:34rem;text-align:center}
+.mark{
+  font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:-.04em;
+  font-size:clamp(4.5rem,16vw,8rem);line-height:1;color:hsl(var(--primary)/.16);
+}
+.eyebrow{
+  font-size:.6875rem;font-weight:800;letter-spacing:.22em;text-transform:uppercase;
+  color:hsl(var(--accent));display:flex;align-items:center;justify-content:center;gap:.7em;margin-top:-.5rem;
+}
+.eyebrow::before,.eyebrow::after{content:'';width:26px;height:1px;background:hsl(var(--accent)/.7)}
+h1{
+  font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:-.03em;line-height:1.1;
+  font-size:clamp(1.7rem,5vw,2.5rem);color:hsl(var(--primary));margin-top:1.1rem;text-wrap:balance;
+}
+p{margin-top:1rem;color:hsl(var(--muted));text-wrap:pretty}
+.btns{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;margin-top:2rem}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.55em;
+  padding:.85em 1.65em;border-radius:var(--r);border:1px solid transparent;
+  font-size:.9375rem;font-weight:700;letter-spacing:-.01em;text-decoration:none;
+  transition:transform .2s var(--ease),background-color .2s ease,border-color .2s ease;
+}
+.btn--primary{background:hsl(var(--primary));color:hsl(34 38% 96%);box-shadow:0 10px 22px -12px hsl(var(--primary)/.55)}
+.btn--primary:hover{background:hsl(var(--primary-2));transform:translateY(-2px)}
+.btn--outline{border-color:hsl(var(--primary)/.28);color:hsl(var(--primary))}
+.btn--outline:hover{border-color:hsl(var(--primary)/.6);background:hsl(var(--primary)/.05);transform:translateY(-2px)}
+.btn:focus-visible{outline:2px solid hsl(var(--accent));outline-offset:3px}
+.links{
+  margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid hsl(var(--line));
+  display:flex;flex-wrap:wrap;gap:.6rem 1.5rem;justify-content:center;font-size:.875rem;font-weight:600;
+}
+.links a{color:hsl(var(--primary));text-decoration:none;text-underline-offset:3px}
+.links a:hover{text-decoration:underline}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+  <main class="wrap">
+    <p class="mark">404</p>
+    <p class="eyebrow">Chodkiewicza 2 · Sieradz</p>
+    <h1>Tej strony tu nie ma</h1>
+    <p>Adres jest nieaktualny albo zawiera literówkę. Cała oferta — apartament 105 m² na sprzedaż i lokal użytkowy 86 m² do wynajęcia — jest na stronie głównej.</p>
+    <div class="btns">
+      <a class="btn btn--primary" href="/">Wróć na stronę główną</a>
+      <a class="btn btn--outline" href="tel:+48503444134">Zadzwoń: 503 444 134</a>
+    </div>
+    <nav class="links" aria-label="Skróty">
+      <a href="/#apartament">Apartament 105 m²</a>
+      <a href="/#lokal">Lokal 86 m²</a>
+      <a href="/#lokalizacja">Lokalizacja</a>
+      <a href="/#faq">Pytania</a>
+      <a href="/#kontakt">Kontakt</a>
+    </nav>
+  </main>
+</body>
+</html>

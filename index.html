@@ -493,6 +493,31 @@ input:user-invalid,textarea:user-invalid{border-color:hsl(0 55% 50%/.6)}
   body{padding-bottom:calc(4.2rem + env(safe-area-inset-bottom))}
 }
 
+/* ---------- druk ---------- */
+@media print{
+  @page{margin:14mm}
+  html{font-size:11pt}
+  body{background:#fff;color:#000;padding:0}
+  .nav,.callbar,.progress,.lb,.strip__nav,.shot__zoom,.btn,.hero__bg,.hero__veil,
+  .mapbox iframe,form,.sr-only,#prywatnosc{display:none !important}
+  .hero{min-height:auto;padding-block:0}
+  .hero__in{padding-block:0 1rem}
+  .hero h1,.hero__sub,.hero .eyebrow{color:#000;text-shadow:none}
+  .offerchip{border-color:#999;background:none;color:#000}
+  .offerchip__l,.offerchip__meta{color:#333}
+  .section{padding-block:1.2rem;break-inside:avoid}
+  .section--deep,.section--alt{background:none;color:#000;border:0}
+  .section--deep .sec-head .display,.sec-head .display{color:#000}
+  .card,.spec,.faq details{border-color:#bbb;box-shadow:none;background:none}
+  [data-reveal]{opacity:1 !important;transform:none !important}
+  .faq details{break-inside:avoid}
+  .faq .faq__a{display:block !important;height:auto !important}
+  .strip{overflow:visible;display:grid;grid-template-columns:repeat(2,1fr);gap:6mm}
+  .shot{break-inside:avoid}
+  a[href^="http"]::after,a[href^="mailto"]::after{content:" (" attr(href) ")";font-size:.8em;color:#555}
+  a[href^="#"]::after{content:none}
+}
+
 /* ---------- reveal / motion ---------- */
 [data-reveal]{opacity:0;transform:translateY(26px)}
 .is-in[data-reveal],[data-reveal].is-in{opacity:1;transform:none}
@@ -1643,18 +1668,24 @@ function render () {
   lbPrev.hidden = group.length < 2
   lbNext.hidden = group.length < 2
 }
+let lbOpener = null
 function openLb (el) {
   group = collect(el)
   idx = Math.max(0, group.indexOf(el))
   render()
+  lbOpener = el
   lb.setAttribute('data-open', '')
   lockScroll(true)
   $('#lbClose').focus({ preventScroll: true })
 }
 function closeLb () {
+  if (!lb.hasAttribute('data-open')) return
   lb.removeAttribute('data-open')
   lockScroll(false)
   lbImg.removeAttribute('src')
+  // fokus wraca na zdjęcie, z którego otwarto podgląd — bez tego osoba
+  // nawigująca klawiaturą trafiała z powrotem na początek dokumentu
+  if (lbOpener) { lbOpener.focus({ preventScroll: true }); lbOpener = null }
 }
 const step = d => { if (!group.length) return; idx = (idx + d + group.length) % group.length; render() }
 
