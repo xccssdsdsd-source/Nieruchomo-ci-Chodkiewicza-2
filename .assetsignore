@@ -1,0 +1,37 @@
+# Pliki, które nie mają trafiać do wdrożenia.
+# Składnia jak w .gitignore, ścieżki liczone od katalogu projektu.
+
+# Zależności i narzędzia — to przez nie wdrożenie padało na limicie 25 MiB
+node_modules
+package.json
+package-lock.json
+bun.lock
+bun.lockb
+
+# Kod Workera i jego konfiguracja — serwuje zasoby, nie jest zasobem
+worker.js
+wrangler.jsonc
+.assetsignore
+.wrangler
+
+# Skrypt pomocniczy uruchamiany lokalnie
+screenshot.mjs
+
+# Repozytorium i pliki robocze
+.git
+.gitignore
+temporary screenshots
+.DS_Store
+
+# Oryginały zdjęć — na stronie używane są warianty webp z assets/img
+Apartamentnasprzedaż
+Lokal nr1
+Lokalnr3sprzeedany
+Lokalużytkowynr2wynajęty
+
+# Starter panelu administracyjnego — osobny projekt, nieużywany przez stronę
+admin-panel-starter
+
+# Pliki nieużywane przez stronę
+image.png
+715972154_1479004397297832_6888587266518236106_n.jpg
