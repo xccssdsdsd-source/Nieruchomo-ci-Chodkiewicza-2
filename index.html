@@ -223,6 +223,17 @@ p+p{margin-top:.9em}
 }
 .keys span::before{content:'';width:5px;height:5px;border-radius:50%;background:hsl(var(--accent));flex:none}
 
+/* Zdjęcia apartamentu to wizualizacje możliwej aranżacji — oznaczenie
+   siedzi przy samym kadrze, nie tylko w akapicie pod spodem. */
+.offer__viz{
+  position:absolute;right:.75rem;bottom:.75rem;z-index:2;
+  padding:.35rem .7rem;border-radius:99px;
+  background:hsl(350 30% 8%/.6);border:1px solid hsl(34 30% 92%/.24);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:hsl(32 24% 92%/.9);
+}
+
 /* ---------- sekcja startowa ---------- */
 /* Pełny ekran, zdjęcie budynku i sama nazwa. Cena, metraż i opis przeniesione
    do sekcji ofert — na wejściu ma być spokój, a nie ściana tekstu. */
@@ -293,44 +304,6 @@ p+p{margin-top:.9em}
 }
 .offer__body>.btn-row{margin-top:auto;padding-top:.3rem}
 
-/* ---------- gallery strip ---------- */
-.strip{
-  display:flex;gap:.9rem;overflow-x:auto;overscroll-behavior-x:contain;
-  scroll-snap-type:x mandatory;scroll-padding-left:clamp(1.1rem,4vw,2.5rem);
-  padding-bottom:1rem;margin-inline:calc(-1 * clamp(1.1rem,4vw,2.5rem));
-  padding-inline:clamp(1.1rem,4vw,2.5rem);
-  scrollbar-width:thin;scrollbar-color:hsl(var(--primary)/.3) transparent;
-}
-.strip::-webkit-scrollbar{height:6px}
-.strip::-webkit-scrollbar-thumb{background:hsl(var(--primary)/.28);border-radius:99px}
-.strip::-webkit-scrollbar-track{background:hsl(var(--line)/.5);border-radius:99px}
-.shot{
-  position:relative;flex:none;scroll-snap-align:start;cursor:zoom-in;
-  border:1px solid hsl(var(--line));border-radius:var(--r);overflow:hidden;background:hsl(var(--surface-2));
-  transition:border-color .25s ease,box-shadow .3s var(--ease),transform .3s var(--ease);
-  width:min(78vw,20rem);height:clamp(19rem,46vw,26rem);
-}
-.shot--wide{width:min(88vw,29rem)}
-.shot img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
-.shot::after{
-  content:'';position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(180deg,transparent 58%,hsl(350 34% 6%/.72) 100%);
-  opacity:.9;transition:opacity .3s ease;
-}
-.shot figcaption{
-  position:absolute;left:0;right:0;bottom:0;z-index:2;padding:.9rem 1rem;
-  font-size:.8125rem;font-weight:600;line-height:1.4;color:hsl(38 40% 96%);
-}
-.shot:hover{border-color:hsl(var(--accent)/.5);box-shadow:0 20px 40px -28px hsl(var(--primary)/.7);transform:translateY(-3px)}
-.shot:hover img{transform:scale(1.05)}
-.shot__zoom{
-  position:absolute;top:.7rem;right:.7rem;z-index:2;width:2rem;height:2rem;border-radius:var(--r);
-  display:grid;place-items:center;background:hsl(var(--bg)/.9);color:hsl(var(--primary));
-  opacity:0;transform:scale(.85);transition:opacity .25s ease,transform .25s var(--ease);
-}
-.shot:hover .shot__zoom,.shot:focus-visible .shot__zoom{opacity:1;transform:scale(1)}
-.shot:focus-visible{outline:2px solid hsl(var(--accent));outline-offset:3px}
-.strip-hint{display:flex;align-items:center;gap:.5rem;margin-top:-.25rem;color:hsl(var(--muted))}
 
 /* ---------- facts ---------- */
 .facts{
@@ -516,35 +489,6 @@ input:user-invalid,textarea:user-invalid{border-color:hsl(0 55% 50%/.6)}
   body{padding-bottom:calc(4.2rem + env(safe-area-inset-bottom))}
 }
 
-/* ---------- druk ---------- */
-@media print{
-  @page{margin:14mm}
-  html{font-size:11pt}
-  body{background:#fff;color:#000;padding:0}
-  .nav,.callbar,.progress,.lb,.strip__nav,.shot__zoom,.btn,.hero__bg,.hero__veil,
-  .mapbox iframe,form,.sr-only,#prywatnosc{display:none !important}
-  .hero{min-height:auto;padding-block:0}
-  .hero__in{padding-block:0 1rem}
-  /* Pasek z udogodnieniami jest na ekranie przyklejony do dołu sekcji
-     powitalnej i w wydruku nachodziłby na kafelki z cenami. Te same fakty —
-     parking, ogrzewanie, światłowód, dojazd — są w tabelach danych obu
-     ofert, więc na papierze pasek jest zbędny. */
-  .hero__cue{display:none !important}
-  .hero__name,.hero__place{color:#000;text-shadow:none}
-  .hero__rule{background:#999}
-  .keys span{border-color:#999;background:none;color:#000}
-  .section{padding-block:1.2rem;break-inside:avoid}
-  .section--deep,.section--alt{background:none;color:#000;border:0}
-  .section--deep .sec-head .display,.sec-head .display{color:#000}
-  .card,.spec,.faq details{border-color:#bbb;box-shadow:none;background:none}
-  [data-reveal]{opacity:1 !important;transform:none !important}
-  .faq details{break-inside:avoid}
-  .faq .faq__a{display:block !important;height:auto !important}
-  .strip{overflow:visible;display:grid;grid-template-columns:repeat(2,1fr);gap:6mm}
-  .shot{break-inside:avoid}
-  a[href^="http"]::after,a[href^="mailto"]::after{content:" (" attr(href) ")";font-size:.8em;color:#555}
-  a[href^="#"]::after{content:none}
-}
 
 /* ---------- kontakt ---------- */
 .callbig{
@@ -685,8 +629,41 @@ section[id],main[id]{scroll-margin-top:5.25rem}
 [data-reveal]{transition:opacity .75s var(--ease),transform .75s var(--ease)}
 .unit--taken .unit__ph img{filter:saturate(.5) brightness(.82)}
 .unit--gray .unit__ph img{filter:grayscale(1) brightness(.74) contrast(.95)}
-.strip:focus-visible{outline:2px solid hsl(var(--accent));outline-offset:4px}
 .lb__nav[hidden]{display:none}
+/* ---------- druk ---------- */
+@media print{
+  @page{margin:14mm}
+  html{font-size:11pt}
+  body{background:#fff;color:#000;padding:0}
+  .nav,.callbar,.progress,.lb,.btn,.hero__bg,.hero__veil,
+  .mapbox iframe,form,.sr-only,#prywatnosc,.hero__cue,
+  .reel__ui,.reel__hint,.reel__bar,.reel__bg{display:none !important}
+  .hero{min-height:auto;padding-block:0}
+  .hero__in{padding-block:0 1rem}
+  .hero__name,.hero__place{color:#000;text-shadow:none}
+  .hero__rule{background:#999}
+  .keys span{border-color:#999;background:none;color:#000}
+  .section{padding-block:1.2rem;break-inside:avoid}
+  .section--deep,.section--alt{background:none;color:#000;border:0}
+  .section--deep .sec-head .display,.sec-head .display{color:#000}
+  .card,.spec,.faq details{border-color:#bbb;box-shadow:none;background:none}
+  [data-reveal]{opacity:1 !important;transform:none !important}
+  .faq details{break-inside:avoid}
+  .faq .faq__a{display:block !important;height:auto !important}
+  /* Galeria na ekranie jest wysoka na kilka wysokości okna i przewija się
+     w bok. Na papierze nie ma przewijania — bez tej reguły z drukarki
+     wyszłoby kilkanaście pustych stron. Zdjęcia układają się w siatkę. */
+  .reel{height:auto !important;background:none;break-inside:auto}
+  .reel__stage{position:static !important;height:auto !important;overflow:visible !important}
+  .reel__rail{display:grid !important;grid-template-columns:repeat(2,1fr);gap:6mm;transform:none !important;height:auto}
+  .reel__slide{flex:none;height:auto;min-height:0;padding:0;break-inside:avoid;display:block}
+  .reel__img{width:100%;height:auto;max-height:9cm;object-fit:cover;box-shadow:none;border:1px solid #bbb}
+  .reel__cap{position:static;padding:.35rem 0 0;background:none;text-align:left}
+  .reel__cap b{color:#000;font-size:.9rem}
+  .reel__cap span{color:#444;font-size:.75rem}
+  a[href^="http"]::after,a[href^="mailto"]::after{content:" (" attr(href) ")";font-size:.8em;color:#555}
+  a[href^="#"]::after{content:none}
+}
 </style>
 
 <noscript><style>
@@ -792,6 +769,7 @@ section[id],main[id]{scroll-margin-top:5.25rem}
                style="object-position:center 62%"
                alt="Salon z aneksem kuchennym w apartamencie 105 m² na sprzedaż, Chodkiewicza 2 w Sieradzu — wizualizacja aranżacji">
           <span class="offer__tag"><i></i>Na sprzedaż</span>
+          <span class="offer__viz">Wizualizacja aranżacji</span>
         </div>
         <div class="offer__body">
           <h3 class="offer__title">Apartament nr 4 — 105 m², II piętro</h3>
