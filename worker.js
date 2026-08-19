@@ -229,6 +229,12 @@ export default {
     const url = new URL(request.url)
     const origin = url.origin
 
+    // /index.html i / to ten sam dokument pod dwoma adresami — jeden z nich
+    // musi być jedynym, żeby nie rozpraszać sygnałów rankingowych.
+    if (url.pathname === '/index.html') {
+      return Response.redirect(origin + '/' + url.search, 301)
+    }
+
     if (url.pathname === '/robots.txt') return robots(origin)
     if (url.pathname === '/sitemap.xml') return sitemap(origin, await contentUpdatedAt(env, url))
 

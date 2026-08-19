@@ -32,6 +32,7 @@
 <link rel="icon" href="/assets/img/icon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/img/icon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/assets/img/icon-180.png">
+<link rel="manifest" href="/site.webmanifest">
 
 <link rel="preload" as="image" fetchpriority="high" href="assets/img/budynek-front-1600.webp" imagesrcset="assets/img/budynek-front-800.webp 800w, assets/img/budynek-front-1200.webp 1200w, assets/img/budynek-front-1600.webp 1600w, assets/img/budynek-front-2048.webp 2048w" imagesizes="100vw">
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/manrope-latin.woff2" crossorigin>
@@ -506,6 +507,11 @@ input:user-invalid,textarea:user-invalid{border-color:hsl(0 55% 50%/.6)}
   .mapbox iframe,form,.sr-only,#prywatnosc{display:none !important}
   .hero{min-height:auto;padding-block:0}
   .hero__in{padding-block:0 1rem}
+  /* Pasek z udogodnieniami jest na ekranie przyklejony do dołu sekcji
+     powitalnej i w wydruku nachodziłby na kafelki z cenami. Te same fakty —
+     parking, ogrzewanie, światłowód, dojazd — są w tabelach danych obu
+     ofert, więc na papierze pasek jest zbędny. */
+  .hero__stamp{display:none !important}
   .hero h1,.hero__sub,.hero .eyebrow{color:#000;text-shadow:none}
   .offerchip{border-color:#999;background:none;color:#000}
   .offerchip__l,.offerchip__meta{color:#333}

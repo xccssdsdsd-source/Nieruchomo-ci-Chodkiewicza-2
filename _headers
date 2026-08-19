@@ -30,3 +30,9 @@
 
 /404.html
   Cache-Control: public, max-age=0, must-revalidate
+
+# Rozszerzenie .webmanifest nie ma domyślnego typu MIME — bez tego
+# przeglądarka pobiera plik zamiast go zinterpretować.
+/site.webmanifest
+  Content-Type: application/manifest+json; charset=utf-8
+  Cache-Control: public, max-age=86400
