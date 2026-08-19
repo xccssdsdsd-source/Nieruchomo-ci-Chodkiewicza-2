@@ -16,18 +16,22 @@
 <meta property="og:site_name" content="Nieruchomości Chodkiewicza 2">
 <meta property="og:title" content="Apartament 105 m² na sprzedaż i lokal 86 m² do wynajęcia — Chodkiewicza 2, Sieradz">
 <meta property="og:description" content="Apartament 105 m² za 498 750 zł i lokal użytkowy 86 m² za 2 800 zł/mc. Osiedle Hetmańskie, Sieradz. Prywatny parking, ogrzewanie podłogowe, światłowód.">
-<meta property="og:image" content="https://nieruchomo-ci-chodkiewicza-2.pages.dev/assets/img/budynek-front-1200.webp">
+<meta property="og:image" content="https://nieruchomo-ci-chodkiewicza-2.pages.dev/assets/img/og-chodkiewicza-2.jpg">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="900">
+<meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Budynek mieszkalno-usługowy przy ul. Chodkiewicza 2 w Sieradzu">
 <meta property="og:url" content="https://nieruchomo-ci-chodkiewicza-2.pages.dev/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Apartament 105 m² na sprzedaż i lokal 86 m² do wynajęcia — Chodkiewicza 2, Sieradz">
 <meta name="twitter:description" content="Apartament 105 m² za 498 750 zł i lokal użytkowy 86 m² za 2 800 zł/mc. Osiedle Hetmańskie, Sieradz.">
-<meta name="twitter:image" content="https://nieruchomo-ci-chodkiewicza-2.pages.dev/assets/img/budynek-front-1200.webp">
+<meta name="twitter:image" content="https://nieruchomo-ci-chodkiewicza-2.pages.dev/assets/img/og-chodkiewicza-2.jpg">
+<meta name="twitter:image:alt" content="Budynek mieszkalno-usługowy przy ul. Chodkiewicza 2 w Sieradzu">
 <meta name="theme-color" content="#3d222a">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%233d222a'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' font-weight='700' fill='%23c07a2e' text-anchor='middle'%3E2%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="/assets/img/icon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/img/icon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/icon-180.png">
 
 <link rel="preload" as="image" fetchpriority="high" href="assets/img/budynek-front-1600.webp" imagesrcset="assets/img/budynek-front-800.webp 800w, assets/img/budynek-front-1200.webp 1200w, assets/img/budynek-front-1600.webp 1600w, assets/img/budynek-front-2048.webp 2048w" imagesizes="100vw">
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/manrope-latin.woff2" crossorigin>
@@ -529,6 +533,7 @@ input:user-invalid,textarea:user-invalid{border-color:hsl(0 55% 50%/.6)}
 /* Pole-pułapka na boty: niewidoczne i pominięte przez czytniki ekranu,
    ale obecne w kodzie formularza, więc automat je wypełni. */
 .hp,.hp input{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;opacity:0}
+.formmsg:focus{outline:none}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 /* Link „Przejdź do treści” musi być widoczny, kiedy dostanie fokus z klawiatury —
    inaczej osoba nawigująca tabulatorem nie wie, gdzie się znajduje. */
@@ -1296,11 +1301,11 @@ section[id],main[id]{scroll-margin-top:5.25rem}
           <summary style="cursor:pointer;font-weight:600">Informacja o przetwarzaniu danych (RODO)</summary>
           <p style="margin-top:.6rem">Administratorem danych jest Nieruchomości Chodkiewicza 2, ul. Chodkiewicza 2, 98-200 Sieradz, kontakt: robertsieradz@wp.pl, tel. 503 444 134. Dane podane w formularzu przetwarzamy wyłącznie w celu udzielenia odpowiedzi na zapytanie i ewentualnego umówienia prezentacji nieruchomości — na podstawie art. 6 ust. 1 lit. b i f RODO. Dane przechowujemy przez czas potrzebny do obsługi zapytania. Masz prawo dostępu do danych, ich sprostowania, usunięcia, ograniczenia przetwarzania oraz wniesienia sprzeciwu i skargi do Prezesa UODO. Podanie danych jest dobrowolne, ale niezbędne do udzielenia odpowiedzi. Szczegóły znajdziesz w <a href="#prywatnosc" style="color:hsl(var(--primary));font-weight:600">polityce prywatności</a>.</p>
         </details>
-        <div class="formmsg formmsg--ok" id="formOk">
+        <div class="formmsg formmsg--ok" id="formOk" role="status" aria-live="polite" tabindex="-1">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:.15rem"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
           <span id="formOkText">Dziękujemy — wiadomość dotarła. Odezwiemy się najszybciej, jak to możliwe.</span>
         </div>
-        <div class="formmsg formmsg--err" id="formErr">
+        <div class="formmsg formmsg--err" id="formErr" role="alert" aria-live="assertive" tabindex="-1">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:.15rem"><circle cx="12" cy="12" r="10"/><path d="M12 8v5m0 3h.01"/></svg>
           <span id="formErrText">Uzupełnij pola oznaczone gwiazdką i zaznacz zgodę na przetwarzanie danych.</span>
         </div>
@@ -1393,7 +1398,7 @@ section[id],main[id]{scroll-margin-top:5.25rem}
 
 <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Powiększone zdjęcie">
   <div class="lb__top">
-    <span id="lbCount">1 / 1</span>
+    <span id="lbCount" role="status" aria-live="polite">1 / 1</span>
     <button class="lbbtn" id="lbClose" aria-label="Zamknij podgląd">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
@@ -1420,7 +1425,7 @@ section[id],main[id]{scroll-margin-top:5.25rem}
       "name": "Nieruchomości Chodkiewicza 2",
       "description": "Budynek mieszkalno-usługowy przy ul. Chodkiewicza 2 na Osiedlu Hetmańskim w Sieradzu. Apartament 105 m² na sprzedaż i lokal użytkowy 86 m² do wynajęcia.",
       "url": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/",
-      "image": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/assets/img/budynek-front-1200.webp",
+      "image": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/assets/img/og-chodkiewicza-2.jpg",
       "telephone": "+48503444134",
       "email": "robertsieradz@wp.pl",
       "priceRange": "2800 zł/mc – 498750 zł",
@@ -1763,11 +1768,13 @@ form.addEventListener('submit', async e => {
   if (!d.name || !d.email || !d.message || !consent) {
     errText.textContent = 'Uzupełnij pola oznaczone gwiazdką i zaznacz zgodę na przetwarzanie danych.'
     errBox.setAttribute('data-show', '')
+    errBox.focus({ preventScroll: true })
     return
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email)) {
     errText.textContent = 'Sprawdź adres e-mail — wygląda na niepełny.'
     errBox.setAttribute('data-show', '')
+    errBox.focus({ preventScroll: true })
     return
   }
 
