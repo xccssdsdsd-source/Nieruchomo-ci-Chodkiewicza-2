@@ -505,7 +505,12 @@ input:user-invalid,textarea:user-invalid{border-color:hsl(0 55% 50%/.6)}
   font-size:clamp(1.9rem,4.4vw,2.6rem);letter-spacing:-.03em;line-height:1;
 }
 .callbig__m{display:block;margin-top:.65rem;font-size:.8125rem;line-height:1.5;color:hsl(34 26% 92%/.72)}
-@media(min-width:920px){.kontakt-side{position:sticky;top:6.5rem}}
+@media(min-width:920px){
+  .kontakt-side{position:sticky;top:6.5rem}
+  /* Tabela danych jest długa, karta z ceną krótka — bez przyklejenia
+     obok tabeli zostawał ekran pustki, a wezwanie uciekało z pola widzenia. */
+  .offer-aside{position:sticky;top:6.5rem}
+}
 
 /* ---------- pytania i odpowiedzi ---------- */
 .faq-side{display:flex;flex-direction:column}
@@ -878,7 +883,7 @@ section[id],main[id]{scroll-margin-top:5.25rem}
         </figure>
       </div>
 
-      <aside data-reveal>
+      <aside class="offer-aside" data-reveal>
         <div class="card card--hover" style="position:sticky;top:6rem">
           <span class="card__mark"></span>
           <p class="eyebrow" style="margin-bottom:1rem">Zainteresowany?</p>
@@ -986,7 +991,7 @@ section[id],main[id]{scroll-margin-top:5.25rem}
         </dl>
       </div>
 
-      <aside data-reveal>
+      <aside class="offer-aside" data-reveal>
         <div class="card card--hover" style="position:sticky;top:6rem">
           <span class="card__mark"></span>
           <p class="eyebrow" style="margin-bottom:1rem">Chcesz obejrzeć?</p>
