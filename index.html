@@ -223,13 +223,6 @@ p+p{margin-top:.9em}
 }
 .keys span::before{content:'';width:5px;height:5px;border-radius:50%;background:hsl(var(--accent));flex:none}
 
-/* ---------- stats (Dlaczego my) ---------- */
-.stats{display:grid;gap:1.5rem 1rem;grid-template-columns:repeat(2,1fr)}
-@media(min-width:640px){.stats{grid-template-columns:repeat(4,1fr)}}
-.stat{padding-top:1.1rem;border-top:2px solid hsl(var(--accent)/.35)}
-.stat__n{font-size:clamp(2.1rem,4vw,2.9rem);color:hsl(var(--primary));line-height:1}
-.stat__l{display:block;margin-top:.5rem;font-size:.8125rem;font-weight:600;color:hsl(var(--text)/.7)}
-
 /* ---------- sekcja startowa ---------- */
 /* Pełny ekran, zdjęcie budynku i sama nazwa. Cena, metraż i opis przeniesione
    do sekcji ofert — na wejściu ma być spokój, a nie ściana tekstu. */
@@ -679,14 +672,6 @@ section[id],main[id]{scroll-margin-top:5.25rem}
       <span>Ogrzewanie podłogowe — gaz ziemny</span>
       <span>Teren ogrodzony</span>
       <span>Blisko węzła S8 Sieradz Zachód</span>
-    </div>
-
-    <p class="eyebrow" data-reveal>Dlaczego my</p>
-    <div class="stats" data-reveal style="margin-top:1rem">
-      <div class="stat"><p class="display stat__n">2</p><span class="stat__l">Lata na rynku</span></div>
-      <div class="stat"><p class="display stat__n">1</p><span class="stat__l">Wynajęty lokal</span></div>
-      <div class="stat"><p class="display stat__n">1</p><span class="stat__l">Lokal na wynajem</span></div>
-      <div class="stat"><p class="display stat__n">1</p><span class="stat__l">Apartament na sprzedaż</span></div>
     </div>
 
     <h3 class="display h3" data-reveal style="color:hsl(var(--primary));margin:clamp(2rem,4vw,3rem) 0 1.4rem">Gdzie to jest</h3>
