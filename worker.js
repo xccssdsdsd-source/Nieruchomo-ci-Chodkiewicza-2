@@ -10,6 +10,8 @@
  *   /api/lead     — odbiór zapytań z formularza kontaktowego
  *   /             — index.html z adresami bezwzględnymi podmienionymi na
  *                   rzeczywisty adres serwera
+ *   /llms.txt     — jw., żeby linki widziane przez asystentów AI wskazywały
+ *                   na domenę, pod którą strona faktycznie działa
  *
  * Dzięki liczeniu adresu z żądania to samo wdrożenie działa poprawnie na
  * domenie roboczej i na domenie własnej — bez wpisywania adresu na sztywno
@@ -199,22 +201,23 @@ async function lead (request, env) {
 /**
  * Adres kanoniczny, Open Graph i dane strukturalne muszą być bezwzględne —
  * scrapery serwisów społecznościowych nie rozwijają ścieżek względnych.
- * W pliku zapisany jest BASE_URL, tutaj podmieniamy go na adres, pod którym
- * strona faktycznie została pobrana.
+ * To samo dotyczy linków w llms.txt, które czytają asystenci AI. W plikach
+ * zapisany jest BASE_URL, tutaj podmieniamy go na adres, pod którym strona
+ * faktycznie została pobrana.
  */
 async function page (request, env, origin) {
   const res = await env.ASSETS.fetch(request)
   if (origin === BASE_URL) return res
 
   const type = res.headers.get('content-type') || ''
-  if (!type.includes('text/html')) return res
+  if (!type.includes('text/html') && !type.includes('text/plain')) return res
 
   try {
-    const html = (await res.text()).replaceAll(BASE_URL, origin)
+    const body = (await res.text()).replaceAll(BASE_URL, origin)
     const headers = new Headers(res.headers)
     headers.delete('content-length')
     headers.delete('etag')
-    return new Response(html, { status: res.status, headers })
+    return new Response(body, { status: res.status, headers })
   } catch {
     // gdyby cokolwiek poszło nie tak, lepiej oddać stronę bez podmiany
     // niż nie oddać jej wcale

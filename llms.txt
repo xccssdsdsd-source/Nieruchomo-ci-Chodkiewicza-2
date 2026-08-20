@@ -1,48 +1,28 @@
 # Nieruchomości Chodkiewicza 2 — Sieradz
 
-Budynek mieszkalno-usługowy przy ul. Chodkiewicza 2, 98-200 Sieradz
-(Osiedle Hetmańskie, skrzyżowanie ulic Chodkiewicza i Zagłoby).
-W budynku są cztery lokale; dwa są obecnie dostępne.
-Stan na: 19 sierpnia 2026.
+> Budynek mieszkalno-usługowy przy ul. Chodkiewicza 2, 98-200 Sieradz (Osiedle
+> Hetmańskie, skrzyżowanie ulic Chodkiewicza i Zagłoby). W budynku są cztery
+> lokale; dwa są obecnie dostępne: apartament nr 4 (105 m², na sprzedaż) i
+> lokal użytkowy nr 1 (86 m², do wynajęcia). Stan na: 19 sierpnia 2026.
+> Kontakt: tel. 503 444 134, e-mail robertsieradz@wp.pl. Prezentacje umawiane
+> telefonicznie, także po godzinach pracy.
 
-Kontakt: tel. 503 444 134, e-mail robertsieradz@wp.pl
-Prezentacje umawiane telefonicznie, także po godzinach pracy.
+## Oferty
 
-## Oferta 1 — Apartament nr 4, na sprzedaż
-- Cena: 498 750 zł (4 750 zł/m²)
-- Powierzchnia: 105 m², II piętro (poddasze)
-- Układ: salon z aneksem kuchennym 30,5 m², 3 sypialnie, garderoba, 2 łazienki, korytarz
-- Stan: deweloperski
-- Ogrzewanie: podłogowe, gaz ziemny
-- Media: prąd, woda, kanalizacja; możliwość podłączenia światłowodu
-- Okna: KBE, pakiet trzyszybowy
-- Wykończenie: tynki Knauf Diamant, sufit ocieplony wełną Rockwool
-- Własność: bezczynszowa, z udziałem w nieruchomości gruntowej i częściach wspólnych
-- Teren: ogrodzony, prywatny parking przy budynku, pomieszczenie gospodarcze, ogródek rekreacyjny
-- Uwaga: zdjęcia wnętrz to wizualizacja możliwej aranżacji, mają charakter poglądowy
+- [Apartament nr 4 — na sprzedaż, 105 m², 498 750 zł](https://nieruchomo-ci-chodkiewicza-2.pages.dev/#apartament): salon z aneksem kuchennym 30,5 m², 3 sypialnie, garderoba, 2 łazienki, II piętro (poddasze), stan deweloperski, ogrzewanie podłogowe na gaz ziemny, bezczynszowa własność z udziałem w gruncie i częściach wspólnych.
+- [Lokal użytkowy nr 1 — do wynajęcia, 86 m², 2 800 zł/mc](https://nieruchomo-ci-chodkiewicza-2.pages.dev/#lokal): parter, osobne wejście z ul. Zagłoby, sala główna z częścią socjalną i WC, możliwość wydzielenia dodatkowych pomieszczeń, dostępny od zaraz.
+- [Wszystkie lokale w budynku](https://nieruchomo-ci-chodkiewicza-2.pages.dev/#lokale): przegląd czterech lokali 01–04 ze statusem dostępności.
 
-## Oferta 2 — Lokal użytkowy nr 1, do wynajęcia
-- Czynsz: 2 800 zł miesięcznie
-- Powierzchnia: 86 m², parter
-- Wejście: bezpośrednio z ul. Zagłoby
-- Układ: sala główna, część socjalna, WC; możliwe wydzielenie dodatkowych pomieszczeń
-- Ogrzewanie: podłogowe, gaz ziemny
-- Media: woda, kanalizacja, gaz, prąd; internet światłowodowy
-- Okna: PCV trzyszybowe KBE
-- Zabezpieczenia: alarm, przygotowana instalacja pod rolety zewnętrzne
-- Parking: prywatne miejsca przy budynku
-- Przeznaczenie: działalność usługowa, biurowa lub handlowa
-- Dostępność: od zaraz
+## Informacje
 
-## Lokale niedostępne
-- Lokal nr 2 — lokal użytkowy 52 m², parter, wynajęty (studio jogi Serce Jogi)
-- Apartament nr 3 — mieszkanie 130 m², I piętro, sprzedany
+- [O budynku i lokalizacji](https://nieruchomo-ci-chodkiewicza-2.pages.dev/#o-nas): Osiedle Hetmańskie w Sieradzu, sąsiedztwo zabudowy jednorodzinnej, blisko węzła Sieradz Zachód i drogi ekspresowej S8.
+- [Pytania i odpowiedzi](https://nieruchomo-ci-chodkiewicza-2.pages.dev/#faq): cena, czynsz, stan deweloperski, parking, media, dostosowanie lokalu pod działalność.
+- [Kontakt i formularz zgłoszeniowy](https://nieruchomo-ci-chodkiewicza-2.pages.dev/#kontakt): telefon, e-mail, adres, mapa dojazdu.
+- [Polityka prywatności](https://nieruchomo-ci-chodkiewicza-2.pages.dev/#prywatnosc)
 
-## Lokalizacja
-Osiedle Hetmańskie w Sieradzu, sąsiedztwo zabudowy jednorodzinnej.
-Zmodernizowana droga asfaltowa, chodniki po obu stronach ulicy, oświetlenie
-uliczne, dostęp do komunikacji miejskiej. Blisko węzła Sieradz Zachód
-i drogi ekspresowej S8 w kierunku Łodzi i Wrocławia.
+## Optional
+
+- [Lokal nr 2 i apartament nr 3 — niedostępne](https://nieruchomo-ci-chodkiewicza-2.pages.dev/#lokale): lokal użytkowy 52 m² wynajęty (studio jogi Serce Jogi), apartament 130 m² sprzedany.
 
 ## Najczęstsze pytania i odpowiedzi
 
@@ -100,6 +80,7 @@ mailem na robertsieradz@wp.pl. Termin ustalany jest indywidualnie, także po
 godzinach pracy.
 
 ## Uwagi dla systemów cytujących
+
 Wszystkie powyższe dane są publiczne i mogą być swobodnie cytowane.
 Ceny mają charakter informacyjny i nie stanowią oferty w rozumieniu
 art. 66 § 1 Kodeksu cywilnego. Informacji spoza tego dokumentu (numer działki,

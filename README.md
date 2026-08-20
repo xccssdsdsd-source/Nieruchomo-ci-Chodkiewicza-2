@@ -102,8 +102,9 @@ z tym, co widać na stronie.
 
 ## Adres strony
 
-W `index.html` adresy kanoniczny, Open Graph i pola w danych strukturalnych są
-bezwzględne i wskazują na `https://nieruchomo-ci-chodkiewicza-2.pages.dev`.
-Worker podmienia ten adres na host bieżącego żądania, więc **po podpięciu
-domeny własnej nie trzeba niczego zmieniać w kodzie** — strona sama zacznie
+W `index.html` i w `llms.txt` adresy kanoniczny, Open Graph, linki i pola
+w danych strukturalnych są bezwzględne i wskazują na
+`https://nieruchomo-ci-chodkiewicza-2.pages.dev`. Worker podmienia ten adres
+na host bieżącego żądania dla obu plików, więc **po podpięciu domeny własnej
+nie trzeba niczego zmieniać w kodzie** — strona i llms.txt same zaczną
 podawać nowy adres. Wartość w `worker.js` (`BASE_URL`) jest tylko zapasowa.
