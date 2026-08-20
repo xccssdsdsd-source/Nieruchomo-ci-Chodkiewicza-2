@@ -14,8 +14,9 @@ wrangler.jsonc
 .assetsignore
 .wrangler
 
-# Skrypt pomocniczy uruchamiany lokalnie
+# Skrypty uruchamiane lokalnie — nie są zasobami strony
 screenshot.mjs
+guard.test.mjs
 
 # Repozytorium i pliki robocze
 .git

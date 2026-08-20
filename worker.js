@@ -37,6 +37,10 @@
  * Gdyby zawiodły wszystkie kanały, /api/lead zwraca 503, a formularz na
  * stronie przechodzi na wysyłkę przez program pocztowy użytkownika — żadne
  * zapytanie nie znika po cichu.
+ *
+ * Przed tą logiką stoi bramka `leadGuard`: sprawdza, czy zapytanie wyszło
+ * z formularza na tej stronie, i ogranicza liczbę zapytań na adres IP.
+ * Sposób wysyłki pozostaje jej całkowicie obojętny.
  */
 
 /**
@@ -126,14 +130,153 @@ function sitemap (origin, lastmod) {
   )
 }
 
+/* ---------- ochrona wejścia do /api/lead ---------- */
+
+/*
+ * Kanały wysyłki poniżej zostają bez zmian — zmienia się wyłącznie to, kto
+ * w ogóle dochodzi do endpointu. Pułapka i próg trzech sekund w `lead()`
+ * bronią przed botem wypełniającym formularz w przeglądarce, ale nie przed
+ * pętlą z curl-em strzelającą wprost w /api/lead: adres skrzynki jest po
+ * stronie Workera, więc taka pętla zasypywała ją bez żadnego ograniczenia.
+ */
+
+/** Zapytanie z formularza waży kilkaset bajtów; 16 KiB to zapas z górką. */
+const LEAD_MAX_BYTES = 16 * 1024
+
+const tooMany = () =>
+  new Response(JSON.stringify({ error: 'rate_limited' }), {
+    status: 429,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'Retry-After': '60'
+    }
+  })
+
+/**
+ * Przeglądarka dokłada nagłówek Origin do każdego żądania POST — także
+ * wysyłanego na własny serwer. Skrypt z cudzej strony wpisze tam swój adres
+ * i odpadnie tutaj; narzędzie wiersza poleceń domyślnie nie wysyła go wcale.
+ * Referer jest zapasem dla nietypowych klientów, które Origin pomijają.
+ *
+ * Odrzucenie nie kończy się dla człowieka ślepym zaułkiem: formularz na
+ * stronie po nieudanej odpowiedzi otwiera program pocztowy z gotową treścią.
+ */
+function fromThisSite (request, url) {
+  const origin = request.headers.get('origin')
+  if (origin) return origin === url.origin
+
+  const referer = request.headers.get('referer')
+  if (!referer) return false
+  try {
+    return new URL(referer).host === url.host
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Licznik zapasowy, trzymany w pamięci instancji Workera. Nie zastąpi
+ * licznika Cloudflare — żyje tylko w obrębie jednej instancji i znika po
+ * chwili bezczynności — ale działa od razu, bez konfiguracji, i zatrzymuje
+ * przypadek najczęstszy: pętlę z jednego adresu.
+ */
+const recent = new Map()
+
+function burstOk (ip, limit = 5, windowMs = 60000) {
+  const now = Date.now()
+  // Mapa rośnie z każdym nowym adresem, a pamięci instancji nikt nie sprząta.
+  if (recent.size > 2000) recent.clear()
+
+  const hits = (recent.get(ip) || []).filter(t => now - t < windowMs)
+  const ok = hits.length < limit
+  if (ok) hits.push(now)
+  recent.set(ip, hits)
+  return ok
+}
+
+/**
+ * Bramka przed `lead()`. Zwraca odpowiedź, gdy żądanie ma zostać odrzucone,
+ * albo `null`, gdy ma przejść dalej.
+ *
+ * Liczniki Cloudflare (`LEAD_RATELIMIT` — na adres IP, `LEAD_RATELIMIT_ALL`
+ * — łącznie) są opcjonalne: bez wpisu w wrangler.jsonc zostaje sam licznik
+ * w pamięci, z wpisem ograniczenie obowiązuje w całej sieci brzegowej.
+ */
+async function leadGuard (request, env, url) {
+  if (!fromThisSite(request, url)) return json({ error: 'forbidden' }, 403)
+
+  /*
+   * Formularz HTML z cudzej strony potrafi wysłać wyłącznie treść typu
+   * urlencoded, multipart albo text/plain. Wymóg JSON-a zamyka więc drogę
+   * na skróty przez ukryty formularz na obcym serwerze.
+   */
+  if (!(request.headers.get('content-type') || '').includes('application/json')) {
+    return json({ error: 'unsupported_media_type' }, 415)
+  }
+
+  const ip = request.headers.get('cf-connecting-ip') || 'nieznany'
+  if (!burstOk(ip)) return tooMany()
+
+  if (env.LEAD_RATELIMIT) {
+    const { success } = await env.LEAD_RATELIMIT.limit({ key: ip })
+    if (!success) return tooMany()
+  }
+
+  /*
+   * Osobny licznik bez podziału na adresy: chroni skrzynkę przed zalewem
+   * rozłożonym na wiele adresów, którego licznik „na IP” nie zauważy.
+   */
+  if (env.LEAD_RATELIMIT_ALL) {
+    const { success } = await env.LEAD_RATELIMIT_ALL.limit({ key: 'lead' })
+    if (!success) return tooMany()
+  }
+
+  return null
+}
+
+/**
+ * Treść żądania czytana z twardym limitem. Nagłówek `content-length` nie
+ * wystarcza — nadawca może go pominąć i wysłać treść porcjami, a wtedy
+ * deklarowany rozmiar nie istnieje i sprawdzać nie ma czego. Dlatego bajty
+ * liczone są w trakcie odbierania, a strumień urywa się w chwili
+ * przekroczenia progu, zamiast po odebraniu całości.
+ */
+async function readCapped (request, max) {
+  if (!request.body) return null
+
+  const reader = request.body.getReader()
+  const chunks = []
+  let size = 0
+
+  while (true) {
+    const { done, value } = await reader.read()
+    if (done) break
+    size += value.byteLength
+    if (size > max) {
+      await reader.cancel()
+      return null
+    }
+    chunks.push(value)
+  }
+
+  const joined = new Uint8Array(size)
+  let at = 0
+  for (const chunk of chunks) {
+    joined.set(chunk, at)
+    at += chunk.byteLength
+  }
+  return new TextDecoder().decode(joined)
+}
+
 /* ---------- formularz kontaktowy ---------- */
 
 const clean = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '')
 
-async function lead (request, env) {
+async function lead (request, env, raw) {
   let payload
   try {
-    payload = await request.json()
+    payload = JSON.parse(raw)
   } catch {
     return json({ error: 'invalid_json' }, 400)
   }
@@ -400,7 +543,13 @@ export default {
 
     if (url.pathname === '/api/lead') {
       if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405)
-      return lead(request, env)
+      const blocked = await leadGuard(request, env, url)
+      if (blocked) return blocked
+
+      const raw = await readCapped(request, LEAD_MAX_BYTES)
+      if (raw === null) return json({ error: 'payload_too_large' }, 413)
+
+      return lead(request, env, raw)
     }
 
     // Znany adres sekcji — przekierowanie trwałe, bo docelowa kotwica się

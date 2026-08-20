@@ -10,6 +10,16 @@
   "main": "worker.js",
   "compatibility_date": "2026-08-15",
   "observability": { "enabled": true },
+  // Liczniki dla /api/lead. Endpoint przyjmuje zapytania z formularza i
+  // przekazuje je dalej na skrzynkę — bez ograniczenia pętla z jednego
+  // adresu potrafiłaby ją zasypać. Pierwszy licznik liczy na adres IP,
+  // drugi łącznie, na wypadek zalewu rozłożonego na wiele adresów.
+  // Worker działa też bez tych wpisów — zostaje wtedy licznik w pamięci
+  // instancji, opisany w worker.js.
+  "ratelimits": [
+    { "name": "LEAD_RATELIMIT", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } },
+    { "name": "LEAD_RATELIMIT_ALL", "namespace_id": "1002", "simple": { "limit": 30, "period": 60 } }
+  ],
   "assets": {
     "directory": ".",
     "binding": "ASSETS",
