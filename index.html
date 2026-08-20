@@ -475,20 +475,26 @@ input:user-invalid,textarea:user-invalid{border-color:hsl(0 55% 50%/.6)}
 }
 
 /* ---------- galeria siatkowa ---------- */
-/* Wszystkie zdjęcia widoczne od razu, obok siebie — bez przewijania po
-   kolei. Kliknięcie otwiera zdjęcie na cały ekran w lightboxie. */
-.gallery-sec{background:hsl(350 30% 7%);padding-block:clamp(2.5rem,5vw,4rem)}
-.gallery-sec .eyebrow{color:hsl(32 22% 88%/.72);margin-bottom:1.1rem}
+/* Bento: dwa duże zdjęcia u góry, reszta układa się w rzędy tak, żeby
+   siatka zawsze wypełniała się co do piksela — bez pustych pól w tle.
+   .g-big (2×2) i .g-wide (2×1) na jasnym tle, żeby zdjęcia były
+   bohaterem sekcji, a nie ciemna ściana wokół nich. */
+.gallery-sec{background:hsl(var(--surface));padding-block:clamp(2.5rem,5vw,4rem);border-block:1px solid hsl(var(--line)/.8)}
+.gallery-sec .eyebrow{margin-bottom:1.1rem}
 .grid-gal{
   display:grid;gap:clamp(.4rem,1vw,.7rem);
   grid-template-columns:repeat(2,1fr);
+  grid-auto-rows:clamp(9rem,19vw,15.5rem);
+  grid-auto-flow:row dense;
 }
-@media(min-width:620px){.grid-gal{grid-template-columns:repeat(3,1fr)}}
-@media(min-width:980px){.grid-gal{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:760px){.grid-gal{grid-template-columns:repeat(4,1fr)}}
 .grid-gal__item{
-  position:relative;display:block;aspect-ratio:4/3;overflow:hidden;
-  border-radius:var(--r);border:0;padding:0;cursor:pointer;background:hsl(350 26% 12%);
+  position:relative;display:block;overflow:hidden;
+  border-radius:var(--r);border:0;padding:0;cursor:pointer;background:hsl(var(--surface-2));
+  grid-column:span 1;grid-row:span 1;
 }
+.grid-gal__item.g-big{grid-column:span 2;grid-row:span 2}
+.grid-gal__item.g-wide{grid-column:span 2;grid-row:span 1}
 .grid-gal__item img{
   width:100%;height:100%;object-fit:cover;display:block;
   transition:transform .5s var(--ease),filter .5s var(--ease);
@@ -573,9 +579,9 @@ section[id],main[id]{scroll-margin-top:5.25rem}
   [data-reveal]{opacity:1 !important;transform:none !important}
   .faq details{break-inside:avoid}
   .faq .faq__a{display:block !important;height:auto !important}
-  .gallery-sec{background:none}
-  .grid-gal{grid-template-columns:repeat(2,1fr) !important;gap:6mm}
-  .grid-gal__item{break-inside:avoid;border:1px solid #bbb}
+  .gallery-sec{background:none;border:0}
+  .grid-gal{grid-template-columns:repeat(2,1fr) !important;grid-auto-rows:44mm;gap:6mm}
+  .grid-gal__item,.grid-gal__item.g-big,.grid-gal__item.g-wide{break-inside:avoid;border:1px solid #bbb}
   .grid-gal__cap,.grid-gal__zoom{display:none}
   a[href^="http"]::after,a[href^="mailto"]::after{content:" (" attr(href) ")";font-size:.8em;color:#555}
   a[href^="#"]::after{content:none}
@@ -833,12 +839,12 @@ section[id],main[id]{scroll-margin-top:5.25rem}
   <div class="wrap">
     <p class="eyebrow" data-reveal>Apartament nr 4 · galeria</p>
     <div class="grid-gal" data-gallery data-reveal>
-      <button class="grid-gal__item" type="button" data-full="assets/img/apartament-salon-1384.webp" data-cap="Salon z aneksem kuchennym — 30,5 m². Wizualizacja możliwej aranżacji.">
+      <button class="grid-gal__item g-big" type="button" data-full="assets/img/apartament-salon-1384.webp" data-cap="Salon z aneksem kuchennym — 30,5 m². Wizualizacja możliwej aranżacji.">
         <img src="assets/img/apartament-salon-480.webp" loading="lazy" decoding="async" alt="Salon z aneksem kuchennym i stołem jadalnianym w apartamencie 105 m², Chodkiewicza 2 Sieradz">
         <span class="grid-gal__zoom" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <span class="grid-gal__cap">Salon z aneksem — 30,5 m²</span>
       </button>
-      <button class="grid-gal__item" type="button" data-full="assets/img/apartament-pokoj-3-1336.webp" data-cap="Sypialnia z miejscem do pracy i widokiem na okoliczną zabudowę jednorodzinną. Wizualizacja możliwej aranżacji.">
+      <button class="grid-gal__item g-big" type="button" data-full="assets/img/apartament-pokoj-3-1336.webp" data-cap="Sypialnia z miejscem do pracy i widokiem na okoliczną zabudowę jednorodzinną. Wizualizacja możliwej aranżacji.">
         <img src="assets/img/apartament-pokoj-3-480.webp" loading="lazy" decoding="async" alt="Sypialnia z łóżkiem, biurkiem przy oknie i widokiem na zieleń, apartament Chodkiewicza 2">
         <span class="grid-gal__zoom" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <span class="grid-gal__cap">Sypialnia z widokiem</span>
@@ -853,17 +859,17 @@ section[id],main[id]{scroll-margin-top:5.25rem}
         <span class="grid-gal__zoom" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <span class="grid-gal__cap">Pokój z oknem dachowym</span>
       </button>
-      <button class="grid-gal__item" type="button" data-full="assets/img/apartament-lazienka-1334.webp" data-cap="Łazienka z kabiną prysznicową, WC i miejscem na pralkę. Wizualizacja możliwej aranżacji.">
+      <button class="grid-gal__item g-wide" type="button" data-full="assets/img/apartament-lazienka-1334.webp" data-cap="Łazienka z kabiną prysznicową, WC i miejscem na pralkę. Wizualizacja możliwej aranżacji.">
         <img src="assets/img/apartament-lazienka-480.webp" loading="lazy" decoding="async" alt="Łazienka z kabiną prysznicową, umywalką i miejscem na pralkę, apartament Chodkiewicza 2">
         <span class="grid-gal__zoom" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <span class="grid-gal__cap">Łazienka</span>
       </button>
-      <button class="grid-gal__item" type="button" data-full="assets/img/apartament-ogrod-800.webp" data-cap="Ogródek rekreacyjny przy budynku, osłonięty od strony sąsiadów szpalerem tui.">
+      <button class="grid-gal__item g-wide" type="button" data-full="assets/img/apartament-ogrod-800.webp" data-cap="Ogródek rekreacyjny przy budynku, osłonięty od strony sąsiadów szpalerem tui.">
         <img src="assets/img/apartament-ogrod-480.webp" loading="lazy" decoding="async" alt="Trawnik i szpaler tui przy budynku Chodkiewicza 2 — ogródek rekreacyjny">
         <span class="grid-gal__zoom" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <span class="grid-gal__cap">Ogródek rekreacyjny</span>
       </button>
-      <button class="grid-gal__item" type="button" data-full="assets/img/budynek-zaglaby-1600.webp" data-cap="Budynek przy Chodkiewicza 2 od strony ulicy — apartament zajmuje drugie piętro.">
+      <button class="grid-gal__item g-wide" type="button" data-full="assets/img/budynek-zaglaby-1600.webp" data-cap="Budynek przy Chodkiewicza 2 od strony ulicy — apartament zajmuje drugie piętro.">
         <img src="assets/img/budynek-zaglaby-480.webp" loading="lazy" decoding="async" alt="Elewacja budynku Chodkiewicza 2 w Sieradzu z oknami apartamentu na drugim piętrze">
         <span class="grid-gal__zoom" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <span class="grid-gal__cap">Budynek od strony ulicy</span>
@@ -956,12 +962,12 @@ section[id],main[id]{scroll-margin-top:5.25rem}
   <div class="wrap">
     <p class="eyebrow" data-reveal>Lokal nr 1 · galeria</p>
     <div class="grid-gal" data-gallery data-reveal>
-      <button class="grid-gal__item" type="button" data-full="assets/img/lokal1-sala-1-1536.webp" data-cap="Sala główna lokalu — otwarta przestrzeń, sufit podwieszany z panelami LED, gres na podłodze.">
+      <button class="grid-gal__item g-big" type="button" data-full="assets/img/lokal1-sala-1-1536.webp" data-cap="Sala główna lokalu — otwarta przestrzeń, sufit podwieszany z panelami LED, gres na podłodze.">
         <img src="assets/img/lokal1-sala-1-480.webp" loading="lazy" decoding="async" alt="Sala główna lokalu użytkowego 86 m² przy Chodkiewicza 2 — pusta przestrzeń z sufitem podwieszanym i gresem">
         <span class="grid-gal__zoom" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <span class="grid-gal__cap">Sala główna</span>
       </button>
-      <button class="grid-gal__item" type="button" data-full="assets/img/lokal1-sala-2-1536.webp" data-cap="Witryny od strony ulicy doświetlają wnętrze i dają miejsce na ekspozycję działalności.">
+      <button class="grid-gal__item g-big" type="button" data-full="assets/img/lokal1-sala-2-1536.webp" data-cap="Witryny od strony ulicy doświetlają wnętrze i dają miejsce na ekspozycję działalności.">
         <img src="assets/img/lokal1-sala-2-480.webp" loading="lazy" decoding="async" alt="Wnętrze lokalu użytkowego z dużymi oknami wychodzącymi na ulicę, Chodkiewicza 2 Sieradz">
         <span class="grid-gal__zoom" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <span class="grid-gal__cap">Witryny od ulicy</span>
@@ -976,7 +982,7 @@ section[id],main[id]{scroll-margin-top:5.25rem}
         <span class="grid-gal__zoom" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <span class="grid-gal__cap">Osobne wejście od ul. Zagłoby</span>
       </button>
-      <button class="grid-gal__item" type="button" data-full="assets/img/lokal1-dojscie-900.webp" data-cap="Utwardzone dojście od parkingu do drzwi lokalu — bez schodów na trasie dojazdu.">
+      <button class="grid-gal__item g-wide" type="button" data-full="assets/img/lokal1-dojscie-900.webp" data-cap="Utwardzone dojście od parkingu do drzwi lokalu — bez schodów na trasie dojazdu.">
         <img src="assets/img/lokal1-dojscie-480.webp" loading="lazy" decoding="async" alt="Kostka brukowa prowadząca od parkingu do wejścia lokalu przy Chodkiewicza 2">
         <span class="grid-gal__zoom" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <span class="grid-gal__cap">Dojście od parkingu</span>
