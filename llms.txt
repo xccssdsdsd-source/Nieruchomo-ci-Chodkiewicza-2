@@ -15,7 +15,7 @@
 
 ## Informacje
 
-- [O budynku i lokalizacji](https://nieruchomo-ci-chodkiewicza-2.pages.dev/#o-nas): Osiedle Hetmańskie w Sieradzu, sąsiedztwo zabudowy jednorodzinnej, blisko węzła Sieradz Zachód i drogi ekspresowej S8.
+- [O budynku i lokalizacji](https://nieruchomo-ci-chodkiewicza-2.pages.dev/#o-nas): Osiedle Hetmańskie w Sieradzu, sąsiedztwo zabudowy jednorodzinnej, blisko węzła Sieradz Południe i drogi ekspresowej S8.
 - [Pytania i odpowiedzi](https://nieruchomo-ci-chodkiewicza-2.pages.dev/#faq): cena, czynsz, stan deweloperski, parking, media, dostosowanie lokalu pod działalność.
 - [Kontakt i formularz zgłoszeniowy](https://nieruchomo-ci-chodkiewicza-2.pages.dev/#kontakt): telefon, e-mail, adres, mapa dojazdu.
 - [Polityka prywatności](https://nieruchomo-ci-chodkiewicza-2.pages.dev/#prywatnosc)
@@ -52,7 +52,7 @@ O: Usługową, biurową lub handlową — w zależności od aranżacji przestrze
 W tym samym budynku, w lokalu nr 2, działa studio jogi.
 
 P: Czy przy budynku są miejsca parkingowe?
-O: Tak, prywatne miejsca parkingowe przy budynku, dostępne dla najemcy
+O: Tak, miejsca parkingowe przy budynku, dostępne dla najemcy
 i jego klientów. Dojście od parkingu do wejścia jest utwardzone kostką brukową.
 
 P: Czy można umieścić szyld lub oklejenie witryny?
