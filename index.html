@@ -223,17 +223,6 @@ p+p{margin-top:.9em}
 }
 .keys span::before{content:'';width:5px;height:5px;border-radius:50%;background:hsl(var(--accent));flex:none}
 
-/* Zdjęcia apartamentu to wizualizacje możliwej aranżacji — oznaczenie
-   siedzi przy samym kadrze, nie tylko w akapicie pod spodem. */
-.offer__viz{
-  position:absolute;right:.75rem;bottom:.75rem;z-index:2;
-  padding:.35rem .7rem;border-radius:99px;
-  background:hsl(350 30% 8%/.6);border:1px solid hsl(34 30% 92%/.24);
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  color:hsl(32 24% 92%/.9);
-}
-
 /* ---------- sekcja startowa ---------- */
 /* Pełny ekran, zdjęcie budynku i sama nazwa. Cena, metraż i opis przeniesione
    do sekcji ofert — na wejściu ma być spokój, a nie ściana tekstu. */
@@ -259,50 +248,7 @@ p+p{margin-top:.9em}
   letter-spacing:.28em;text-transform:uppercase;color:hsl(32 30% 88%/.8);
 }
 /* Wskaźnik przewijania — bez tekstu, sama kreska schodząca w dół. */
-.hero__cue{
-  position:absolute;left:50%;bottom:clamp(1.4rem,4vh,2.6rem);translate:-50% 0;z-index:2;
-  width:2.5rem;height:3.4rem;display:grid;place-items:center;color:hsl(34 32% 92%/.7);
-  border:0;background:none;cursor:pointer;transition:color .25s ease;
-}
-.hero__cue:hover{color:hsl(34 34% 96%)}
-.hero__cue:focus-visible{outline:2px solid hsl(34 34% 94%/.8);outline-offset:4px;border-radius:var(--r)}
-.hero__cue span{display:block;width:1px;height:2.2rem;background:currentColor;transform-origin:top;animation:cue 2.2s var(--ease) infinite}
-@keyframes cue{0%{transform:scaleY(0);opacity:0}35%{transform:scaleY(1);opacity:1}70%,100%{transform:scaleY(1) translateY(2.2rem);opacity:0}}
-@media(prefers-reduced-motion:reduce){.hero__cue span{animation:none}}
-
-
-/* ---------- offer cards ---------- */
-.offers{display:grid;gap:clamp(1.25rem,2.5vw,1.75rem);grid-template-columns:1fr}
-@media(min-width:860px){.offers{grid-template-columns:1fr 1fr}}
-.offer{
-  position:relative;display:flex;flex-direction:column;overflow:hidden;
-  background:hsl(var(--bg));border:1px solid hsl(var(--line));border-radius:var(--r);
-  box-shadow:0 1px 2px hsl(20 18% 12%/.03),0 18px 40px -32px hsl(var(--primary)/.5);
-  transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .25s ease;
-}
-.offer::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:hsl(var(--accent));transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease);z-index:3}
-.offer:hover{transform:translateY(-4px);border-color:hsl(var(--accent)/.4);box-shadow:0 2px 4px hsl(20 18% 12%/.05),0 34px 60px -38px hsl(var(--primary)/.6)}
-.offer:hover::before{transform:scaleX(1)}
-.offer__media{position:relative;overflow:hidden;aspect-ratio:4/3;background:hsl(var(--surface-2))}
-.offer__media img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
-.offer:hover .offer__media img{transform:scale(1.04)}
-.offer__tag{
-  position:absolute;top:.9rem;left:.9rem;z-index:2;display:inline-flex;align-items:center;gap:.5rem;
-  padding:.4rem .8rem;border-radius:var(--r);background:hsl(var(--bg)/.94);backdrop-filter:blur(6px);
-  font-size:.6875rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:hsl(var(--primary));
-}
-.offer__tag i{width:6px;height:6px;border-radius:50%;background:hsl(var(--ok));box-shadow:0 0 0 3px hsl(var(--ok)/.18)}
-.offer__body{display:flex;flex-direction:column;flex:1;gap:1.05rem;padding:clamp(1.3rem,2.4vw,1.85rem)}
-.offer__title{font-family:var(--font-display);font-size:clamp(1.35rem,2.4vw,1.75rem);font-weight:600;letter-spacing:-.03em;line-height:1.15;color:hsl(var(--primary))}
-.offer__price{display:flex;align-items:baseline;flex-wrap:wrap;gap:.45rem .8rem}
-.offer__price b{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.1rem);font-weight:600;letter-spacing:-.035em;color:hsl(var(--text))}
-.offer__facts{display:flex;flex-wrap:wrap;gap:.4rem}
-.pill{
-  display:inline-flex;align-items:center;gap:.4rem;padding:.32rem .7rem;border-radius:99px;
-  background:hsl(var(--surface));border:1px solid hsl(var(--line));
-  font-size:.78rem;font-weight:600;color:hsl(var(--text)/.78);
-}
-.offer__body>.btn-row{margin-top:auto;padding-top:.3rem}
+.hero__cta{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;margin-top:clamp(1.8rem,4vw,2.6rem)}
 
 
 /* ---------- facts ---------- */
@@ -383,15 +329,6 @@ a.unit:hover .unit__ph img{transform:scale(1.05)}
 .status--gone i{background:hsl(34 20% 92%/.4)}
 
 /* ---------- steps ---------- */
-.steps{counter-reset:s;display:grid;gap:1rem;grid-template-columns:1fr}
-@media(min-width:820px){.steps{grid-template-columns:repeat(3,1fr)}}
-.step{position:relative;padding:1.5rem 1.35rem 1.35rem;border:1px solid hsl(var(--line));border-radius:var(--r);background:hsl(var(--bg))}
-.step::before{
-  counter-increment:s;content:counter(s,decimal-leading-zero);
-  font-family:var(--font-display);font-size:2.4rem;font-weight:600;letter-spacing:-.04em;
-  color:hsl(var(--accent)/.28);line-height:1;display:block;margin-bottom:.6rem;
-}
-
 /* ---------- faq ---------- */
 .faq{border-top:1px solid hsl(var(--line))}
 .faq details{border-bottom:1px solid hsl(var(--line))}
@@ -641,7 +578,7 @@ section[id],main[id]{scroll-margin-top:5.25rem}
   html{font-size:11pt}
   body{background:#fff;color:#000;padding:0}
   .nav,.callbar,.progress,.lb,.btn,.hero__bg,.hero__veil,
-  .mapbox iframe,form,.sr-only,#prywatnosc,.hero__cue,
+  .mapbox iframe,form,.sr-only,#prywatnosc,.hero__cta,
   .reel__ui,.reel__hint,.reel__bar,.reel__bg{display:none !important}
   .hero{min-height:auto;padding-block:0}
   .hero__in{padding-block:0 1rem}
@@ -682,7 +619,6 @@ section[id],main[id]{scroll-margin-top:5.25rem}
   .nav{transform:none !important;opacity:1 !important;pointer-events:auto !important;
        background:hsl(var(--bg)/.92);border-bottom-color:hsl(var(--line))}
   .nav .brand,.nav .nav__links a{color:hsl(var(--text))}
-  .hero__cue{display:none}
   /* Sekcje startują z opacity:0 i odsłania je IntersectionObserver.
      Bez tej reguły strona bez działającego skryptu jest pusta poniżej hero. */
   [data-reveal]{opacity:1 !important;transform:none !important}
@@ -698,10 +634,10 @@ section[id],main[id]{scroll-margin-top:5.25rem}
   <div class="wrap nav__in">
     <a href="#top" class="brand" aria-label="Chodkiewicza 2 — strona główna">Chodkiewicza&nbsp;<b>2</b></a>
     <nav class="nav__links" aria-label="Nawigacja główna">
-      <a href="#oferty">Oferty</a>
+      <a href="#o-nas">O nas</a>
+      <a href="#lokale">Lokale</a>
       <a href="#apartament">Apartament 105 m²</a>
       <a href="#lokal">Lokal 86 m²</a>
-      <a href="#lokalizacja">Lokalizacja</a>
       <a href="#faq">Pytania</a>
     </nav>
     <a href="tel:+48503444134" class="btn btn--accent nav__cta">
@@ -713,12 +649,10 @@ section[id],main[id]{scroll-margin-top:5.25rem}
     </button>
   </div>
   <nav class="menu" id="menu" aria-label="Nawigacja mobilna">
-    <a href="#oferty">Oferty</a>
+    <a href="#o-nas">O nas</a>
+    <a href="#lokale">Wszystkie lokale</a>
     <a href="#apartament">Apartament 105 m² — sprzedaż</a>
     <a href="#lokal">Lokal 86 m² — wynajem</a>
-    <a href="#adaptacja">Adaptacja lokalu</a>
-    <a href="#lokalizacja">Lokalizacja</a>
-    <a href="#budynek">Budynek</a>
     <a href="#faq">Pytania i odpowiedzi</a>
     <a href="#kontakt">Kontakt</a>
     <a href="tel:+48503444134" class="btn btn--accent">Zadzwoń: 503 444 134</a>
@@ -740,98 +674,122 @@ section[id],main[id]{scroll-margin-top:5.25rem}
     <h1 class="display hero__name">Nieruchomości <em>Chodkiewicza 2</em></h1>
     <div class="hero__rule"></div>
     <p class="hero__place">Osiedle Hetmańskie · Sieradz</p>
+    <div class="hero__cta">
+      <a href="#lokale" class="btn btn--accent">Dostępne nieruchomości</a>
+      <a href="#kontakt" class="btn btn--onDark">Kontakt</a>
+    </div>
   </div>
-
-  <button class="hero__cue" type="button" data-scroll-to="#oferty" aria-label="Przejdź do ofert"><span></span></button>
 </section>
-
-<section class="section" id="oferty">
+<section class="section" id="o-nas">
   <div class="wrap">
     <div class="sec-head sec-head--split">
       <div>
-        <p class="eyebrow" data-reveal>Dostępne teraz</p>
-        <h2 class="display h2" data-reveal style="margin-top:.9rem">Dwie wolne<br>nieruchomości</h2>
+        <p class="eyebrow" data-reveal>O nas</p>
+        <h2 class="display h2" data-reveal style="margin-top:.9rem">Jeden budynek,<br>cztery lokale</h2>
       </div>
-      <div data-reveal>
-        <p class="lead">Apartament 105 m² na sprzedaż za 498 750 zł i lokal użytkowy 86 m² do wynajęcia za 2 800 zł miesięcznie. Obie nieruchomości są w tym samym budynku mieszkalno-usługowym na Osiedlu Hetmańskim w Sieradzu.</p>
-        <p class="small muted" style="margin-top:.9rem">Cztery lokale — dwa mają już właścicieli, dwa są wolne i dostępne od zaraz. Poniżej komplet danych: metraż, cena, wyposażenie, rzuty i zdjęcia.</p>
+      <div data-reveal style="flex:1 1 22rem">
+        <p class="lead">Nie prowadzimy biura pośrednictwa z setką adresów. Mamy jeden budynek mieszkalno-usługowy przy ul. Chodkiewicza 2 w Sieradzu i cztery lokale w nim: dwa lokale użytkowe na parterze od strony ul. Zagłoby oraz dwa apartamenty na piętrach.</p>
+        <p class="small muted" style="margin-top:.9rem">Dzwoniąc pod <a href="tel:+48503444134" style="color:hsl(var(--primary));font-weight:700">503 444 134</a> rozmawiasz z osobą, która zna każdy metr tej nieruchomości, jej instalacje i sąsiedztwo. Prezentacje umawiamy telefonicznie, także po godzinach pracy.</p>
       </div>
     </div>
 
     <div class="keys" data-reveal>
       <span>Prywatny parking przy budynku</span>
       <span>Ogrzewanie podłogowe — gaz ziemny</span>
-      <span>Internet światłowodowy</span>
+      <span>Teren ogrodzony</span>
       <span>Blisko węzła S8 Sieradz Zachód</span>
     </div>
 
-    <div class="offers">
-      <a class="offer" href="#apartament" data-reveal>
-        <div class="offer__media">
-          <img src="assets/img/apartament-salon-800.webp"
-               srcset="assets/img/apartament-salon-480.webp 480w, assets/img/apartament-salon-800.webp 800w, assets/img/apartament-salon-1200.webp 1200w"
-               sizes="(max-width:860px) 92vw, 46vw" width="1384" height="1726" loading="lazy" decoding="async"
-               style="object-position:center 62%"
-               alt="Salon z aneksem kuchennym w apartamencie 105 m² na sprzedaż, Chodkiewicza 2 w Sieradzu — wizualizacja aranżacji">
-          <span class="offer__tag"><i></i>Na sprzedaż</span>
-          <span class="offer__viz">Wizualizacja aranżacji</span>
+    <h3 class="display h3" data-reveal style="color:hsl(var(--primary));margin:clamp(2rem,4vw,3rem) 0 1.4rem">Gdzie to jest</h3>
+    <p class="small muted" data-reveal style="max-width:62ch;margin-bottom:1.6rem">Budynek stoi na skrzyżowaniu ulic Chodkiewicza i Zagłoby na Osiedlu Hetmańskim w Sieradzu, w sąsiedztwie zabudowy jednorodzinnej. Mapę i dojazd znajdziesz w sekcji <a href="#kontakt" style="color:hsl(var(--primary));font-weight:600">kontakt</a>.</p>
+
+    <div class="grid grid--4">
+      <div class="card" data-reveal>
+        <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20 3 17V4l6 3m0 13 6-3m-6 3V7m6 10 6 3V7l-6 3m0 7V10m0 0L9 7"/></svg></span>
+        <h4 class="h4">Dojazd i S8</h4>
+        <p class="small muted" style="margin-top:.5rem">Osiedle leży w pobliżu węzła Sieradz Zachód, który daje wjazd na drogę ekspresową S8 w kierunku Łodzi i Wrocławia.</p>
+      </div>
+      <div class="card" data-reveal>
+        <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 8h3a2 2 0 1 1 0 4H9V8Zm0 4v4"/></svg></span>
+        <h4 class="h4">Prywatny parking</h4>
+        <p class="small muted" style="margin-top:.5rem">Miejsca parkingowe znajdują się bezpośrednio przy budynku i mogą z nich korzystać najemca oraz jego klienci.</p>
+      </div>
+      <div class="card" data-reveal>
+        <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1m4 0h1M9 13h1m4 0h1M9 17h1m4 0h1"/></svg></span>
+        <h4 class="h4">Okoliczna zabudowa</h4>
+        <p class="small muted" style="margin-top:.5rem">Wokół domy jednorodzinne i zabudowa mieszkaniowa — naturalne zaplecze klientów z sąsiednich ulic.</p>
+      </div>
+      <div class="card" data-reveal>
+        <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10M4 16h16M4 16l-1 4h18l-1-4M8 20v1m8-1v1M7 8h10M7 12h10"/></svg></span>
+        <h4 class="h4">Infrastruktura</h4>
+        <p class="small muted" style="margin-top:.5rem">Zmodernizowana droga asfaltowa, chodnik po obu stronach ulicy, oświetlenie uliczne i dostęp do komunikacji miejskiej.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section section--deep" id="lokale">
+  <div class="wrap">
+    <div class="sec-head sec-head--split">
+      <div>
+        <p class="eyebrow" data-reveal>Wszystkie lokale</p>
+        <h2 class="display h2" data-reveal style="margin-top:.9rem">Cztery lokale.<br>Dwa już zajęte.</h2>
+      </div>
+      <p class="lead" data-reveal style="color:hsl(34 30% 92%/.82)">Pełny stan na dziś: cztery lokale, z których dwa mają już właścicieli, a dwa są dostępne. Kliknij dostępny lokal, żeby przejść do jego pełnego opisu, danych i zdjęć.</p>
+    </div>
+
+    <div class="ledger">
+      <a class="unit" href="#lokal" data-reveal>
+        <div class="unit__ph">
+          <img src="assets/img/lokal1-wejscie-480.webp" srcset="assets/img/lokal1-wejscie-480.webp 480w, assets/img/lokal1-wejscie-800.webp 800w" sizes="(max-width:700px) 92vw, 280px" width="1200" height="900" loading="lazy" decoding="async" alt="Wejście do lokalu użytkowego nr 1 od ul. Zagłoby, Chodkiewicza 2 Sieradz">
+          <span class="unit__no">01</span>
         </div>
-        <div class="offer__body">
-          <h3 class="offer__title">Apartament nr 4 — 105 m², II piętro</h3>
-          <div class="offer__price">
-            <b>498 750 zł</b>
-            <span class="small muted">4 750 zł/m² · bezczynszowa własność</span>
-          </div>
-          <p class="small muted">Stan deweloperski. Salon z aneksem kuchennym 30,5 m², trzy sypialnie, garderoba i dwie łazienki. Ogrzewanie podłogowe na gaz ziemny, okna KBE trzyszybowe.</p>
-          <ul class="offer__facts">
-            <li class="pill">105 m²</li>
-            <li class="pill">3 sypialnie</li>
-            <li class="pill">2 łazienki</li>
-            <li class="pill">Stan deweloperski</li>
-            <li class="pill">Parking</li>
-          </ul>
-          <div class="btn-row">
-            <span class="btn btn--primary">Zobacz apartament
-              <svg class="arr" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-            </span>
-          </div>
+        <div class="unit__b">
+          <span class="unit__n">Lokal nr 1</span>
+          <span class="unit__m">86 m² · parter · lokal użytkowy</span>
+          <span class="unit__p">2 800 zł / mc</span>
+          <span class="status status--live"><i></i>Do wynajęcia</span>
         </div>
       </a>
 
-      <a class="offer" href="#lokal" data-reveal>
-        <div class="offer__media">
-          <img src="assets/img/lokal1-sala-1-800.webp"
-               srcset="assets/img/lokal1-sala-1-480.webp 480w, assets/img/lokal1-sala-1-800.webp 800w, assets/img/lokal1-sala-1-1200.webp 1200w"
-               sizes="(max-width:860px) 92vw, 46vw" width="1536" height="2048" loading="lazy" decoding="async"
-               style="object-position:center 58%"
-               alt="Sala główna lokalu użytkowego 86 m² do wynajęcia przy Chodkiewicza 2 w Sieradzu — otwarta przestrzeń z sufitem podwieszanym">
-          <span class="offer__tag"><i></i>Do wynajęcia</span>
+      <article class="unit unit--taken" data-reveal>
+        <div class="unit__ph">
+          <img src="assets/img/lokal2-serce-jogi-480.webp" srcset="assets/img/lokal2-serce-jogi-480.webp 480w, assets/img/lokal2-serce-jogi-800.webp 800w" sizes="(max-width:700px) 92vw, 280px" width="1086" height="730" loading="lazy" decoding="async" alt="Szyld studia jogi Serce Jogi na elewacji budynku Chodkiewicza 2 — lokal nr 2">
+          <span class="unit__no">02</span>
         </div>
-        <div class="offer__body">
-          <h3 class="offer__title">Lokal nr 1 — 86 m², parter</h3>
-          <div class="offer__price">
-            <b>2 800 zł</b>
-            <span class="small muted">miesięcznie · dostępny od zaraz</span>
-          </div>
-          <p class="small muted">Wejście bezpośrednio z ul. Zagłoby. Sala główna, część socjalna i WC — z możliwością wydzielenia dodatkowych pomieszczeń pod Twoją działalność.</p>
-          <ul class="offer__facts">
-            <li class="pill">86 m²</li>
-            <li class="pill">Parter</li>
-            <li class="pill">Alarm</li>
-            <li class="pill">Światłowód</li>
-            <li class="pill">Parking</li>
-          </ul>
-          <div class="btn-row">
-            <span class="btn btn--primary">Zobacz lokal
-              <svg class="arr" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-            </span>
-          </div>
+        <div class="unit__b">
+          <span class="unit__n">Lokal nr 2</span>
+          <span class="unit__m">52 m² · parter · studio jogi</span>
+          <span class="status status--gone"><i></i>Wynajęty</span>
+        </div>
+      </article>
+
+      <article class="unit unit--gray" data-reveal>
+        <div class="unit__ph">
+          <img src="assets/img/apartament3-salon-480.webp" srcset="assets/img/apartament3-salon-480.webp 480w, assets/img/apartament3-salon-800.webp 800w" sizes="(max-width:700px) 92vw, 280px" width="1274" height="1235" loading="lazy" decoding="async" alt="Salon sprzedanego apartamentu nr 3 przy Chodkiewicza 2 w Sieradzu">
+          <span class="unit__no">03</span>
+        </div>
+        <div class="unit__b">
+          <span class="unit__n">Apartament nr 3</span>
+          <span class="unit__m">130 m² · I piętro · mieszkanie</span>
+          <span class="status status--gone"><i></i>Sprzedany</span>
+        </div>
+      </article>
+
+      <a class="unit" href="#apartament" data-reveal>
+        <div class="unit__ph">
+          <img src="assets/img/apartament-salon-480.webp" srcset="assets/img/apartament-salon-480.webp 480w, assets/img/apartament-salon-800.webp 800w" sizes="(max-width:700px) 92vw, 280px" width="1384" height="1726" loading="lazy" decoding="async" style="object-position:center 62%" alt="Salon z aneksem kuchennym w apartamencie nr 4 na sprzedaż, Chodkiewicza 2">
+          <span class="unit__no">04</span>
+        </div>
+        <div class="unit__b">
+          <span class="unit__n">Apartament nr 4</span>
+          <span class="unit__m">105 m² · II piętro · mieszkanie</span>
+          <span class="unit__p">498 750 zł</span>
+          <span class="status status--live"><i></i>Na sprzedaż</span>
         </div>
       </a>
     </div>
   </div>
 </section>
-
 <section class="section section--alt" id="apartament">
   <div class="wrap">
     <div class="sec-head sec-head--split">
@@ -903,7 +861,6 @@ section[id],main[id]{scroll-margin-top:5.25rem}
     </div>
   </div>
 </section>
-
 <section class="reel" id="apartament-galeria" data-reel style="--slides:7" aria-label="Apartament nr 4 · galeria">
   <div class="reel__stage">
     <div class="reel__rail">
@@ -951,7 +908,6 @@ section[id],main[id]{scroll-margin-top:5.25rem}
     <div class="reel__bar"><i data-reel-bar></i></div>
   </div>
 </section>
-
 <section class="section" id="lokal">
   <div class="wrap">
     <div class="sec-head sec-head--split">
@@ -1009,9 +965,30 @@ section[id],main[id]{scroll-margin-top:5.25rem}
         </div>
       </aside>
     </div>
+
+    <div class="split split--wideR" style="margin-top:clamp(2.5rem,5vw,3.5rem)">
+      <div class="plan plan--tall" data-reveal>
+        <img src="assets/img/lokal1-rzut-800.webp" width="1080" height="2340" loading="lazy" decoding="async"
+             data-full="assets/img/lokal1-rzut-1080.webp" data-cap="Rzut lokalu nr 1 z przykładową propozycją wydzielenia pomieszczeń."
+             alt="Rzut lokalu użytkowego 86 m² przy Chodkiewicza 2 z propozycją podziału na siedem pomieszczeń, toaletę i część socjalną">
+      </div>
+      <div data-reveal>
+        <h3 class="display h3" style="color:hsl(var(--primary));margin-bottom:1rem">Przykładowy podział 86 m²</h3>
+        <p class="small muted">Rzut obok pokazuje jeden z możliwych wariantów: siedem osobnych pomieszczeń, toaletę i część socjalną z aneksem. To propozycja, a nie stan obecny — dziś lokal jest w większości otwartą salą.</p>
+        <p class="small muted">Możesz zostawić przestrzeń otwartą, wydzielić dwa duże gabinety albo pójść w stronę pokazanego układu. Rozmawiamy o tym przed podpisaniem umowy, żeby nie było później niespodzianek po żadnej ze stron.</p>
+        <ul class="checks" style="margin-top:1.4rem">
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sala główna gotowa — sufit podwieszany, oświetlenie LED, gres</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Toaleta i część socjalna już wykończone</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Przygotowana instalacja pod rolety zewnętrzne</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Alarm i internet światłowodowy w standardzie</li>
+        </ul>
+        <a href="#kontakt" class="btn btn--primary" style="margin-top:1.6rem" data-prefill="adaptacja">Opowiedz nam o swojej działalności
+          <svg class="arr" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
-
 <section class="reel" id="lokal-galeria" data-reel style="--slides:5" aria-label="Lokal nr 1 · galeria">
   <div class="reel__stage">
     <div class="reel__rail">
@@ -1049,223 +1026,6 @@ section[id],main[id]{scroll-margin-top:5.25rem}
     <div class="reel__bar"><i data-reel-bar></i></div>
   </div>
 </section>
-
-<section class="section section--alt" id="adaptacja">
-  <div class="wrap">
-    <div class="sec-head">
-      <p class="eyebrow" data-reveal>Wsparcie najemcy</p>
-      <h2 class="display h2" data-reveal>Lokal dopasowany do Twojego biznesu</h2>
-      <p class="lead" data-reveal>Każda działalność potrzebuje czegoś innego. Gabinet chce ciszy i osobnych pokoi, sklep — otwartej sali i dobrej witryny, biuro — zaplecza socjalnego. Dlatego układ lokalu nr 1 nie jest przesądzony: ustalamy go razem, zanim podpiszesz umowę.</p>
-    </div>
-
-    <div class="steps" style="margin-bottom:clamp(2rem,4vw,3rem)">
-      <div class="step" data-reveal>
-        <h3 class="h4">Mówisz, czym się zajmujesz</h3>
-        <p class="small muted" style="margin-top:.5rem">Ile potrzebujesz pomieszczeń, gdzie ma być recepcja, czy potrzebne jest zaplecze albo osobne wejście dla pracowników.</p>
-      </div>
-      <div class="step" data-reveal>
-        <h3 class="h4">Ustalamy zakres zmian</h3>
-        <p class="small muted" style="margin-top:.5rem">Przechodzimy przez rzut i decydujemy, które ścianki działowe mają powstać, a co zostaje otwarte. Zakres prac i warunki zapisujemy w umowie.</p>
-      </div>
-      <div class="step" data-reveal>
-        <h3 class="h4">Przygotowujemy przestrzeń</h3>
-        <p class="small muted" style="margin-top:.5rem">Lokal trafia do Ciebie w ustalonym stanie — z gotowym WC, częścią socjalną, ogrzewaniem podłogowym, alarmem i światłowodem.</p>
-      </div>
-    </div>
-
-    <div class="split split--wideR">
-      <div class="plan plan--tall" data-reveal>
-        <img src="assets/img/lokal1-rzut-800.webp" width="1080" height="2340" loading="lazy" decoding="async"
-             data-full="assets/img/lokal1-rzut-1080.webp" data-cap="Rzut lokalu nr 1 z przykładową propozycją wydzielenia pomieszczeń."
-             alt="Rzut lokalu użytkowego 86 m² przy Chodkiewicza 2 z propozycją podziału na siedem pomieszczeń, toaletę i część socjalną">
-      </div>
-      <div data-reveal>
-        <h3 class="display h3" style="color:hsl(var(--primary));margin-bottom:1rem">Przykładowy podział 86 m²</h3>
-        <p class="small muted">Rzut obok pokazuje jeden z możliwych wariantów: siedem osobnych pomieszczeń, toaletę i część socjalną z aneksem. To propozycja, a nie stan obecny — dziś lokal jest w większości otwartą salą.</p>
-        <p class="small muted">Możesz zostawić przestrzeń otwartą, wydzielić dwa duże gabinety albo pójść w stronę pokazanego układu. Rozmawiamy o tym przed podpisaniem umowy, żeby nie było później niespodzianek po żadnej ze stron.</p>
-        <ul class="checks" style="margin-top:1.4rem">
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sala główna gotowa — sufit podwieszany, oświetlenie LED, gres</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Toaleta i część socjalna już wykończone</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Przygotowana instalacja pod rolety zewnętrzne</li>
-          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Alarm i internet światłowodowy w standardzie</li>
-        </ul>
-        <a href="#kontakt" class="btn btn--primary" style="margin-top:1.6rem" data-prefill="adaptacja">Opowiedz nam o swojej działalności
-          <svg class="arr" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="lokalizacja">
-  <div class="wrap">
-    <div class="sec-head">
-      <p class="eyebrow" data-reveal>Lokalizacja</p>
-      <h2 class="display h2" data-reveal>Narożnik Chodkiewicza i Zagłoby,<br>Osiedle Hetmańskie</h2>
-      <p class="lead" data-reveal>Budynek stoi na skrzyżowaniu ulic Chodkiewicza i Zagłoby w Sieradzu, w sąsiedztwie dużego skupiska zabudowy jednorodzinnej. To dobre miejsce dla działalności, która żyje z okolicznych mieszkańców — i spokojny adres dla kogoś, kto tu zamieszka.</p>
-    </div>
-
-    <div class="split" style="align-items:stretch">
-      <div class="grid grid--2" data-reveal style="align-content:start">
-        <div class="card">
-          <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20 3 17V4l6 3m0 13 6-3m-6 3V7m6 10 6 3V7l-6 3m0 7V10m0 0L9 7"/></svg></span>
-          <h3 class="h4">Dojazd i S8</h3>
-          <p class="small muted" style="margin-top:.5rem">Osiedle leży w pobliżu węzła Sieradz Zachód, który daje dogodny wjazd na drogę ekspresową S8 w kierunku Łodzi i Wrocławia.</p>
-        </div>
-        <div class="card">
-          <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 8h3a2 2 0 1 1 0 4H9V8Zm0 4v4"/></svg></span>
-          <h3 class="h4">Prywatny parking</h3>
-          <p class="small muted" style="margin-top:.5rem">Miejsca parkingowe znajdują się bezpośrednio przy budynku i mogą z nich korzystać najemca oraz jego klienci.</p>
-        </div>
-        <div class="card">
-          <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1m4 0h1M9 13h1m4 0h1M9 17h1m4 0h1"/></svg></span>
-          <h3 class="h4">Okoliczna zabudowa</h3>
-          <p class="small muted" style="margin-top:.5rem">Wokół domy jednorodzinne i zabudowa mieszkaniowa — naturalne zaplecze klientów z sąsiednich ulic.</p>
-        </div>
-        <div class="card">
-          <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10M4 16h16M4 16l-1 4h18l-1-4M8 20v1m8-1v1M7 8h10M7 12h10"/></svg></span>
-          <h3 class="h4">Infrastruktura</h3>
-          <p class="small muted" style="margin-top:.5rem">Zmodernizowana droga asfaltowa, chodnik po obu stronach ulicy, oświetlenie uliczne i dostęp do komunikacji miejskiej.</p>
-        </div>
-      </div>
-
-      <div class="mapbox" data-reveal>
-        <iframe
-          src="https://www.google.com/maps?q=Chodkiewicza+2,98-200+Sieradz&hl=pl&output=embed"
-          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-          title="Mapa — ul. Chodkiewicza 2, 98-200 Sieradz"></iframe>
-        <div class="mapbox__bar">
-          <span class="muted">ul. Chodkiewicza 2, 98-200 Sieradz</span>
-          <a href="https://www.google.com/maps/dir/?api=1&destination=Chodkiewicza+2%2C+98-200+Sieradz" target="_blank" rel="noopener">
-            Wyznacz trasę
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section section--deep" id="budynek">
-  <div class="wrap">
-    <div class="sec-head sec-head--split">
-      <div>
-        <p class="eyebrow" data-reveal>Budynek</p>
-        <h2 class="display h2" data-reveal style="margin-top:.9rem">Cztery lokale.<br>Dwa już zajęte.</h2>
-      </div>
-      <p class="lead" data-reveal style="color:hsl(34 30% 92%/.82)">Chodkiewicza 2 to budynek mieszkalno-usługowy: na parterze od strony ul. Zagłoby dwa lokale użytkowe, wyżej dwa apartamenty. Poniżej pełny stan na dziś — bez ukrywania tego, co już poszło.</p>
-    </div>
-
-    <div class="ledger">
-      <a class="unit" href="#lokal" data-reveal>
-        <div class="unit__ph">
-          <img src="assets/img/lokal1-wejscie-480.webp" srcset="assets/img/lokal1-wejscie-480.webp 480w, assets/img/lokal1-wejscie-800.webp 800w" sizes="(max-width:700px) 92vw, 280px" width="1200" height="900" loading="lazy" decoding="async" alt="Wejście do lokalu użytkowego nr 1 od ul. Zagłoby, Chodkiewicza 2 Sieradz">
-          <span class="unit__no">01</span>
-        </div>
-        <div class="unit__b">
-          <span class="unit__n">Lokal nr 1</span>
-          <span class="unit__m">86 m² · parter · lokal użytkowy</span>
-          <span class="unit__p">2 800 zł / mc</span>
-          <span class="status status--live"><i></i>Do wynajęcia</span>
-        </div>
-      </a>
-
-      <article class="unit unit--taken" data-reveal>
-        <div class="unit__ph">
-          <img src="assets/img/lokal2-serce-jogi-480.webp" srcset="assets/img/lokal2-serce-jogi-480.webp 480w, assets/img/lokal2-serce-jogi-800.webp 800w" sizes="(max-width:700px) 92vw, 280px" width="1086" height="730" loading="lazy" decoding="async" alt="Szyld studia jogi Serce Jogi na elewacji budynku Chodkiewicza 2 — lokal nr 2">
-          <span class="unit__no">02</span>
-        </div>
-        <div class="unit__b">
-          <span class="unit__n">Lokal nr 2</span>
-          <span class="unit__m">52 m² · parter · studio jogi</span>
-          <span class="status status--gone"><i></i>Wynajęty</span>
-        </div>
-      </article>
-
-      <article class="unit unit--gray" data-reveal>
-        <div class="unit__ph">
-          <img src="assets/img/apartament3-salon-480.webp" srcset="assets/img/apartament3-salon-480.webp 480w, assets/img/apartament3-salon-800.webp 800w" sizes="(max-width:700px) 92vw, 280px" width="1274" height="1235" loading="lazy" decoding="async" alt="Salon sprzedanego apartamentu nr 3 przy Chodkiewicza 2 w Sieradzu">
-          <span class="unit__no">03</span>
-        </div>
-        <div class="unit__b">
-          <span class="unit__n">Apartament nr 3</span>
-          <span class="unit__m">130 m² · I piętro · mieszkanie</span>
-          <span class="status status--gone"><i></i>Sprzedany</span>
-        </div>
-      </article>
-
-      <a class="unit" href="#apartament" data-reveal>
-        <div class="unit__ph">
-          <img src="assets/img/apartament-salon-480.webp" srcset="assets/img/apartament-salon-480.webp 480w, assets/img/apartament-salon-800.webp 800w" sizes="(max-width:700px) 92vw, 280px" width="1384" height="1726" loading="lazy" decoding="async" style="object-position:center 62%" alt="Salon z aneksem kuchennym w apartamencie nr 4 na sprzedaż, Chodkiewicza 2">
-          <span class="unit__no">04</span>
-        </div>
-        <div class="unit__b">
-          <span class="unit__n">Apartament nr 4</span>
-          <span class="unit__m">105 m² · II piętro · mieszkanie</span>
-          <span class="unit__p">498 750 zł</span>
-          <span class="status status--live"><i></i>Na sprzedaż</span>
-        </div>
-      </a>
-    </div>
-
-    <div class="split" style="margin-top:clamp(2.5rem,5vw,4rem);align-items:center">
-      <div data-reveal>
-        <h3 class="display h3" style="color:hsl(38 36% 95%);margin-bottom:1rem">Jeden budynek, nie katalog ofert</h3>
-        <p class="small" style="color:hsl(34 30% 92%/.8)">Nie prowadzimy biura pośrednictwa z setką adresów. Mamy jeden budynek przy Chodkiewicza 2 i cztery lokale w nim — dzwoniąc pod 503 444 134 rozmawiasz z kimś, kto zna każdy metr tej nieruchomości, jej instalacje i sąsiedztwo.</p>
-        <p class="small" style="color:hsl(34 30% 92%/.8)">Od dwóch lat kolejne lokale znajdują tu właścicieli i najemców. Lokal nr 2 wynajęliśmy studiu jogi, apartament nr 3 sprzedaliśmy. Zostały dwa — i to o nich jest cała ta strona.</p>
-        <div class="btn-row" style="margin-top:1.6rem">
-          <a href="#oferty" class="btn btn--accent">Zobacz wolne lokale</a>
-          <a href="#kontakt" class="btn btn--onDark">Napisz do nas</a>
-        </div>
-      </div>
-      <figure data-reveal style="border:1px solid hsl(38 40% 96%/.16);border-radius:var(--r);overflow:hidden">
-        <img src="assets/img/budynek-narozny-800.webp" srcset="assets/img/budynek-narozny-480.webp 480w, assets/img/budynek-narozny-800.webp 800w, assets/img/budynek-narozny-960.webp 960w" sizes="(max-width:920px) 92vw, 46vw" width="960" height="720" loading="lazy" decoding="async" alt="Budynek Chodkiewicza 2 w Sieradzu widziany od strony skrzyżowania, z szyldem najemcy na elewacji">
-      </figure>
-    </div>
-  </div>
-</section>
-
-<section class="section section--alt" id="gwarancje">
-  <div class="wrap">
-    <div class="sec-head">
-      <p class="eyebrow" data-reveal>Zanim podpiszesz</p>
-      <h2 class="display h2" data-reveal>Rozumiemy Twoje obawy</h2>
-      <p class="lead" data-reveal>Wynajem lokalu albo zakup mieszkania to decyzja na lata. Poniżej cztery rzeczy, o które pytają nas najczęściej — i to, jak je u nas rozwiązujemy.</p>
-    </div>
-
-    <div class="grid grid--4">
-      <div class="card card--hover" data-reveal>
-        <span class="card__mark"></span>
-        <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M16 13H8m8 4H8m2-8H8"/></svg></span>
-        <p class="tiny" style="color:hsl(var(--accent));font-weight:700;margin-bottom:.35rem">„Czy warunki są uczciwe?”</p>
-        <h3 class="h4">Wszystko ustalone przed podpisem</h3>
-        <p class="small muted" style="margin-top:.5rem">Czynsz, kaucję, okres wypowiedzenia i zakres prac adaptacyjnych omawiamy w całości, zanim cokolwiek podpiszesz. Nic nie pojawia się w umowie po cichu.</p>
-      </div>
-      <div class="card card--hover" data-reveal>
-        <span class="card__mark"></span>
-        <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94Z"/></svg></span>
-        <p class="tiny" style="color:hsl(var(--accent));font-weight:700;margin-bottom:.35rem">„Co, jeśli coś się zepsuje?”</p>
-        <h3 class="h4">Zgłaszasz usterkę telefonem</h3>
-        <p class="small muted" style="margin-top:.5rem">Usterkę zgłaszasz pod 503 444 134 i rozmawiasz z osobą, która odpowiada za budynek — bez systemu zgłoszeń i przerzucania się działami.</p>
-      </div>
-      <div class="card card--hover" data-reveal>
-        <span class="card__mark"></span>
-        <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg></span>
-        <p class="tiny" style="color:hsl(var(--accent));font-weight:700;margin-bottom:.35rem">„Czy czynsz nagle wzrośnie?”</p>
-        <h3 class="h4">Zasady zmian zapisane w umowie</h3>
-        <p class="small muted" style="margin-top:.5rem">Jeżeli czynsz miałby się kiedyś zmienić, tryb i granice tej zmiany są opisane w umowie od pierwszego dnia. Zależy nam na najemcy, który zostaje na lata.</p>
-      </div>
-      <div class="card card--hover" data-reveal>
-        <span class="card__mark"></span>
-        <span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
-        <p class="tiny" style="color:hsl(var(--accent));font-weight:700;margin-bottom:.35rem">„Zostanę sam po podpisaniu?”</p>
-        <h3 class="h4">Ten sam numer przez cały najem</h3>
-        <p class="small muted" style="margin-top:.5rem">Telefon i adres e-mail nie zmieniają się po podpisaniu umowy — ten sam numer obsługuje budynek na co dzień, nie tylko na etapie szukania najemcy.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="section" id="faq">
   <div class="wrap">
     <div class="split split--wideR faq-split">
@@ -1331,7 +1091,6 @@ section[id],main[id]{scroll-margin-top:5.25rem}
     </div>
   </div>
 </section>
-
 <section class="section section--alt" id="kontakt">
   <div class="wrap">
     <div class="sec-head sec-head--split">
@@ -1425,9 +1184,25 @@ section[id],main[id]{scroll-margin-top:5.25rem}
         </div>
       </form>
     </div>
+
+    <div class="mapwrap" data-reveal style="margin-top:clamp(2rem,4vw,3rem)">
+      <div class="mapbox">
+        <iframe
+          src="https://www.google.com/maps?q=Chodkiewicza+2,98-200+Sieradz&hl=pl&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa — ul. Chodkiewicza 2, 98-200 Sieradz"></iframe>
+        <div class="mapbox__bar">
+          <span class="muted">ul. Chodkiewicza 2, 98-200 Sieradz</span>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=Chodkiewicza+2%2C+98-200+Sieradz" target="_blank" rel="noopener">
+            Wyznacz trasę
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
-
 <section class="section section--alt" id="prywatnosc">
   <div class="wrap" style="max-width:56rem">
     <div class="sec-head">
@@ -1449,7 +1224,7 @@ section[id],main[id]{scroll-margin-top:5.25rem}
       </div>
       <div>
         <p class="h4" style="margin-bottom:.5rem">Pliki cookie i usługi zewnętrzne</p>
-        <p class="muted">Ta strona nie zakłada własnych plików cookie, nie zbiera statystyk odwiedzin i nie korzysta z narzędzi śledzących. Czcionki są hostowane na tym samym serwerze co strona, więc ich pobranie nie wysyła żadnych danych na zewnątrz. Jedynym elementem zewnętrznym jest osadzona mapa Google w sekcji „Lokalizacja” — jej wyświetlenie oznacza połączenie z serwerami Google, które mogą zapisać Twój adres IP i własne pliki cookie na zasadach opisanych w <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color:hsl(var(--primary));font-weight:600">polityce prywatności Google</a>.</p>
+        <p class="muted">Ta strona nie zakłada własnych plików cookie, nie zbiera statystyk odwiedzin i nie korzysta z narzędzi śledzących. Czcionki są hostowane na tym samym serwerze co strona, więc ich pobranie nie wysyła żadnych danych na zewnątrz. Jedynym elementem zewnętrznym jest osadzona mapa Google w sekcji „Kontakt” — jej wyświetlenie oznacza połączenie z serwerami Google, które mogą zapisać Twój adres IP i własne pliki cookie na zasadach opisanych w <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color:hsl(var(--primary));font-weight:600">polityce prywatności Google</a>.</p>
       </div>
       <div>
         <p class="h4" style="margin-bottom:.5rem">Jak długo przechowujemy dane</p>
@@ -1479,8 +1254,8 @@ section[id],main[id]{scroll-margin-top:5.25rem}
         <ul>
           <li><a href="#apartament">Apartament nr 4 — 105 m², 498 750 zł</a></li>
           <li><a href="#lokal">Lokal nr 1 — 86 m², 2 800 zł/mc</a></li>
-          <li><a href="#adaptacja">Adaptacja lokalu</a></li>
-          <li><a href="#budynek">Wszystkie lokale w budynku</a></li>
+          <li><a href="#lokale">Wszystkie lokale w budynku</a></li>
+          <li><a href="#o-nas">O nas</a></li>
         </ul>
       </div>
       <div>
@@ -1488,7 +1263,7 @@ section[id],main[id]{scroll-margin-top:5.25rem}
         <ul>
           <li><a href="tel:+48503444134">503 444 134</a></li>
           <li><a href="mailto:robertsieradz@wp.pl">robertsieradz@wp.pl</a></li>
-          <li><a href="#lokalizacja">Dojazd i mapa</a></li>
+          <li><a href="#kontakt">Dojazd i mapa</a></li>
           <li><a href="#faq">Pytania i odpowiedzi</a></li>
           <li><a href="#prywatnosc">Polityka prywatności</a></li>
         </ul>
@@ -1549,13 +1324,6 @@ section[id],main[id]{scroll-margin-top:5.25rem}
       },
       "areaServed": { "@type": "City", "name": "Sieradz" },
       "hasMap": "https://www.google.com/maps/search/?api=1&query=Chodkiewicza+2%2C+98-200+Sieradz",
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-        "opens": "08:00",
-        "closes": "20:00",
-        "description": "Prezentacje umawiane telefonicznie, także po godzinach"
-      },
       "knowsLanguage": "pl"
     },
     {
@@ -1689,12 +1457,6 @@ function lockScroll (on) {
   document.documentElement.style.overflow = on ? 'hidden' : ''
   document.body.style.overflow = on ? 'hidden' : ''
 }
-
-/* ---------- zjazd z sekcji startowej ---------- */
-$$('[data-scroll-to]').forEach(el => el.addEventListener('click', () => {
-  const t = $(el.dataset.scrollTo)
-  if (t) t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
-}))
 
 /* ---------- rok w stopce ---------- */
 $('#year').textContent = new Date().getFullYear()

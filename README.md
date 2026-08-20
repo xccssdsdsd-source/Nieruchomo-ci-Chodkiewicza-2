@@ -23,6 +23,26 @@ Katalogi `Apartamentnasprzedaż/`, `Lokal nr1/`, `Lokalnr3sprzeedany/`,
 `Lokalużytkowynr2wynajęty/` i `admin-panel-starter/` zostają w repozytorium
 jako archiwum, ale nie trafiają do wdrożenia — wyklucza je `.assetsignore`.
 
+## Układ strony
+
+Sekcje idą w jednej, ustalonej kolejności — od ogółu do konkretu:
+
+1. **Ekran startowy** (`#top`) — sama nazwa nieruchomości i dwa przyciski:
+   do dostępnych lokali i do kontaktu. Bez cen i opisów.
+2. **O nas** (`#o-nas`) — kim jesteśmy, czym jest ten budynek, gdzie stoi.
+3. **Wszystkie lokale** (`#lokale`) — cztery lokale 01–04 ze statusem
+   dostępności; dostępne są klikalne i prowadzą do swojej sekcji.
+4. **Apartament nr 4** (`#apartament`) — oferta sprzedaży, dane, rzut, galeria.
+5. **Lokal nr 1** (`#lokal`) — oferta najmu, dane, przykładowy podział, galeria.
+6. **Pytania i odpowiedzi** (`#faq`) — wyłącznie pytania, na które odpowiedź
+   wynika z treści powyżej.
+7. **Kontakt** (`#kontakt`) — telefon, e-mail, adres, formularz i mapa.
+8. **Polityka prywatności** (`#prywatnosc`).
+
+Na stronie znajdują się tylko informacje faktycznie przekazane o budynku
+i lokalach. Jeśli czegoś nie wiadomo (godziny otwarcia, wysokość kaucji,
+numer działki), nie zgadujemy — zostaje to do rozmowy telefonicznej.
+
 ## Praca lokalna
 
 ```bash
