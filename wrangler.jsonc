@@ -13,10 +13,17 @@
   "assets": {
     "directory": ".",
     "binding": "ASSETS",
-    // Worker musi zobaczyć te trasy przed warstwą statyczną: podmienia w
-    // stronie głównej adresy bezwzględne na adres bieżącego hosta i generuje
-    // robots.txt oraz mapę strony.
-    "run_worker_first": ["/", "/index.html", "/robots.txt", "/sitemap.xml", "/llms.txt", "/api/*"],
+    // Worker musi zobaczyć żądanie przed warstwą statyczną: podmienia w
+    // stronie głównej adresy bezwzględne na adres bieżącego hosta, generuje
+    // robots.txt oraz mapę strony, a adresy sekcji (/kontakt, /oferta)
+    // przekłada na kotwice strony głównej. Ta ostatnia funkcja wymaga wzorca
+    // ogólnego — lista konkretnych tras nie obejmie adresu, którego nikt
+    // wcześniej nie przewidział.
+    //
+    // Wyjątkiem jest /assets/* — zdjęcia, czcionki i style idą prosto z
+    // warstwy statycznej. Worker nie ma tam nic do roboty, a każde jego
+    // uruchomienie to koszt i kilka milisekund opóźnienia na zasób.
+    "run_worker_first": ["/*", "!/assets/*"],
     // Nieistniejący adres dostaje stronę 404 w szacie graficznej serwisu,
     // z odnośnikami do obu ofert — zamiast surowego komunikatu przeglądarki.
     "not_found_handling": "404-page"

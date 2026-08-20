@@ -17,15 +17,26 @@
  * domenie roboczej i na domenie własnej — bez wpisywania adresu na sztywno
  * i bez zmiany kodu przy przepinaniu domeny.
  *
- * Konfiguracja formularza (Workers → Settings → Variables and Secrets):
- *   LEAD_WEBHOOK_URL — webhook przyjmujący JSON (Make, Zapier, n8n, Slack).
- *   RESEND_API_KEY   — alternatywnie wysyłka e-mailem przez Resend.
- *   LEAD_TO          — odbiorca dla Resend (domyślnie robertsieradz@wp.pl).
- *   LEAD_FROM        — zweryfikowany nadawca w Resend.
+ * Formularz działa bez żadnej konfiguracji: /api/lead wysyła zapytanie przez
+ * FormSubmit na adres z LEAD_EMAIL. Warunek jest jeden i jednorazowy — po
+ * pierwszym zapytaniu odbiorca musi kliknąć link aktywacyjny, który przyjdzie
+ * na jego skrzynkę.
  *
- * Gdy nic nie jest ustawione, /api/lead zwraca 503, a formularz na stronie
- * przechodzi na wysyłkę przez program pocztowy użytkownika — żadne zapytanie
- * nie znika po cichu.
+ * Kanały opcjonalne (Workers → Settings → Variables and Secrets). Worker
+ * próbuje ich po kolei i kończy na pierwszym, który przyjmie zapytanie;
+ * FormSubmit zostaje wtedy zabezpieczeniem na końcu kolejki:
+ *   WEB3FORMS_KEY    — klucz z web3forms.com wystawiony na adres odbiorcy.
+ *   LEAD_WEBHOOK_URL — webhook przyjmujący JSON (Make, Zapier, n8n, Slack).
+ *   RESEND_API_KEY   — wysyłka przez Resend; wymaga własnej domeny z
+ *                      rekordami DKIM/SPF, bo Resend nie wyśle z adresu,
+ *                      którego nie zweryfikowano.
+ *   LEAD_FROM        — zweryfikowany nadawca w Resend.
+ *   LEAD_TO          — odbiorca inny niż LEAD_EMAIL; działa dla wszystkich
+ *                      kanałów wysyłających e-mail.
+ *
+ * Gdyby zawiodły wszystkie kanały, /api/lead zwraca 503, a formularz na
+ * stronie przechodzi na wysyłkę przez program pocztowy użytkownika — żadne
+ * zapytanie nie znika po cichu.
  */
 
 /**
@@ -34,6 +45,13 @@
  * gdyby plik trafił do przeglądarki z pominięciem Workera.
  */
 const BASE_URL = 'https://nieruchomo-ci-chodkiewicza-2.pages.dev'
+
+/**
+ * Skrzynka, na którą trafiają zapytania z formularza. Ten sam adres jest
+ * podany w stopce i w zapasowej wysyłce przez program pocztowy, więc jego
+ * obecność w kodzie niczego nie ujawnia. Zmienna LEAD_TO ma pierwszeństwo.
+ */
+const LEAD_EMAIL = 'robertsieradz@wp.pl'
 
 const json = (body, status = 200) =>
   new Response(JSON.stringify(body), {
@@ -158,6 +176,42 @@ async function lead (request, env) {
     item.message
   ].join('\n')
 
+  const recipient = clean(env.LEAD_TO, 160) || LEAD_EMAIL
+
+  /*
+   * Web3Forms: pośrednik, który wysyła wiadomość na adres potwierdzony przy
+   * zakładaniu klucza. Nadawcą jest jego serwer, więc nie potrzeba własnej
+   * domeny ani rekordów DNS — jedyna droga, żeby zapytania trafiały wprost
+   * na skrzynkę wp.pl. Adres z formularza ląduje w polu „Odpowiedz do”.
+   */
+  if (env.WEB3FORMS_KEY) {
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: env.WEB3FORMS_KEY,
+          subject: 'Zapytanie ze strony — ' + item.topic,
+          from_name: 'Chodkiewicza 2',
+          name: item.name,
+          email: item.email,
+          phone: item.phone || '—',
+          message: lines
+        })
+      })
+      /*
+       * Web3Forms potrafi odpowiedzieć kodem 200 z `success: false`
+       * (np. przy zużytym limicie), więc sam status HTTP nie wystarcza.
+       */
+      if (res.ok) {
+        const body = await res.json().catch(() => null)
+        if (!body || body.success !== false) return json({ ok: true })
+      }
+    } catch {
+      // spróbuj kolejnego kanału
+    }
+  }
+
   if (env.LEAD_WEBHOOK_URL) {
     try {
       const res = await fetch(env.LEAD_WEBHOOK_URL, {
@@ -181,7 +235,7 @@ async function lead (request, env) {
         },
         body: JSON.stringify({
           from: env.LEAD_FROM,
-          to: [env.LEAD_TO || 'robertsieradz@wp.pl'],
+          to: [recipient],
           reply_to: item.email,
           subject: 'Zapytanie ze strony — ' + item.topic,
           text: lines
@@ -193,8 +247,111 @@ async function lead (request, env) {
     }
   }
 
+  /*
+   * FormSubmit: działa bez konta i bez klucza — wystarczy, że po pierwszym
+   * zapytaniu odbiorca kliknie link aktywacyjny, który przyjdzie na jego
+   * skrzynkę. Dlatego stoi na końcu jako kanał domyślny: gdy nic nie jest
+   * skonfigurowane, formularz i tak dostarcza wiadomość, zamiast zwracać błąd.
+   */
+  try {
+    const res = await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(recipient), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        _subject: 'Zapytanie ze strony — ' + item.topic,
+        _template: 'table',
+        _captcha: 'false',
+        name: item.name,
+        email: item.email,
+        phone: item.phone || '—',
+        message: lines
+      })
+    })
+    /* Pole `success` przychodzi jako napis, nie jako wartość logiczna. */
+    if (res.ok) {
+      const body = await res.json().catch(() => null)
+      if (!body || String(body.success) === 'true') return json({ ok: true })
+    }
+  } catch {
+    // wszystkie kanały zawiodły
+  }
+
   return json({ error: 'not_configured' }, 503)
 }
+
+/* ---------- adresy sekcji ---------- */
+
+/**
+ * Strona jest jednym dokumentem — każda sekcja to kotwica, nie osobny adres.
+ * Adres wpisany ręcznie, podany w rozmowie telefonicznej albo wydrukowany na
+ * ulotce („chodkiewicza2.pl/kontakt”) trafiał więc na stronę błędu. Poniższa
+ * mapa przekłada takie ścieżki na `id` istniejące w index.html.
+ *
+ * Klucze są w postaci znormalizowanej przez `slug()` — bez polskich znaków
+ * i bez ukośników. Warianty (`oferta` / `oferty` / `nieruchomosci`) są
+ * wypisane celowo: każdy z nich ktoś może wpisać z pamięci.
+ */
+const ANCHORS = {
+  'o-nas': 'o-nas',
+  'onas': 'o-nas',
+  'o-inwestycji': 'o-nas',
+  'o-budynku': 'o-nas',
+  'budynek': 'o-nas',
+  'lokale': 'lokale',
+  'oferta': 'lokale',
+  'oferty': 'lokale',
+  'nieruchomosci': 'lokale',
+  'apartament': 'apartament',
+  'apartament-nr-4': 'apartament',
+  'mieszkanie': 'apartament',
+  'sprzedaz': 'apartament',
+  'na-sprzedaz': 'apartament',
+  'galeria': 'apartament-galeria',
+  'lokal': 'lokal',
+  'lokal-nr-1': 'lokal',
+  'lokal-uzytkowy': 'lokal',
+  'wynajem': 'lokal',
+  'do-wynajecia': 'lokal',
+  'wsparcie-najemcy': 'wsparcie-najemcy',
+  'dla-najemcy': 'wsparcie-najemcy',
+  'faq': 'faq',
+  'pytania': 'faq',
+  'pytania-i-odpowiedzi': 'faq',
+  'kontakt': 'kontakt',
+  'kontakty': 'kontakt',
+  'napisz': 'kontakt',
+  'umow-prezentacje': 'kontakt',
+  'prywatnosc': 'prywatnosc',
+  'polityka-prywatnosci': 'prywatnosc',
+  'rodo': 'prywatnosc'
+}
+
+const DIACRITICS = { 'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n', 'ó': 'o', 'ś': 's', 'ź': 'z', 'ż': 'z' }
+
+/**
+ * Ścieżka → klucz mapy. Odporne na wielkość liter, końcowy ukośnik, polskie
+ * znaki (także zapisane procentowo, stąd dekodowanie) i znaki podkreślenia.
+ */
+function slug (pathname) {
+  let raw = pathname
+  try {
+    raw = decodeURIComponent(pathname)
+  } catch {
+    // ciąg z niepoprawnym kodowaniem procentowym — pracujemy na oryginale
+  }
+  return raw
+    .toLowerCase()
+    .replace(/[ąćęłńóśźż]/g, ch => DIACRITICS[ch])
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+/**
+ * Ścieżka pliku (`/assets/img/x.webp`, `/site.webmanifest`) czy adres strony
+ * (`/kontakt`)? Brakujący plik ma dostać uczciwe 404; brakujący adres strony
+ * — przejść na stronę główną.
+ */
+const looksLikeFile = pathname => /\.[a-z0-9]{2,5}$/i.test(pathname)
 
 /* ---------- strona główna ---------- */
 
@@ -246,6 +403,25 @@ export default {
       return lead(request, env)
     }
 
-    return page(request, env, origin)
+    // Znany adres sekcji — przekierowanie trwałe, bo docelowa kotwica się
+    // nie zmieni. Parametry (np. kampanijne utm_*) przenosimy dalej.
+    const anchor = ANCHORS[slug(url.pathname)]
+    if (anchor) return Response.redirect(origin + '/' + url.search + '#' + anchor, 301)
+
+    const res = await page(request, env, origin)
+
+    /*
+     * Cokolwiek innego, co wygląda na adres strony, a nie na plik — na stronę
+     * główną, zamiast na komunikat o błędzie. Kod 302, nie 301: te adresy nie
+     * mają stałego odpowiednika, a trwałe przekierowanie kazałoby
+     * wyszukiwarkom zapamiętać przypadkowy adres jako wersję strony głównej.
+     * Brakujący plik nadal dostaje 404 — inaczej przeglądarka dostałaby
+     * dokument HTML w miejscu obrazka albo arkusza stylów.
+     */
+    if (res.status === 404 && request.method === 'GET' && !looksLikeFile(url.pathname)) {
+      return Response.redirect(origin + '/', 302)
+    }
+
+    return res
   }
 }
