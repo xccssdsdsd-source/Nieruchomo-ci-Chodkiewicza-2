@@ -223,6 +223,13 @@ p+p{margin-top:.9em}
 }
 .keys span::before{content:'';width:5px;height:5px;border-radius:50%;background:hsl(var(--accent));flex:none}
 
+/* ---------- stats (Dlaczego my) ---------- */
+.stats{display:grid;gap:1.5rem 1rem;grid-template-columns:repeat(2,1fr)}
+@media(min-width:640px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{padding-top:1.1rem;border-top:2px solid hsl(var(--accent)/.35)}
+.stat__n{font-size:clamp(2.1rem,4vw,2.9rem);color:hsl(var(--primary));line-height:1}
+.stat__l{display:block;margin-top:.5rem;font-size:.8125rem;font-weight:600;color:hsl(var(--text)/.7)}
+
 /* ---------- sekcja startowa ---------- */
 /* Pełny ekran, zdjęcie budynku i sama nazwa. Cena, metraż i opis przeniesione
    do sekcji ofert — na wejściu ma być spokój, a nie ściana tekstu. */
@@ -674,6 +681,14 @@ section[id],main[id]{scroll-margin-top:5.25rem}
       <span>Blisko węzła S8 Sieradz Zachód</span>
     </div>
 
+    <p class="eyebrow" data-reveal>Dlaczego my</p>
+    <div class="stats" data-reveal style="margin-top:1rem">
+      <div class="stat"><p class="display stat__n">2</p><span class="stat__l">Lata na rynku</span></div>
+      <div class="stat"><p class="display stat__n">1</p><span class="stat__l">Wynajęty lokal</span></div>
+      <div class="stat"><p class="display stat__n">1</p><span class="stat__l">Lokal na wynajem</span></div>
+      <div class="stat"><p class="display stat__n">1</p><span class="stat__l">Apartament na sprzedaż</span></div>
+    </div>
+
     <h3 class="display h3" data-reveal style="color:hsl(var(--primary));margin:clamp(2rem,4vw,3rem) 0 1.4rem">Gdzie to jest</h3>
     <p class="small muted" data-reveal style="max-width:62ch;margin-bottom:1.6rem">Budynek stoi na skrzyżowaniu ulic Chodkiewicza i Zagłoby na Osiedlu Hetmańskim w Sieradzu, w sąsiedztwie zabudowy jednorodzinnej. Mapę i dojazd znajdziesz w sekcji <a href="#kontakt" style="color:hsl(var(--primary));font-weight:600">kontakt</a>.</p>
 
@@ -987,6 +1002,30 @@ section[id],main[id]{scroll-margin-top:5.25rem}
         <span class="grid-gal__zoom" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
         <span class="grid-gal__cap">Dojście od parkingu</span>
       </button>
+    </div>
+  </div>
+</section>
+<section class="section section--alt" id="wsparcie-najemcy">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow" data-reveal>Wsparcie najemcy</p>
+      <h2 class="display h2" data-reveal>Lokal dopasowany<br>do Twojego biznesu</h2>
+    </div>
+    <div class="split split--wideR">
+      <div data-reveal>
+        <p class="lead">Wiemy, że każda działalność ma inne potrzeby. Dlatego oferujemy najemcom możliwość dostosowania lokalu użytkowego do indywidualnych wymagań prowadzonej działalności.</p>
+        <p class="small muted" style="margin-top:1rem">Wspólnie ustalamy zakres potrzebnych zmian i funkcjonalne rozwiązania, tak aby wynajmowana przestrzeń była jak najlepiej dopasowana do charakteru biznesu i oczekiwań klienta. Ty określasz potrzeby — my pomagamy stworzyć przestrzeń dopasowaną do Twojej działalności.</p>
+      </div>
+      <div class="card card--hover" data-reveal>
+        <span class="card__mark"></span>
+        <p class="h4">Rozumiemy Twoje obawy</p>
+        <p class="small muted" style="margin-top:.85rem">Wynajem lokalu użytkowego to ważna decyzja, dlatego stawiamy na przejrzyste zasady, bezpieczeństwo i partnerską współpracę. Dbamy o stan techniczny nieruchomości oraz sprawną komunikację z najemcą — zależy nam na długoterminowej współpracy opartej na wzajemnym zaufaniu i jasnych warunkach najmu.</p>
+        <ul class="checks" style="margin-top:1.1rem">
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Przejrzyste zasady i jasne warunki najmu</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Dbałość o stan techniczny nieruchomości</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Rzetelne podejście i wsparcie na co dzień</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
