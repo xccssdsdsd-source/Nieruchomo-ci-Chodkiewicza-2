@@ -6,10 +6,11 @@
  * byłby w ogóle uruchamiany. Cała logika serwerowa mieszka więc tutaj:
  *
  *   /robots.txt   — z adresem mapy strony liczonym z hosta żądania
- *   /sitemap.xml  — jw.
+ *   /sitemap.xml  — jw., razem ze zgłoszeniem zdjęć lokali do Grafiki Google
  *   /api/lead     — odbiór zapytań z formularza kontaktowego
  *   /             — index.html z adresami bezwzględnymi podmienionymi na
- *                   rzeczywisty adres serwera
+ *                   rzeczywisty adres serwera i z datą „dateModified”
+ *                   przepisaną ze znacznika „Stan ofert”
  *   /llms.txt     — jw., żeby linki widziane przez asystentów AI wskazywały
  *                   na domenę, pod którą strona faktycznie działa
  *
@@ -72,12 +73,26 @@ const text = (body, type, maxAge) =>
     }
   })
 
+/** Podpisy zdjęć w mapie strony trafiają do XML-a i muszą być w nim legalne. */
+const xml = v => v
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+
 /* ---------- robots.txt ---------- */
 
 function robots (origin) {
   return text([
     'User-agent: *',
     'Allow: /',
+    '',
+    '# Zdjęcia i czcionki mają być indeksowane — bez tego wpisu Grafika Google',
+    '# nie zobaczy zdjęć lokali, a te są zgłoszone w mapie strony.',
+    'Allow: /assets/',
+    '',
+    '# Punkt odbioru formularza. Przyjmuje wyłącznie POST, więc robot i tak',
+    '# dostałby 405, ale zapytania robotów nie mają zużywać limitu na skrzynkę.',
+    'Disallow: /api/',
     '',
     '# Zasoby robocze i oryginały zdjęć — nieprzeznaczone do indeksowania',
     'Disallow: /admin-panel-starter/',
@@ -111,19 +126,51 @@ async function contentUpdatedAt (env, url) {
 }
 
 /**
+ * Zdjęcia zgłaszane razem ze stroną, w rozszerzeniu obrazkowym mapy strony.
+ * Strona jest jednym dokumentem z galeriami wczytywanymi leniwie, więc bez
+ * tej listy robot Grafiki Google widzi tylko zdjęcie z pierwszego ekranu —
+ * a wyszukiwanie zdjęciami („lokal użytkowy Sieradz”) jest dla oferty
+ * nieruchomości jednym z realnych źródeł wejść.
+ *
+ * Podpisy są tymi samymi zdaniami co atrybuty `alt` w index.html: opisują
+ * to, co faktycznie widać na zdjęciu, bez upychania nazw miejscowości.
+ */
+const IMAGES = [
+  ['budynek-front-1600.webp', 'Budynek mieszkalno-usługowy przy ul. Chodkiewicza 2 w Sieradzu'],
+  ['budynek-zaglaby-1600.webp', 'Elewacja budynku od ul. Zagłoby z wejściem do lokalu użytkowego nr 1'],
+  ['apartament-salon-1200.webp', 'Apartament nr 4 — salon z aneksem kuchennym, wizualizacja aranżacji'],
+  ['apartament-pokoj-3-1200.webp', 'Apartament nr 4 — sypialnia na poddaszu, wizualizacja aranżacji'],
+  ['apartament-lazienka-1200.webp', 'Apartament nr 4 — łazienka, wizualizacja aranżacji'],
+  ['apartament-rzut-625.webp', 'Rzut poddasza — układ pomieszczeń apartamentu nr 4 o powierzchni 105 m²'],
+  ['lokal1-sala-1-1200.webp', 'Lokal użytkowy nr 1 — otwarta sala główna o powierzchni 86 m²'],
+  ['lokal1-sala-2-1200.webp', 'Lokal użytkowy nr 1 — druga część sali z oknami od strony ulicy'],
+  ['lokal1-wejscie-1200.webp', 'Lokal użytkowy nr 1 — osobne wejście od ul. Zagłoby'],
+  ['lokal1-rzut-1080.webp', 'Lokal użytkowy nr 1 — przykładowy podział 86 m² na pomieszczenia']
+]
+
+/**
  * Zgłaszamy wyłącznie adres strony głównej. Adresy z kotwicą (`/#lokal`)
  * są dla wyszukiwarek tym samym dokumentem — zgłaszanie ich zaśmieca raport
  * w Search Console wpisami o zduplikowanych stronach i niczego nie wnosi.
  */
 function sitemap (origin, lastmod) {
+  const images = IMAGES.map(([file, caption]) =>
+    '    <image:image>\n' +
+    '      <image:loc>' + origin + '/assets/img/' + file + '</image:loc>\n' +
+    '      <image:title>' + xml(caption) + '</image:title>\n' +
+    '    </image:image>\n'
+  ).join('')
+
   return text(
     '<?xml version="1.0" encoding="UTF-8"?>\n' +
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n' +
+    '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' +
     '  <url>\n' +
     '    <loc>' + origin + '/</loc>\n' +
     '    <lastmod>' + lastmod + '</lastmod>\n' +
     '    <changefreq>weekly</changefreq>\n' +
     '    <priority>1.0</priority>\n' +
+    images +
     '  </url>\n' +
     '</urlset>\n',
     'application/xml; charset=utf-8', 3600
@@ -499,6 +546,20 @@ const looksLikeFile = pathname => /\.[a-z0-9]{2,5}$/i.test(pathname)
 /* ---------- strona główna ---------- */
 
 /**
+ * Data ostatniej zmiany w danych strukturalnych („dateModified”) pochodzi
+ * z tego samego znacznika `<time id="updated">`, co „Stan ofert” widoczny
+ * na stronie i `<lastmod>` w mapie strony. Wpisana w index.html wartość jest
+ * tylko wartością wyjściową — bez tej podmiany trzeba by pamiętać o poprawieniu
+ * daty w dwóch miejscach, a rozjazd między nimi to dokładnie ten rodzaj
+ * usterki, którego nikt nie zauważy przez pół roku.
+ */
+function syncModified (html) {
+  const found = html.match(/<time[^>]+id="updated"[^>]+datetime="(\d{4}-\d{2}-\d{2})"/)
+  if (!found) return html
+  return html.replace(/"dateModified": "\d{4}-\d{2}-\d{2}"/g, '"dateModified": "' + found[1] + '"')
+}
+
+/**
  * Adres kanoniczny, Open Graph i dane strukturalne muszą być bezwzględne —
  * scrapery serwisów społecznościowych nie rozwijają ścieżek względnych.
  * To samo dotyczy linków w llms.txt, które czytają asystenci AI. W plikach
@@ -507,13 +568,19 @@ const looksLikeFile = pathname => /\.[a-z0-9]{2,5}$/i.test(pathname)
  */
 async function page (request, env, origin) {
   const res = await env.ASSETS.fetch(request)
-  if (origin === BASE_URL) return res
 
   const type = res.headers.get('content-type') || ''
-  if (!type.includes('text/html') && !type.includes('text/plain')) return res
+  const isHtml = type.includes('text/html')
+  if (!isHtml && !type.includes('text/plain')) return res
+  // Poza HTML-em (llms.txt) jedyną zmianą jest adres — jeśli i on się zgadza,
+  // nie ma po co czytać i składać treści od nowa.
+  if (!isHtml && origin === BASE_URL) return res
 
   try {
-    const body = (await res.text()).replaceAll(BASE_URL, origin)
+    let body = await res.text()
+    if (origin !== BASE_URL) body = body.replaceAll(BASE_URL, origin)
+    if (isHtml) body = syncModified(body)
+
     const headers = new Headers(res.headers)
     headers.delete('content-length')
     headers.delete('etag')
