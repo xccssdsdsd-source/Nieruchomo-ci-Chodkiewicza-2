@@ -64,13 +64,27 @@ p{margin-top:1rem;color:hsl(var(--muted));text-wrap:pretty}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
-<!-- Google tag (gtag.js) — ładowany async, nie blokuje renderowania hero -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1Y874153BY"></script>
+<!-- Google Analytics 4 — tylko dla osób, które wcześniej wyraziły zgodę
+     w banerze na stronie głównej. Ta strona banera nie pokazuje, więc przy
+     braku zapisanej zgody nie ładuje się tu nic. -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-1Y874153BY');
+  gtag('consent', 'default', {
+    ad_storage: 'denied', ad_user_data: 'denied',
+    ad_personalization: 'denied', analytics_storage: 'denied'
+  });
+  try {
+    if (localStorage.getItem('ch2-zgoda-analityka') === 'granted') {
+      gtag('consent', 'update', { analytics_storage: 'granted' });
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-1Y874153BY';
+      document.head.appendChild(s);
+      gtag('js', new Date());
+      gtag('config', 'G-1Y874153BY');
+    }
+  } catch (e) {}
 </script>
 </head>
 <body>

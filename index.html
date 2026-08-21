@@ -433,6 +433,40 @@ input:user-invalid,textarea:user-invalid{border-color:hsl(0 55% 50%/.6)}
 .callbar[data-show]{transform:none}
 .callbar .btn{flex:1;padding:.75em 1em;font-size:.875rem}
 @media(min-width:760px){.callbar{display:none}}
+
+/* ---------- zgoda na cookies ---------- */
+.consent{
+  position:fixed;left:0;right:0;bottom:0;z-index:90;
+  padding:clamp(1rem,3vw,1.35rem) clamp(.9rem,3vw,1.5rem) calc(clamp(1rem,3vw,1.35rem) + env(safe-area-inset-bottom));
+  background:hsl(var(--surface)/.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-top:1px solid hsl(var(--line));
+  box-shadow:0 -12px 40px -24px hsl(var(--primary)/.55);
+  transform:translateY(110%);transition:transform .34s var(--ease);
+}
+.consent[data-show]{transform:none}
+.consent__in{
+  max-width:64rem;margin-inline:auto;display:flex;flex-wrap:wrap;gap:.9rem 1.6rem;
+  align-items:center;justify-content:space-between;
+}
+.consent__txt{flex:1 1 22rem;max-width:62ch;font-size:.875rem;line-height:1.65;color:hsl(var(--muted))}
+.consent__txt a{color:hsl(var(--primary));font-weight:600;text-underline-offset:3px}
+/* Oba przyciski mają tę samą wagę wizualną — odmówienie zgody musi być
+   równie łatwe jak jej udzielenie (art. 7 ust. 3 RODO). Żadnych ciemnych wzorców. */
+.consent__act{flex:0 0 auto;display:flex;gap:.6rem;flex-wrap:wrap}
+.consent__act .btn{padding:.7em 1.4em;font-size:.875rem;min-width:9.5rem}
+/* „Odrzucam” dostaje pełne tło i ten sam cień co „Akceptuję” — odmówienie
+   nie może być wizualnie słabsze od zgody (wytyczne EROD o ciemnych wzorcach). */
+.consent__act .btn--outline{
+  background:hsl(var(--bg));border-color:hsl(var(--primary)/.45);
+  box-shadow:0 1px 2px hsl(var(--primary)/.14),0 10px 22px -14px hsl(var(--primary)/.4);
+}
+@media(max-width:560px){
+  .consent__act{width:100%}
+  .consent__act .btn{flex:1 1 0}
+}
+/* Baner i pasek „Zadzwoń” zajmują to samo miejsce przy dolnej krawędzi. */
+body[data-consent-open] .callbar{display:none}
+@media(prefers-reduced-motion:reduce){.consent{transition:none}}
 @media(max-width:759px){
   body{padding-bottom:calc(4.2rem + env(safe-area-inset-bottom))}
 }
@@ -565,7 +599,7 @@ section[id],main[id]{scroll-margin-top:5.25rem}
   @page{margin:14mm}
   html{font-size:11pt}
   body{background:#fff;color:#000;padding:0}
-  .nav,.callbar,.progress,.lb,.btn,.hero__bg,.hero__veil,
+  .nav,.callbar,.consent,.progress,.lb,.btn,.hero__bg,.hero__veil,
   .mapbox iframe,form,.sr-only,#prywatnosc,.hero__cta{display:none !important}
   .hero{min-height:auto;padding-block:0}
   .hero__in{padding-block:0 1rem}
@@ -599,13 +633,21 @@ section[id],main[id]{scroll-margin-top:5.25rem}
   .hero__bg{transform:none !important}
 </style></noscript>
 
-<!-- Google tag (gtag.js) — ładowany async, nie blokuje renderowania hero -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1Y874153BY"></script>
+<!-- Google Analytics 4 — zgoda przed pomiarem.
+     Tu nie ma żadnego żądania sieciowego: ustawiamy wyłącznie domyślny stan
+     zgody na „denied” (Consent Mode v2). Sam gtag.js dogrywa się dopiero, gdy
+     odwiedzający kliknie „Akceptuję” — art. 398 Prawa komunikacji
+     elektronicznej wymaga zgody UPRZEDNIEJ, więc skrypt nie może się wczytać
+     „na zapas”. Logika włączania: sekcja „zgoda na cookies” na dole pliku. -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-1Y874153BY');
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied'
+  });
 </script>
 </head>
 <body>
@@ -1221,7 +1263,9 @@ section[id],main[id]{scroll-margin-top:5.25rem}
       </div>
       <div>
         <p class="h4" style="margin-bottom:.5rem">Pliki cookie i usługi zewnętrzne</p>
-        <p class="muted">Ta strona nie zakłada własnych plików cookie, nie zbiera statystyk odwiedzin i nie korzysta z narzędzi śledzących. Czcionki są hostowane na tym samym serwerze co strona, więc ich pobranie nie wysyła żadnych danych na zewnątrz. Jedynym elementem zewnętrznym jest osadzona mapa Google w sekcji „Kontakt” — jej wyświetlenie oznacza połączenie z serwerami Google, które mogą zapisać Twój adres IP i własne pliki cookie na zasadach opisanych w <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color:hsl(var(--primary));font-weight:600">polityce prywatności Google</a>.</p>
+        <p class="muted">Sama strona nie zakłada plików cookie i nie działa na niej nic, na co się nie zgodzisz. Czcionki są hostowane na tym samym serwerze co strona, więc ich pobranie nie wysyła żadnych danych na zewnątrz. Elementy zewnętrzne są dwa:</p>
+        <p class="muted" style="margin-top:.7rem"><strong>Google Analytics 4</strong> — statystyki odwiedzin: które oferty są oglądane i jak długo. Uruchamia się <strong>wyłącznie po kliknięciu „Akceptuję”</strong> w banerze; do tego czasu skrypt Google nie jest w ogóle pobierany. Po zgodzie zapisuje pliki cookie <code>_ga</code> i <code>_ga_*</code> (ważne do 2 lat) i przekazuje dane o wizycie — w tym adres IP — firmie Google Ireland Limited oraz Google LLC w USA, na podstawie decyzji Komisji Europejskiej o EU-US Data Privacy Framework. Podstawą jest Twoja zgoda, art. 6 ust. 1 lit. a RODO. Dane w GA przechowujemy 14 miesięcy. Nie łączymy ich z treścią formularza kontaktowego i nie używamy do reklam. Zgodę możesz wycofać w każdej chwili — kliknij <a href="#" data-consent-settings style="color:hsl(var(--primary));font-weight:600">Ustawienia prywatności</a> — co nie wpływa na legalność pomiaru sprzed wycofania. Zasady po stronie Google opisuje <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color:hsl(var(--primary));font-weight:600">polityka prywatności Google</a>.</p>
+        <p class="muted" style="margin-top:.7rem"><strong>Mapa Google</strong> w sekcji „Kontakt” — jej wyświetlenie oznacza połączenie z serwerami Google, które mogą zapisać Twój adres IP i własne pliki cookie, na zasadach z tej samej polityki Google.</p>
       </div>
       <div>
         <p class="h4" style="margin-bottom:.5rem">Jak długo przechowujemy dane</p>
@@ -1231,7 +1275,7 @@ section[id],main[id]{scroll-margin-top:5.25rem}
         <p class="h4" style="margin-bottom:.5rem">Twoje prawa</p>
         <p class="muted">Masz prawo dostępu do swoich danych, ich sprostowania, usunięcia, ograniczenia przetwarzania, przeniesienia oraz wniesienia sprzeciwu. Napisz na <a href="mailto:robertsieradz@wp.pl" style="color:hsl(var(--primary));font-weight:600">robertsieradz@wp.pl</a> — odpowiemy najszybciej, jak się da. Przysługuje Ci też skarga do Prezesa Urzędu Ochrony Danych Osobowych, ul. Stawki 2, 00-193 Warszawa.</p>
       </div>
-      <p class="tiny muted">Ostatnia aktualizacja: 19 sierpnia 2026.</p>
+      <p class="tiny muted">Ostatnia aktualizacja: 21 sierpnia 2026.</p>
     </div>
   </div>
 </section>
@@ -1263,6 +1307,7 @@ section[id],main[id]{scroll-margin-top:5.25rem}
           <li><a href="#kontakt">Dojazd i mapa</a></li>
           <li><a href="#faq">Pytania i odpowiedzi</a></li>
           <li><a href="#prywatnosc">Polityka prywatności</a></li>
+          <li><a href="#" data-consent-settings>Ustawienia prywatności</a></li>
         </ul>
       </div>
     </div>
@@ -1276,6 +1321,21 @@ section[id],main[id]{scroll-margin-top:5.25rem}
 <div class="callbar" id="callbar">
   <a href="tel:+48503444134" class="btn btn--accent">Zadzwoń</a>
   <a href="#kontakt" class="btn btn--outline">Napisz</a>
+</div>
+
+<div class="consent" id="consent" role="dialog" aria-modal="false" aria-labelledby="consentTxt" hidden>
+  <div class="consent__in">
+    <p class="consent__txt" id="consentTxt">
+      Chcemy sprawdzać w Google Analytics, które oferty są oglądane — to wymaga zapisania
+      plików cookie na Twoim urządzeniu i wysłania danych o wizycie do Google. Bez Twojej zgody
+      nic się nie uruchamia, a strona działa tak samo. Szczegóły w
+      <a href="#prywatnosc">polityce prywatności</a>.
+    </p>
+    <div class="consent__act">
+      <button type="button" class="btn btn--outline" id="consentNo">Odrzucam</button>
+      <button type="button" class="btn btn--primary" id="consentYes">Akceptuję</button>
+    </div>
+  </div>
 </div>
 
 <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Powiększone zdjęcie">
@@ -1698,6 +1758,66 @@ form.addEventListener('submit', async e => {
     okBox.setAttribute('data-show', '')
   }
 })
+
+/* ---------- zgoda na cookies (Google Analytics) ----------
+   GA nie startuje, dopóki nie ma wyraźnego „Akceptuję”. Wybór pamiętamy
+   w localStorage — nie w cookie, żeby samo zapamiętanie odmowy nie zakładało
+   pliku, na który ktoś właśnie się nie zgodził. Dostęp w try/catch, bo
+   w trybie prywatnym odczyt potrafi rzucić wyjątkiem. */
+const GA_ID = 'G-1Y874153BY'
+const CONSENT_KEY = 'ch2-zgoda-analityka'
+const consentBox = $('#consent')
+
+const readConsent = () => { try { return localStorage.getItem(CONSENT_KEY) } catch { return null } }
+const saveConsent = v => { try { localStorage.setItem(CONSENT_KEY, v) } catch {} }
+
+let gaLoaded = false
+function loadGA () {
+  if (gaLoaded) return
+  gaLoaded = true
+  gtag('consent', 'update', { analytics_storage: 'granted' })
+  const sc = document.createElement('script')
+  sc.async = true
+  sc.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID
+  document.head.appendChild(sc)
+  gtag('js', new Date())
+  gtag('config', GA_ID)
+}
+
+function showConsent () {
+  consentBox.hidden = false
+  document.body.setAttribute('data-consent-open', '')
+  requestAnimationFrame(() => consentBox.setAttribute('data-show', ''))
+}
+
+function hideConsent () {
+  consentBox.removeAttribute('data-show')
+  document.body.removeAttribute('data-consent-open')
+  if (reduce) consentBox.hidden = true
+  else setTimeout(() => { consentBox.hidden = true }, 360)
+}
+
+function decide (value) {
+  saveConsent(value)
+  hideConsent()
+  if (value === 'granted') loadGA()
+  /* Wycofanie zgody: GA raz wczytany żyje do końca tej wizyty, więc
+     odcinamy mu zapis danych. Cookies znikają po zamknięciu karty. */
+  else gtag('consent', 'update', { analytics_storage: 'denied' })
+}
+
+$('#consentYes').addEventListener('click', () => decide('granted'))
+$('#consentNo').addEventListener('click', () => decide('denied'))
+
+$$('[data-consent-settings]').forEach(el => el.addEventListener('click', e => {
+  e.preventDefault()
+  showConsent()
+  $('#consentNo').focus()
+}))
+
+const savedConsent = readConsent()
+if (savedConsent === 'granted') loadGA()
+else if (savedConsent !== 'denied') showConsent()
 
 })()
 </script>
