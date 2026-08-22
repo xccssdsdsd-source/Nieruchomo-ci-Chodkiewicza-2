@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Apartament 105 m² i lokal 86 m² — Chodkiewicza 2, Sieradz</title>
 <meta name="description" content="Apartament 105 m² na sprzedaż za 498 750 zł i lokal użytkowy 86 m² do wynajęcia za 2 800 zł/mc. Chodkiewicza 2, Osiedle Hetmańskie w Sieradzu. Tel. 503 444 134.">
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Nieruchomości Chodkiewicza 2">
 <meta name="geo.region" content="PL-LD">
 <meta name="geo.placename" content="Sieradz">
@@ -1371,7 +1371,22 @@ section[id],main[id]{scroll-margin-top:5.25rem}
       "image": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/assets/img/og-chodkiewicza-2.jpg",
       "telephone": "+48503444134",
       "email": "robertsieradz@wp.pl",
-      "priceRange": "2800 zł/mc – 498750 zł",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/assets/img/icon-180.png",
+        "width": 180,
+        "height": 180
+      },
+      "priceRange": "2800–498750 PLN",
+      "currenciesAccepted": "PLN",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "telephone": "+48503444134",
+        "email": "robertsieradz@wp.pl",
+        "availableLanguage": "pl",
+        "areaServed": "PL"
+      },
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "ul. Chodkiewicza 2",
@@ -1382,7 +1397,8 @@ section[id],main[id]{scroll-margin-top:5.25rem}
       },
       "areaServed": { "@type": "City", "name": "Sieradz" },
       "hasMap": "https://www.google.com/maps/search/?api=1&query=Chodkiewicza+2%2C+98-200+Sieradz",
-      "knowsLanguage": "pl"
+      "knowsLanguage": "pl",
+      "mainEntityOfPage": { "@id": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#strona-glowna" }
     },
     {
       "@type": "WebSite",
@@ -1391,6 +1407,24 @@ section[id],main[id]{scroll-margin-top:5.25rem}
       "name": "Nieruchomości Chodkiewicza 2",
       "inLanguage": "pl-PL",
       "publisher": { "@id": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#organizacja" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#strona-glowna",
+      "url": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/",
+      "name": "Apartament 105 m² i lokal 86 m² — Chodkiewicza 2, Sieradz",
+      "description": "Apartament 105 m² na sprzedaż za 498 750 zł i lokal użytkowy 86 m² do wynajęcia za 2 800 zł/mc przy ul. Chodkiewicza 2 na Osiedlu Hetmańskim w Sieradzu.",
+      "inLanguage": "pl-PL",
+      "isPartOf": { "@id": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#strona" },
+      "about": { "@id": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#organizacja" },
+      "breadcrumb": { "@id": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#okruszki" },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/assets/img/budynek-front-1600.webp",
+        "caption": "Budynek mieszkalno-usługowy przy ul. Chodkiewicza 2 w Sieradzu"
+      },
+      "datePublished": "2026-08-18",
+      "dateModified": "2026-08-19"
     },
     {
       "@type": "RealEstateListing",
@@ -1404,14 +1438,21 @@ section[id],main[id]{scroll-margin-top:5.25rem}
         "https://nieruchomo-ci-chodkiewicza-2.pages.dev/assets/img/budynek-zaglaby-1200.webp"
       ],
       "datePosted": "2026-08-18",
+      "dateModified": "2026-08-19",
       "inLanguage": "pl-PL",
       "provider": { "@id": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#organizacja" },
+      "mainEntityOfPage": { "@id": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#strona-glowna" },
+      "tourBookingPage": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#kontakt",
       "offers": {
         "@type": "Offer",
+        "url": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#apartament",
         "price": "498750",
         "priceCurrency": "PLN",
         "availability": "https://schema.org/InStock",
-        "businessFunction": "https://purl.org/goodrelations/v1#Sell"
+        "businessFunction": "https://purl.org/goodrelations/v1#Sell",
+        "validFrom": "2026-08-18",
+        "seller": { "@id": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#organizacja" },
+        "eligibleRegion": { "@type": "Country", "name": "PL" }
       },
       "address": {
         "@type": "PostalAddress",
@@ -1428,7 +1469,16 @@ section[id],main[id]{scroll-margin-top:5.25rem}
         "numberOfBedrooms": 3,
         "numberOfBathroomsTotal": 2,
         "floorLevel": "2",
-        "floorSize": { "@type": "QuantitativeValue", "value": 105, "unitCode": "MTK" }
+        "floorSize": { "@type": "QuantitativeValue", "value": 105, "unitCode": "MTK" },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "ul. Chodkiewicza 2",
+          "addressLocality": "Sieradz",
+          "postalCode": "98-200",
+          "addressRegion": "łódzkie",
+          "addressCountry": "PL"
+        },
+        "containedInPlace": { "@type": "City", "name": "Sieradz" }
       }
     },
     {
@@ -1443,14 +1493,21 @@ section[id],main[id]{scroll-margin-top:5.25rem}
         "https://nieruchomo-ci-chodkiewicza-2.pages.dev/assets/img/lokal1-rzut-1080.webp"
       ],
       "datePosted": "2026-08-18",
+      "dateModified": "2026-08-19",
       "inLanguage": "pl-PL",
       "provider": { "@id": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#organizacja" },
+      "mainEntityOfPage": { "@id": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#strona-glowna" },
+      "tourBookingPage": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#kontakt",
       "offers": {
         "@type": "Offer",
+        "url": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#lokal",
         "price": "2800",
         "priceCurrency": "PLN",
         "availability": "https://schema.org/InStock",
         "businessFunction": "https://purl.org/goodrelations/v1#LeaseOut",
+        "validFrom": "2026-08-18",
+        "seller": { "@id": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#organizacja" },
+        "eligibleRegion": { "@type": "Country", "name": "PL" },
         "priceSpecification": {
           "@type": "UnitPriceSpecification",
           "price": "2800",
@@ -1469,11 +1526,21 @@ section[id],main[id]{scroll-margin-top:5.25rem}
       "about": {
         "@type": "Place",
         "name": "Lokal użytkowy nr 1",
-        "floorSize": { "@type": "QuantitativeValue", "value": 86, "unitCode": "MTK" }
+        "floorSize": { "@type": "QuantitativeValue", "value": 86, "unitCode": "MTK" },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "ul. Chodkiewicza 2",
+          "addressLocality": "Sieradz",
+          "postalCode": "98-200",
+          "addressRegion": "łódzkie",
+          "addressCountry": "PL"
+        },
+        "containedInPlace": { "@type": "City", "name": "Sieradz" }
       }
     },
     {
       "@type": "BreadcrumbList",
+      "@id": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#okruszki",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Chodkiewicza 2, Sieradz", "item": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/" },
         { "@type": "ListItem", "position": 2, "name": "Apartament nr 4 — sprzedaż", "item": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#apartament" },
@@ -1484,6 +1551,7 @@ section[id],main[id]{scroll-margin-top:5.25rem}
       "@type": "FAQPage",
       "@id": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#faq-page",
       "inLanguage": "pl-PL",
+      "isPartOf": { "@id": "https://nieruchomo-ci-chodkiewicza-2.pages.dev/#strona-glowna" },
       "mainEntity": [
         { "@type": "Question", "name": "Ile kosztuje apartament 105 m² przy Chodkiewicza 2 w Sieradzu?", "acceptedAnswer": { "@type": "Answer", "text": "Apartament nr 4 kosztuje 498 750 zł, czyli 4 750 zł za metr kwadratowy. Ma 105 m² i znajduje się na II piętrze. Jest to bezczynszowa własność z udziałem w nieruchomości gruntowej i częściach wspólnych." } },
         { "@type": "Question", "name": "Ile wynosi czynsz najmu lokalu użytkowego 86 m² przy Chodkiewicza 2?", "acceptedAnswer": { "@type": "Answer", "text": "Czynsz najmu lokalu nr 1 to 2 800 zł miesięcznie. Lokal ma 86 m² na parterze, z osobnym wejściem od ul. Zagłoby, i jest dostępny od zaraz. Warunki dotyczące kaucji, mediów i okresu wypowiedzenia ustalamy przed podpisaniem umowy." } },

@@ -14,9 +14,11 @@ wrangler.jsonc
 .assetsignore
 .wrangler
 
-# Skrypty uruchamiane lokalnie — nie są zasobami strony
+# Skrypty uruchamiane lokalnie — nie są zasobami strony.
+# Wzorzec, a nie lista nazw: `consent.test.mjs` dopisano później i przez
+# lukę w liście trafiał na produkcję jako publicznie pobieralny plik.
 screenshot.mjs
-guard.test.mjs
+*.test.mjs
 
 # Repozytorium i pliki robocze
 .git

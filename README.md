@@ -10,7 +10,7 @@ wdrażana na Cloudflare jako Worker ze statycznymi zasobami.
 |-----------------------|----------------|
 | `index.html`          | Cała strona: treść, style i skrypt w jednym pliku |
 | `404.html`            | Strona błędu w tej samej szacie graficznej |
-| `worker.js`           | `robots.txt`, `sitemap.xml`, odbiór formularza, adresy bezwzględne |
+| `worker.js`           | `robots.txt`, `sitemap.xml` (ze zdjęciami), odbiór formularza, adresy bezwzględne i data aktualizacji |
 | `wrangler.jsonc`      | Konfiguracja wdrożenia |
 | `.assetsignore`       | Czego **nie** wysyłać na produkcję |
 | `_headers`            | Nagłówki: cache, bezpieczeństwo, polityka CSP |
@@ -97,8 +97,10 @@ pamiętaj o trzech miejscach:
 <time id="updated" datetime="2026-08-19">19 sierpnia 2026</time>
 ```
 
-Worker odczytuje z niego `lastmod` w mapie strony, więc nie da się jej rozjechać
-z tym, co widać na stronie.
+Worker odczytuje z niego `lastmod` w mapie strony **oraz `dateModified`
+w danych strukturalnych**, podmieniając je przy każdym żądaniu. Data w bloku
+`ld+json` jest więc tylko wartością wyjściową — nie da się jej rozjechać z tym,
+co widać na stronie.
 
 ## Adres strony
 
