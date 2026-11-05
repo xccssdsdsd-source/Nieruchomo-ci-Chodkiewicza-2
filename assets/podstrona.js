@@ -91,3 +91,105 @@
   if (stored === 'granted') loadGA()
   else if (stored !== 'denied') show()
 })()
+
+/* Formularz kontaktowy podstrony. Wysyła do /api/lead dokładnie to samo co
+   formularz strony głównej (te same pola, pułapka na boty i stempel czasu),
+   więc po stronie Workera nic się nie zmienia. Gdy wysyłka zawiedzie, otwiera
+   program pocztowy z gotową wiadomością, żeby zapytanie nie przepadło.
+
+   Pomiar kontaktu: zdarzenie GA4 `generate_lead` po kliknięciu numeru
+   telefonu, adresu e-mail i po wysłaniu formularza. Wysyłane wyłącznie przy
+   zapisanej zgodzie na analitykę, bez niej nie trafia nawet do kolejki.
+   Średnik na początku: bez niego ten blok skleja się z poprzednim `})()`. */
+;(() => {
+  const CONSENT_KEY = 'ch2-zgoda-analityka'
+  const consented = () => { try { return localStorage.getItem(CONSENT_KEY) === 'granted' } catch { return false } }
+  const track = (source, extra = {}) => {
+    if (consented() && typeof window.gtag === 'function') window.gtag('event', 'generate_lead', { lead_source: source, ...extra })
+  }
+
+  document.addEventListener('click', e => {
+    const link = e.target.closest && e.target.closest('a[href^="tel:"], a[href^="mailto:"]')
+    if (link) track(link.getAttribute('href').startsWith('tel:') ? 'telefon' : 'email')
+  })
+
+  const form = document.getElementById('leadForm')
+  if (!form) return
+
+  const $ = id => document.getElementById(id)
+  const okBox = $('formOk')
+  const errBox = $('formErr')
+  const okText = $('formOkText')
+  const errText = $('formErrText')
+  const submitBtn = $('formSubmit')
+  // Serwer po cichu odrzuca zgłoszenia wysłane szybciej niż w trzy sekundy.
+  const openedAt = Date.now()
+
+  const fail = message => {
+    errText.textContent = message
+    errBox.setAttribute('data-show', '')
+    errBox.focus({ preventScroll: true })
+  }
+
+  const mailto = d => 'mailto:robertsieradz@wp.pl?subject=' +
+    encodeURIComponent('Zapytanie ze strony — ' + d.topic) +
+    '&body=' + encodeURIComponent([
+      'Imię i nazwisko: ' + d.name,
+      'Telefon: ' + (d.phone || '—'),
+      'E-mail: ' + d.email,
+      'Dotyczy: ' + d.topic,
+      '',
+      d.message
+    ].join('\n'))
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault()
+    okBox.removeAttribute('data-show')
+    errBox.removeAttribute('data-show')
+
+    const d = {
+      name: $('f-name').value.trim(),
+      phone: $('f-phone').value.trim(),
+      email: $('f-email').value.trim(),
+      topic: $('f-topic').value,
+      message: $('f-msg').value.trim(),
+      company: $('f-company').value,
+      elapsed: Date.now() - openedAt
+    }
+
+    if (!d.name || !d.email || !d.message || !$('f-rodo').checked) {
+      return fail('Uzupełnij pola oznaczone gwiazdką i zaznacz zgodę na przetwarzanie danych.')
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email)) {
+      return fail('Sprawdź adres e-mail, wygląda na niepełny.')
+    }
+
+    submitBtn.disabled = true
+    submitBtn.textContent = 'Wysyłanie…'
+    let sent = false
+    try {
+      const res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(d)
+      })
+      sent = res.ok
+    } catch {
+      sent = false
+    }
+    submitBtn.disabled = false
+    submitBtn.textContent = 'Wyślij wiadomość'
+
+    if (sent) {
+      okText.textContent = 'Dziękujemy, wiadomość dotarła. Odezwiemy się najszybciej, jak to możliwe.'
+      okBox.setAttribute('data-show', '')
+      okBox.focus({ preventScroll: true })
+      form.reset()
+      track('formularz', { form_topic: d.topic })
+    } else {
+      window.location.href = mailto(d)
+      okText.textContent = 'Otworzyliśmy Twój program pocztowy z gotową wiadomością, wystarczy ją wysłać. Jeśli nic się nie otworzyło, zadzwoń pod 503 444 134 lub napisz na robertsieradz@wp.pl.'
+      okBox.setAttribute('data-show', '')
+    }
+  })
+})()

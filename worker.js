@@ -170,14 +170,14 @@ async function contentUpdatedAt (env, url, path) {
  */
 const IMAGES = [
   ['budynek-front-1600.webp', 'Budynek mieszkalno-usługowy przy ul. Chodkiewicza 2 w Sieradzu'],
-  ['budynek-zaglaby-1600.webp', 'Elewacja budynku od ul. Zagłoby z wejściem do lokalu użytkowego nr 1'],
+  ['budynek-zaglaby-1600.webp', 'Budynek przy ul. Chodkiewicza 2 w Sieradzu od strony ulicy'],
   ['apartament-salon-1200.webp', 'Apartament nr 4 — salon z aneksem kuchennym, wizualizacja aranżacji'],
   ['apartament-pokoj-3-1200.webp', 'Apartament nr 4 — sypialnia na poddaszu, wizualizacja aranżacji'],
-  ['apartament-lazienka-1200.webp', 'Apartament nr 4 — łazienka, wizualizacja aranżacji'],
+  ['apartament-lazienka-1334.webp', 'Apartament nr 4 — łazienka, wizualizacja aranżacji'],
   ['apartament-rzut-625.webp', 'Rzut poddasza — układ pomieszczeń apartamentu nr 4 o powierzchni 105 m²'],
   ['lokal1-sala-1-1200.webp', 'Lokal użytkowy nr 1 — otwarta sala główna o powierzchni 86 m²'],
-  ['lokal1-sala-2-1200.webp', 'Lokal użytkowy nr 1 — druga część sali z oknami od strony ulicy'],
-  ['lokal1-wejscie-1200.webp', 'Lokal użytkowy nr 1 — osobne wejście od ul. Zagłoby'],
+  ['lokal1-sala-2-1536.webp', 'Lokal użytkowy nr 1 — druga część sali z oknami od strony ulicy'],
+  ['lokal1-wejscie-1200.webp', 'Wejście do lokalu użytkowego nr 1 od ul. Zagłoby, drzwi z numerem 1'],
   ['lokal1-rzut-1080.webp', 'Lokal użytkowy nr 1 — przykładowy podział 86 m² na pomieszczenia']
 ]
 
@@ -197,7 +197,6 @@ const PAGES = [
     priority: '0.9',
     images: [
       ['budynek-zaglaby-1600.webp', 'Budynek przy ul. Chodkiewicza 2 w Sieradzu, w którym na II piętrze znajduje się apartament nr 4'],
-      ['apartament-rzut-625.webp', 'Rzut poddasza — układ pomieszczeń apartamentu nr 4 o powierzchni 105 m²'],
       ['apartament-salon-1200.webp', 'Apartament nr 4 — salon z aneksem kuchennym 30,5 m², wizualizacja aranżacji'],
       ['apartament-pokoj-3-1200.webp', 'Apartament nr 4 — sypialnia, wizualizacja aranżacji'],
       ['apartament-lazienka-1200.webp', 'Apartament nr 4 — łazienka, wizualizacja aranżacji'],
@@ -208,9 +207,9 @@ const PAGES = [
     path: UNIT_PAGE,
     priority: '0.9',
     images: [
-      ['lokal1-wejscie-1200.webp', 'Lokal użytkowy nr 1 — osobne wejście od ul. Zagłoby'],
       ['lokal1-sala-1-1200.webp', 'Lokal użytkowy nr 1 — sala główna z sufitem podwieszanym i gresem'],
-      ['lokal1-sala-2-1200.webp', 'Lokal użytkowy nr 1 — witryny od strony ulicy'],
+      ['lokal1-sala-2-1200.webp', 'Lokal użytkowy nr 1 — okna od strony ulicy'],
+      ['lokal1-wejscie-1200.webp', 'Wejście do lokalu użytkowego nr 1 od ul. Zagłoby, drzwi z numerem 1'],
       ['lokal1-rzut-1080.webp', 'Lokal użytkowy nr 1 — przykładowy podział 86 m² na pomieszczenia']
     ]
   },
@@ -586,12 +585,18 @@ const ANCHORS = {
 const SHORTCUTS = {
   'apartament': APARTMENT_PAGE,
   'apartament-nr-4': APARTMENT_PAGE,
+  'apartament-na-sprzedaz': APARTMENT_PAGE,
   'mieszkanie': APARTMENT_PAGE,
+  'mieszkanie-na-sprzedaz': APARTMENT_PAGE,
+  'mieszkanie-na-sprzedaz-sieradz': APARTMENT_PAGE,
   'sprzedaz': APARTMENT_PAGE,
   'na-sprzedaz': APARTMENT_PAGE,
   'lokal': UNIT_PAGE,
   'lokal-nr-1': UNIT_PAGE,
   'lokal-uzytkowy': UNIT_PAGE,
+  'lokal-uzytkowy-do-wynajecia': UNIT_PAGE,
+  'lokal-do-wynajecia': UNIT_PAGE,
+  'lokal-na-wynajem': UNIT_PAGE,
   'wynajem': UNIT_PAGE,
   'do-wynajecia': UNIT_PAGE,
   'lokalizacja': LOCATION_PAGE,

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "nieruchomosci-chodkiewicza2.vercel.app" }],
+      "destination": "https://chodkiewicza2.pl/:path*",
+      "permanent": true
+    }
+  ]
+}

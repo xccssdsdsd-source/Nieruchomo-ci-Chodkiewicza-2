@@ -70,8 +70,30 @@ informacje faktycznie przekazane o budynku i lokalach.
 Mapy Google celowo nie ma na podstronach: polityka prywatności opisuje ją
 tylko w sekcji „Kontakt” strony głównej, więc zostaje sam link do trasy.
 
-Strona główna nie linkuje do podstron. Wyszukiwarki znajdują je przez mapę
-strony, `llms.txt`, stronę 404 i odnośniki między podstronami.
+Strona główna linkuje do podstron ze stopki i spod akapitu otwierającego
+sekcje ofert. Do tego mapa strony, `llms.txt`, strona 404 i odnośniki między
+podstronami.
+
+Każda podstrona ma pełny węzeł firmy (`#organizacja`: nazwa, telefon, adres,
+współrzędne, mapa) i węzeł miasta (`#sieradz`, z odnośnikiem do Wikipedii,
+powiatem i województwem). Adres i telefon są zapisane wszędzie tak samo:
+`ul. Chodkiewicza 2, 98-200 Sieradz`, `503 444 134` (`+48503444134` w danych
+strukturalnych). `npm test` pilnuje obu rzeczy.
+
+**Formularz na podstronach.** Każda podstrona ma własny formularz w pasie
+kontaktu (`#kontakt`), wysyłany na ten sam `/api/lead` co formularz strony
+głównej. Temat jest z góry ustawiony na ofertę z danej strony, a wiadomość
+wstępnie wypełniona, więc osoba z wyszukiwarki nie musi przechodzić na stronę
+główną. Logika jest w `assets/podstrona.js`. Po zgodzie na analitykę skrypt
+wysyła do GA4 zdarzenie `generate_lead` (`lead_source`: `telefon`, `email`
+albo `formularz`); żeby liczyło się jako konwersja, oznacz je w GA4 jako
+kluczowe zdarzenie.
+
+**Rzut apartamentu jest zdjęty z podstrony.** Rzut poddasza pokazuje jedną
+łazienkę (7,68 m²), brak garderoby, salon 30,68 m² i sumę 107,07 m², a opis
+oferty mówi o dwóch łazienkach, garderobie, 30,5 m² i 105 m². Do czasu
+potwierdzenia przez właściciela podstrona pokazuje opis bez rzutu; strona
+główna rzut nadal ma.
 
 ## Praca lokalna
 
@@ -91,6 +113,14 @@ a `wrangler deploy` domyślnie wysłałby cały katalog projektu jako zasoby.
 Bez listy wykluczeń wdrożenie przerywa się na pliku `node_modules/workerd/bin/workerd`
 ważącym 144 MiB przy limicie 25 MiB na zasób. Jeśli kiedyś build zacznie padać
 z komunikatem „Asset too large”, sprawdź najpierw, czy ten plik nadal istnieje.
+
+**Vercel.** Repozytorium jest podpięte także do projektu na Vercelu, który
+publikował pełną kopię strony pod `nieruchomosci-chodkiewicza2.vercel.app`, bez
+Workera: z adresem kanonicznym na nieistniejącą domenę `pages.dev`
+i z formularzem, który nie miał dokąd wysłać zapytania. `vercel.json`
+przekierowuje ten adres trwale na `chodkiewicza2.pl` (podglądy gałęzi zostają,
+są i tak za logowaniem i z `noindex`). Jeśli projekt na Vercelu nie jest
+potrzebny, najprościej go usunąć.
 
 ## Formularz kontaktowy
 
@@ -136,7 +166,7 @@ pamiętaj o czterech miejscach:
 **Datę „Stan oferty” każda strona ma własną**, w znaczniku:
 
 ```html
-<time id="updated" datetime="2026-08-19">19 sierpnia 2026</time>
+<time id="updated" datetime="2026-11-05">5 listopada 2026</time>
 ```
 
 Worker odczytuje z niego `lastmod` tej strony w mapie **oraz `dateModified`
