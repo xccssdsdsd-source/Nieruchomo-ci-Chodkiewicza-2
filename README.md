@@ -114,6 +114,14 @@ Bez listy wykluczeń wdrożenie przerywa się na pliku `node_modules/workerd/bin
 ważącym 144 MiB przy limicie 25 MiB na zasób. Jeśli kiedyś build zacznie padać
 z komunikatem „Asset too large”, sprawdź najpierw, czy ten plik nadal istnieje.
 
+**Vercel.** Repozytorium jest podpięte także do projektu na Vercelu, który
+publikował pełną kopię strony pod `nieruchomosci-chodkiewicza2.vercel.app`, bez
+Workera: z adresem kanonicznym na nieistniejącą domenę `pages.dev`
+i z formularzem, który nie miał dokąd wysłać zapytania. `vercel.json`
+przekierowuje ten adres trwale na `chodkiewicza2.pl` (podglądy gałęzi zostają,
+są i tak za logowaniem i z `noindex`). Jeśli projekt na Vercelu nie jest
+potrzebny, najprościej go usunąć.
+
 ## Formularz kontaktowy
 
 Bez żadnej konfiguracji `/api/lead` wysyła zapytanie przez FormSubmit na adres
