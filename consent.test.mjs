@@ -19,7 +19,8 @@ const srv = createServer(async (req, res) => {
 await new Promise(r => srv.listen(0, r))
 const base = `http://localhost:${srv.address().port}`
 
-const browser = await chromium.launch()
+const launchOpts = process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}
+const browser = await chromium.launch(launchOpts)
 let fail = 0
 const check = (name, got, want) => {
   const ok = JSON.stringify(got) === JSON.stringify(want)
@@ -113,6 +114,35 @@ const googleHits = page => {
     const r = document.querySelector('#consentNo').getBoundingClientRect()
     return r.width > 40 && r.bottom <= window.innerHeight
   }), true)
+  await ctx.close()
+}
+
+// 7. podstrona - ten sam baner i ta sama zasada: zgoda przed pomiarem
+{
+  const ctx = await browser.newContext()
+  const page = await ctx.newPage()
+  const hits = googleHits(page)
+  await page.goto(base + '/apartament-na-sprzedaz-sieradz.html', { waitUntil: 'networkidle' })
+  await page.waitForTimeout(800)
+  check('podstrona: baner widoczny', await page.isVisible('#consent'), true)
+  check('podstrona: zapytania do Google przed zgoda', hits.filter(u => /googletagmanager|google-analytics/.test(u)).length, 0)
+  await page.click('#consentYes')
+  await page.waitForTimeout(1500)
+  check('podstrona: gtag.js pobrany po zgodzie', hits.some(u => u.includes('googletagmanager.com/gtag/js')), true)
+  check('podstrona: wybor zapisany', await page.evaluate(() => localStorage.getItem('ch2-zgoda-analityka')), 'granted')
+  await page.reload({ waitUntil: 'networkidle' })
+  await page.waitForTimeout(600)
+  check('podstrona: po odswiezeniu baneru brak', await page.isVisible('#consent'), false)
+  await ctx.close()
+}
+
+// 8. podstrony na waskim ekranie
+for (const path of ['/apartament-na-sprzedaz-sieradz.html', '/lokal-uzytkowy-do-wynajecia-sieradz.html', '/osiedle-hetmanskie-sieradz.html']) {
+  const ctx = await browser.newContext({ viewport: { width: 320, height: 640 } })
+  const page = await ctx.newPage()
+  await page.goto(base + path, { waitUntil: 'networkidle' })
+  await page.waitForTimeout(600)
+  check(`320px ${path}: brak poziomego przewijania`, await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), true)
   await ctx.close()
 }
 

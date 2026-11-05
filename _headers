@@ -32,6 +32,11 @@
 /404.html
   Cache-Control: public, max-age=0, must-revalidate
 
+# Bez jawnego kodowania część klientów czyta plik jako Latin-1 i polskie
+# znaki w streszczeniu dla asystentów AI zamieniają się w krzaczki.
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+
 # Rozszerzenie .webmanifest nie ma domyślnego typu MIME — bez tego
 # przeglądarka pobiera plik zamiast go zinterpretować.
 /site.webmanifest

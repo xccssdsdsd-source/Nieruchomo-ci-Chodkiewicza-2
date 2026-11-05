@@ -5,14 +5,18 @@
  * Workera ze statycznymi zasobami — katalog `functions/` z czasów Pages nie
  * byłby w ogóle uruchamiany. Cała logika serwerowa mieszka więc tutaj:
  *
+ *   www., http:// — trwałe przekierowanie na jeden adres kanoniczny
  *   /robots.txt   — z adresem mapy strony liczonym z hosta żądania
- *   /sitemap.xml  — jw., razem ze zgłoszeniem zdjęć lokali do Grafiki Google
+ *   /sitemap.xml  — jw., wszystkie strony serwisu razem ze zgłoszeniem zdjęć
+ *                   lokali do Grafiki Google
  *   /api/lead     — odbiór zapytań z formularza kontaktowego
  *   /             — index.html z adresami bezwzględnymi podmienionymi na
  *                   rzeczywisty adres serwera i z datą „dateModified”
  *                   przepisaną ze znacznika „Stan ofert”
  *   /llms.txt     — jw., żeby linki widziane przez asystentów AI wskazywały
  *                   na domenę, pod którą strona faktycznie działa
+ *   podstrony     — oferty i lokalizacja (pliki .html w katalogu głównym),
+ *                   obsługiwane tak samo jak strona główna
  *
  * Dzięki liczeniu adresu z żądania to samo wdrożenie działa poprawnie na
  * domenie roboczej i na domenie własnej — bez wpisywania adresu na sztywno
@@ -52,6 +56,33 @@
 const BASE_URL = 'https://nieruchomo-ci-chodkiewicza-2.pages.dev'
 
 /**
+ * Jedyny adres, pod którym strona ma być indeksowana. Pod `www.` i po `http://`
+ * serwis odpowiadał kodem 200, a podmiana adresów robiła z każdej z tych kopii
+ * własny adres kanoniczny — dla wyszukiwarki były to osobne, zduplikowane strony.
+ */
+const CANONICAL_HOST = 'chodkiewicza2.pl'
+
+/**
+ * Przekierowuje wyłącznie GET i HEAD. Zapytanie z formularza wysłane z karty
+ * otwartej jeszcze pod `www.` ma dojść, a przeglądarka po 301 zgubiłaby treść.
+ */
+function canonicalRedirect (request, url) {
+  if (request.method !== 'GET' && request.method !== 'HEAD') return null
+
+  const isAlias = url.hostname === 'www.' + CANONICAL_HOST
+  const isPlain = url.hostname === CANONICAL_HOST && url.protocol === 'http:'
+  if (!isAlias && !isPlain) return null
+
+  return Response.redirect('https://' + CANONICAL_HOST + url.pathname + url.search, 301)
+}
+
+/**
+ * Adresy robocze Cloudflare mają działać dalej — to na nich ogląda się
+ * wersje próbne — ale adres kanoniczny w ich treści wskazuje domenę właściwą.
+ */
+const isPreviewHost = hostname => /\.(workers|pages)\.dev$/.test(hostname)
+
+/**
  * Skrzynka, na którą trafiają zapytania z formularza. Ten sam adres jest
  * podany w stopce i w zapasowej wysyłce przez program pocztowy, więc jego
  * obecność w kodzie niczego nie ujawnia. Zmienna LEAD_TO ma pierwszeństwo.
@@ -84,6 +115,9 @@ const xml = v => v
 function robots (origin) {
   return text([
     'User-agent: *',
+    '# Treść oferty może trafiać do wyników wyszukiwania i do odpowiedzi',
+    '# asystentów AI. O trenowaniu modeli ten wpis celowo nie rozstrzyga.',
+    'Content-Signal: search=yes,ai-input=yes',
     'Allow: /',
     '',
     '# Zdjęcia i czcionki mają być indeksowane — bez tego wpisu Grafika Google',
@@ -109,14 +143,13 @@ function robots (origin) {
 /* ---------- sitemap.xml ---------- */
 
 /**
- * Data ostatniej zmiany treści pochodzi z jednego miejsca — znacznika
- * `<time id="updated">` w index.html, który wyświetla się też odwiedzającym
- * jako „Stan ofert”. Dzięki temu aktualizacja oferty wymaga poprawienia daty
- * tylko raz, a mapa strony nie zgłasza zmian, których nie było.
+ * Data ostatniej zmiany treści pochodzi ze znacznika `<time id="updated">`
+ * danej strony, który wyświetla się też odwiedzającym jako „Stan ofert”.
+ * Dzięki temu mapa strony nie zgłasza zmian, których nie było.
  */
-async function contentUpdatedAt (env, url) {
+async function contentUpdatedAt (env, url, path) {
   try {
-    const res = await env.ASSETS.fetch(new URL('/', url))
+    const res = await env.ASSETS.fetch(new URL(path, url))
     const found = (await res.text()).match(/<time[^>]+id="updated"[^>]+datetime="(\d{4}-\d{2}-\d{2})"/)
     if (found) return found[1]
   } catch {
@@ -148,30 +181,70 @@ const IMAGES = [
   ['lokal1-rzut-1080.webp', 'Lokal użytkowy nr 1 — przykładowy podział 86 m² na pomieszczenia']
 ]
 
+const APARTMENT_PAGE = '/apartament-na-sprzedaz-sieradz'
+const UNIT_PAGE = '/lokal-uzytkowy-do-wynajecia-sieradz'
+const LOCATION_PAGE = '/osiedle-hetmanskie-sieradz'
+
 /**
- * Zgłaszamy wyłącznie adres strony głównej. Adresy z kotwicą (`/#lokal`)
- * są dla wyszukiwarek tym samym dokumentem — zgłaszanie ich zaśmieca raport
- * w Search Console wpisami o zduplikowanych stronach i niczego nie wnosi.
+ * Strony zgłaszane w mapie. Adresy z kotwicą (`/#lokal`) są dla wyszukiwarek
+ * tym samym dokumentem co strona główna, więc na liście ich nie ma — własny
+ * wpis dostaje tylko strona z własnym adresem.
  */
-function sitemap (origin, lastmod) {
-  const images = IMAGES.map(([file, caption]) =>
-    '    <image:image>\n' +
-    '      <image:loc>' + origin + '/assets/img/' + file + '</image:loc>\n' +
-    '      <image:title>' + xml(caption) + '</image:title>\n' +
-    '    </image:image>\n'
+const PAGES = [
+  { path: '/', priority: '1.0', images: IMAGES },
+  {
+    path: APARTMENT_PAGE,
+    priority: '0.9',
+    images: [
+      ['budynek-zaglaby-1600.webp', 'Budynek przy ul. Chodkiewicza 2 w Sieradzu, w którym na II piętrze znajduje się apartament nr 4'],
+      ['apartament-rzut-625.webp', 'Rzut poddasza — układ pomieszczeń apartamentu nr 4 o powierzchni 105 m²'],
+      ['apartament-salon-1200.webp', 'Apartament nr 4 — salon z aneksem kuchennym 30,5 m², wizualizacja aranżacji'],
+      ['apartament-pokoj-3-1200.webp', 'Apartament nr 4 — sypialnia, wizualizacja aranżacji'],
+      ['apartament-lazienka-1200.webp', 'Apartament nr 4 — łazienka, wizualizacja aranżacji'],
+      ['apartament-ogrod-800.webp', 'Ogródek rekreacyjny przy budynku Chodkiewicza 2 w Sieradzu']
+    ]
+  },
+  {
+    path: UNIT_PAGE,
+    priority: '0.9',
+    images: [
+      ['lokal1-wejscie-1200.webp', 'Lokal użytkowy nr 1 — osobne wejście od ul. Zagłoby'],
+      ['lokal1-sala-1-1200.webp', 'Lokal użytkowy nr 1 — sala główna z sufitem podwieszanym i gresem'],
+      ['lokal1-sala-2-1200.webp', 'Lokal użytkowy nr 1 — witryny od strony ulicy'],
+      ['lokal1-rzut-1080.webp', 'Lokal użytkowy nr 1 — przykładowy podział 86 m² na pomieszczenia']
+    ]
+  },
+  {
+    path: LOCATION_PAGE,
+    priority: '0.7',
+    images: [
+      ['budynek-front-1600.webp', 'Budynek mieszkalno-usługowy przy ul. Chodkiewicza 2 na Osiedlu Hetmańskim w Sieradzu'],
+      ['budynek-narozny-960.webp', 'Narożnik budynku na skrzyżowaniu ulic Chodkiewicza i Zagłoby w Sieradzu']
+    ]
+  }
+]
+
+function sitemap (origin, entries) {
+  const urls = entries.map(({ path, lastmod, priority, images }) =>
+    '  <url>\n' +
+    '    <loc>' + origin + path + '</loc>\n' +
+    '    <lastmod>' + lastmod + '</lastmod>\n' +
+    '    <changefreq>weekly</changefreq>\n' +
+    '    <priority>' + priority + '</priority>\n' +
+    images.map(([file, caption]) =>
+      '    <image:image>\n' +
+      '      <image:loc>' + origin + '/assets/img/' + file + '</image:loc>\n' +
+      '      <image:title>' + xml(caption) + '</image:title>\n' +
+      '    </image:image>\n'
+    ).join('') +
+    '  </url>\n'
   ).join('')
 
   return text(
     '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n' +
     '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' +
-    '  <url>\n' +
-    '    <loc>' + origin + '/</loc>\n' +
-    '    <lastmod>' + lastmod + '</lastmod>\n' +
-    '    <changefreq>weekly</changefreq>\n' +
-    '    <priority>1.0</priority>\n' +
-    images +
-    '  </url>\n' +
+    urls +
     '</urlset>\n',
     'application/xml; charset=utf-8', 3600
   )
@@ -491,17 +564,7 @@ const ANCHORS = {
   'oferta': 'lokale',
   'oferty': 'lokale',
   'nieruchomosci': 'lokale',
-  'apartament': 'apartament',
-  'apartament-nr-4': 'apartament',
-  'mieszkanie': 'apartament',
-  'sprzedaz': 'apartament',
-  'na-sprzedaz': 'apartament',
   'galeria': 'apartament-galeria',
-  'lokal': 'lokal',
-  'lokal-nr-1': 'lokal',
-  'lokal-uzytkowy': 'lokal',
-  'wynajem': 'lokal',
-  'do-wynajecia': 'lokal',
   'wsparcie-najemcy': 'wsparcie-najemcy',
   'dla-najemcy': 'wsparcie-najemcy',
   'faq': 'faq',
@@ -514,6 +577,27 @@ const ANCHORS = {
   'prywatnosc': 'prywatnosc',
   'polityka-prywatnosci': 'prywatnosc',
   'rodo': 'prywatnosc'
+}
+
+/**
+ * Skróty prowadzące do podstron. Oferta i lokalizacja mają własne adresy,
+ * więc te ścieżki kończą się tam, a nie na kotwicy strony głównej.
+ */
+const SHORTCUTS = {
+  'apartament': APARTMENT_PAGE,
+  'apartament-nr-4': APARTMENT_PAGE,
+  'mieszkanie': APARTMENT_PAGE,
+  'sprzedaz': APARTMENT_PAGE,
+  'na-sprzedaz': APARTMENT_PAGE,
+  'lokal': UNIT_PAGE,
+  'lokal-nr-1': UNIT_PAGE,
+  'lokal-uzytkowy': UNIT_PAGE,
+  'wynajem': UNIT_PAGE,
+  'do-wynajecia': UNIT_PAGE,
+  'lokalizacja': LOCATION_PAGE,
+  'dojazd': LOCATION_PAGE,
+  'adres': LOCATION_PAGE,
+  'osiedle-hetmanskie': LOCATION_PAGE
 }
 
 const DIACRITICS = { 'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n', 'ó': 'o', 'ś': 's', 'ź': 'z', 'ż': 'z' }
@@ -599,6 +683,9 @@ export default {
     const url = new URL(request.url)
     const origin = url.origin
 
+    const canonical = canonicalRedirect(request, url)
+    if (canonical) return canonical
+
     // /index.html i / to ten sam dokument pod dwoma adresami — jeden z nich
     // musi być jedynym, żeby nie rozpraszać sygnałów rankingowych.
     if (url.pathname === '/index.html') {
@@ -606,7 +693,13 @@ export default {
     }
 
     if (url.pathname === '/robots.txt') return robots(origin)
-    if (url.pathname === '/sitemap.xml') return sitemap(origin, await contentUpdatedAt(env, url))
+    if (url.pathname === '/sitemap.xml') {
+      const entries = await Promise.all(PAGES.map(async entry => ({
+        ...entry,
+        lastmod: await contentUpdatedAt(env, url, entry.path)
+      })))
+      return sitemap(origin, entries)
+    }
 
     if (url.pathname === '/api/lead') {
       if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405)
@@ -621,10 +714,13 @@ export default {
 
     // Znany adres sekcji — przekierowanie trwałe, bo docelowa kotwica się
     // nie zmieni. Parametry (np. kampanijne utm_*) przenosimy dalej.
-    const anchor = ANCHORS[slug(url.pathname)]
+    const key = slug(url.pathname)
+    const anchor = ANCHORS[key]
     if (anchor) return Response.redirect(origin + '/' + url.search + '#' + anchor, 301)
+    if (SHORTCUTS[key]) return Response.redirect(origin + SHORTCUTS[key] + url.search, 301)
 
-    const res = await page(request, env, origin)
+    const publicOrigin = isPreviewHost(url.hostname) ? 'https://' + CANONICAL_HOST : origin
+    const res = await page(request, env, publicOrigin)
 
     /*
      * Cokolwiek innego, co wygląda na adres strony, a nie na plik — na stronę
