@@ -200,6 +200,56 @@ a.sr-only:focus{position:fixed;top:.6rem;left:.6rem;z-index:100;width:auto;heigh
 .cta p{margin-top:.75rem;max-width:58ch;color:hsl(34 30% 94%/.78)}
 .cta .btn-row{margin-top:1.5rem}
 
+/* Formularz w pasie kontaktu. Ten sam punkt odbioru (/api/lead), te same pola
+   i ta sama pułapka na boty co na stronie głównej; temat jest z góry ustawiony
+   na ofertę z tej podstrony, więc odwiedzający z wyszukiwarki nie musi
+   przechodzić na stronę główną, żeby napisać. */
+.cta__in{display:grid;gap:clamp(1.75rem,4vw,3.25rem);grid-template-columns:1fr;align-items:start}
+@media(min-width:920px){.cta__in{grid-template-columns:.85fr 1.15fr}}
+.cta__mail{font-size:.9375rem}
+.cta__mail a{color:hsl(34 36% 95%);font-weight:700;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.form-card{
+  position:relative;display:grid;gap:1rem;min-width:0;padding:clamp(1.15rem,3vw,2rem);border-radius:var(--r);
+  background:hsl(var(--bg));color:hsl(var(--text));border:1px solid hsl(var(--line));
+  box-shadow:0 24px 48px -32px hsl(0 0% 0%/.55);
+}
+.form-card__head{font-family:var(--font-display);font-size:clamp(1.15rem,1.9vw,1.35rem);font-weight:600;letter-spacing:-.02em;line-height:1.25;color:hsl(var(--primary))}
+.form-card__row{display:grid;gap:1rem;grid-template-columns:1fr}
+@media(min-width:560px){.form-card__row{grid-template-columns:1fr 1fr}}
+.field{display:flex;flex-direction:column;gap:.4rem;min-width:0}
+.field label{font-size:.8125rem;font-weight:700;letter-spacing:.01em}
+.field label span{color:hsl(var(--accent))}
+.field input,.field select,.field textarea{
+  width:100%;min-width:0;padding:.75rem .9rem;border-radius:var(--r);
+  font:inherit;font-size:.9375rem;line-height:1.5;color:inherit;
+  background:hsl(38 44% 98%);border:1px solid hsl(var(--line));
+  transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease;
+}
+.field textarea{resize:vertical;min-height:6.5rem}
+.field select{
+  appearance:none;-webkit-appearance:none;padding-right:2.4rem;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b5c55' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right .9rem center;
+}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:hsl(var(--primary)/.55);box-shadow:0 0 0 4px hsl(var(--primary)/.1);background-color:hsl(var(--bg))}
+.field input:user-invalid,.field textarea:user-invalid{border-color:hsl(0 55% 50%/.6)}
+.agree{display:flex;gap:.7rem;align-items:flex-start;font-size:.8125rem;line-height:1.55;color:hsl(var(--muted))}
+.agree input{flex:none;width:1.15rem;height:1.15rem;margin-top:.15rem;accent-color:hsl(var(--primary));cursor:pointer}
+.agree .req{color:hsl(var(--accent))}
+.rodo{font-size:.75rem;line-height:1.55;color:hsl(var(--muted))}
+.rodo summary{cursor:pointer;font-weight:600}
+.cta .form-card p{margin-top:.5rem;max-width:none;color:hsl(var(--muted))}
+.rodo a{color:hsl(var(--primary));font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.formmsg{display:none;padding:.8rem 1rem;border-radius:var(--r);font-size:.875rem;font-weight:600;line-height:1.5}
+.formmsg[data-show]{display:block}
+.formmsg:focus{outline:none}
+.formmsg--ok{background:hsl(152 30% 30%/.1);color:hsl(152 34% 24%);border:1px solid hsl(152 30% 30%/.28)}
+.formmsg--err{background:hsl(0 60% 50%/.08);color:hsl(0 58% 38%);border:1px solid hsl(0 60% 50%/.25)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.form-card .btn{justify-self:start}
+.form-card .btn:disabled{opacity:.7;cursor:progress;transform:none}
+@media(max-width:559px){.form-card .btn{justify-self:stretch}}
+
 /* ---------- powiązane strony ---------- */
 .related{display:grid;gap:1rem;grid-template-columns:1fr}
 @media(min-width:720px){.related{grid-template-columns:1fr 1fr}}

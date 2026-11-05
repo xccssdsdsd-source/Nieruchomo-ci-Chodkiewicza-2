@@ -7,7 +7,17 @@ const root = process.cwd()
 const types = { '.html':'text/html', '.css':'text/css', '.js':'text/javascript', '.webp':'image/webp',
   '.jpg':'image/jpeg', '.png':'image/png', '.svg':'image/svg+xml', '.woff2':'font/woff2', '.webmanifest':'application/manifest+json' }
 
+// Zapytania wysłane z formularza: serwer testowy je zapisuje i odpowiada jak Worker.
+const leads = []
+
 const srv = createServer(async (req, res) => {
+  if (req.method === 'POST' && req.url === '/api/lead') {
+    let body = ''
+    for await (const chunk of req) body += chunk
+    leads.push({ body: JSON.parse(body), type: req.headers['content-type'] })
+    res.writeHead(200, { 'Content-Type': 'application/json' })
+    return res.end('{"ok":true}')
+  }
   let p = decodeURIComponent(req.url.split('?')[0])
   if (p === '/') p = '/index.html'
   try {
@@ -143,6 +153,38 @@ for (const path of ['/apartament-na-sprzedaz-sieradz.html', '/lokal-uzytkowy-do-
   await page.goto(base + path, { waitUntil: 'networkidle' })
   await page.waitForTimeout(600)
   check(`320px ${path}: brak poziomego przewijania`, await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), true)
+  await ctx.close()
+}
+
+// 9. formularz na podstronie: wysyłka na /api/lead z tematem tej oferty
+for (const [path, topic] of [
+  ['/lokal-uzytkowy-do-wynajecia-sieradz.html', 'Lokal nr 1 — 86 m², wynajem'],
+  ['/apartament-na-sprzedaz-sieradz.html', 'Apartament nr 4 — 105 m², sprzedaż']
+]) {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } })
+  const page = await ctx.newPage()
+  await page.goto(base + path, { waitUntil: 'networkidle' })
+  await page.click('#consentNo')
+  leads.length = 0
+
+  await page.click('#formSubmit')
+  check(`${path}: pusty formularz zatrzymany`, await page.isVisible('#formErr'), true)
+  check(`${path}: pusty formularz nie wysłany`, leads.length, 0)
+
+  await page.fill('#f-name', 'Jan Testowy')
+  await page.fill('#f-email', 'jan@example.com')
+  await page.fill('#f-phone', '500 100 200')
+  await page.check('#f-rodo')
+  await page.click('#formSubmit')
+  await page.waitForSelector('#formOk[data-show]', { timeout: 5000 }).catch(() => {})
+
+  const sent = leads[0] && leads[0].body
+  check(`${path}: zapytanie wysłane raz`, leads.length, 1)
+  check(`${path}: JSON`, leads[0] && leads[0].type, 'application/json')
+  check(`${path}: temat oferty`, sent && sent.topic, topic)
+  check(`${path}: wiadomość wstępnie wypełniona`, Boolean(sent && sent.message.includes('Chodkiewicza 2')), true)
+  check(`${path}: pułapka pusta`, sent && sent.company, '')
+  check(`${path}: potwierdzenie widoczne`, await page.isVisible('#formOk'), true)
   await ctx.close()
 }
 

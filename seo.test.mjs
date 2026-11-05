@@ -411,6 +411,78 @@ for (const path of SUBPAGES) {
   check(label + ': podpisy „wizualizacja”', unlabelled.length, 0)
 }
 
+/* ---------- D. Lokalne SEO, kontakt i poprawki z audytu ---------- */
+
+// Skróty z wariantami adresów, które ktoś wpisze z pamięci
+for (const [from, to] of [
+  ['/mieszkanie-na-sprzedaz', APARTMENT],
+  ['/lokal-do-wynajecia', UNIT]
+]) {
+  const res = await hit(SITE + from)
+  check('skrót ' + from, res.status + ' ' + location(res), '301 ' + SITE + to)
+}
+
+const WIKI_SIERADZ = 'https://pl.wikipedia.org/wiki/Sieradz'
+const NAP = ['ul. Chodkiewicza 2', '98-200 Sieradz', '503 444 134', 'robertsieradz@wp.pl']
+const homeTopics = [...homepage.matchAll(/<option value="([^"]+)"/g)].map(m => m[1])
+
+for (const path of SUBPAGES) {
+  const label = path.slice(1)
+  const html = read(fileFor(path))
+  if (html === null) continue
+  let graph = []
+  try { graph = graphOf(html) } catch { /* zgłoszone w części B */ }
+
+  // Pełny węzeł firmy na każdej podstronie, nie tylko odwołanie do strony głównej
+  const org = graph.find(node => node['@id'] === BASE_URL + '/#organizacja')
+  check(label + ': węzeł organizacji', Boolean(org), true)
+  if (org) {
+    check(label + ': organizacja: telefon', org.telephone, '+48503444134')
+    check(label + ': organizacja: ulica', org.address && org.address.streetAddress, 'ul. Chodkiewicza 2')
+    check(label + ': organizacja: kod', org.address && org.address.postalCode, '98-200')
+    check(label + ': organizacja: geo', org.geo && `${org.geo.latitude},${org.geo.longitude}`, '51.57249,18.71349')
+  }
+  const city = graph.find(node => node['@id'] === BASE_URL + '/#sieradz')
+  check(label + ': miasto z odnośnikiem do Wikipedii', city && city.sameAs, WIKI_SIERADZ)
+  check(label + ': obiekt osadzony w Sieradzu', JSON.stringify(graph).includes('"containedInPlace":{"@id":"' + BASE_URL + '/#sieradz"}'), true)
+
+  // Te same dane kontaktowe, zapisane tak samo jak na stronie głównej
+  const text = visible(html)
+  for (const item of NAP) {
+    check(label + ': widoczne ' + item, text.includes(item), true)
+    check('strona główna: widoczne ' + item, visible(homepage).includes(item), true)
+  }
+
+  // Formularz na miejscu, z tematem zgodnym z formularzem strony głównej
+  check(label + ': formularz kontaktowy', /<form\b[^>]*id="leadForm"/.test(html), true)
+  for (const id of ['f-name', 'f-email', 'f-msg', 'f-rodo', 'f-company', 'f-topic']) {
+    check(label + ': pole ' + id, hasId(html, id), true)
+  }
+  const selected = (html.match(/<option value="([^"]+)" selected>/) || [])[1]
+  check(label + ': temat jak na stronie głównej', homeTopics.includes(selected), true)
+  check(label + ': odnośniki do formularza na tej stronie', html.includes('href="/#kontakt"'), false)
+}
+
+// Sformułowania, które audyt zdjęć uznał za nieprawdziwe
+for (const file of ['llms.txt', ...SUBPAGES.map(fileFor)]) {
+  const body = read(file).toLowerCase()
+  for (const phrase of ['zadaszeni', 'bez schodów', 'witryn', 'gotowa do użytku', 'sala główna gotowa']) {
+    check(file + ': bez „' + phrase + '”', body.includes(phrase), false)
+  }
+}
+
+// Zdjęcie zgłoszone w mapie strony przy danym adresie musi być na tej stronie
+{
+  const body = await (await hit(SITE + '/sitemap.xml')).text()
+  for (const entry of [...body.matchAll(/<url>([\s\S]*?)<\/url>/g)].map(m => m[1])) {
+    const path = entry.match(/<loc>([^<]+)<\/loc>/)[1].replace(SITE, '')
+    const html = read(fileFor(path))
+    const absent = [...entry.matchAll(/<image:loc>[^<]*\/assets\/img\/([^<]+)<\/image:loc>/g)]
+      .map(m => m[1]).filter(file => !html.includes('assets/img/' + file))
+    check('sitemap: zdjęcia ' + path + ' są na stronie', absent.join(', '), '')
+  }
+}
+
 globalThis.fetch = realFetch
 let bad = 0
 for (const [label, ok, detail] of cases) {

@@ -1,11 +1,12 @@
 # Nieruchomości Chodkiewicza 2 — Sieradz
 
 > Budynek mieszkalno-usługowy przy ul. Chodkiewicza 2, 98-200 Sieradz (Osiedle
-> Hetmańskie, skrzyżowanie ulic Chodkiewicza i Zagłoby). W budynku są cztery
-> lokale; dwa są obecnie dostępne: apartament nr 4 (105 m², na sprzedaż) i
-> lokal użytkowy nr 1 (86 m², do wynajęcia). Stan na: 19 sierpnia 2026.
-> Współrzędne budynku: 51.57249, 18.71349. Pełne dane każdej oferty (parametry,
-> rzut, zdjęcia, pytania i odpowiedzi) są na jej osobnej stronie, podanej niżej.
+> Hetmańskie, skrzyżowanie ulic Chodkiewicza i Zagłoby; powiat sieradzki,
+> województwo łódzkie). W budynku są cztery lokale; dwa są obecnie dostępne:
+> apartament nr 4 (105 m², na sprzedaż) i lokal użytkowy nr 1 (86 m², do
+> wynajęcia). Stan na: 5 listopada 2026. Współrzędne budynku: 51.57249,
+> 18.71349. Pełne dane każdej oferty (parametry, zdjęcia, pytania
+> i odpowiedzi, formularz kontaktowy) są na jej osobnej stronie, podanej niżej.
 > Kontakt: tel. 503 444 134, e-mail robertsieradz@wp.pl. Prezentacje umawiane
 > telefonicznie, także po godzinach pracy.
 
@@ -55,10 +56,11 @@ O: Usługową, biurową lub handlową — w zależności od aranżacji przestrze
 W tym samym budynku, w lokalu nr 2, działa studio jogi.
 
 P: Czy przy budynku są miejsca parkingowe?
-O: Tak, miejsca parkingowe przy budynku, dostępne dla najemcy
-i jego klientów. Dojście od parkingu do wejścia jest utwardzone kostką brukową.
+O: Przy budynku są prywatne miejsca parkingowe, z których może korzystać
+najemca lokalu użytkowego nr 1 oraz jego klienci. Dojście od parkingu do
+wejścia jest utwardzone kostką brukową.
 
-P: Czy można umieścić szyld lub oklejenie witryny?
+P: Czy można umieścić szyld lub okleić okna?
 O: Tak. Elewacja od strony ulicy jest dobrze widoczna z drogi i daje duże
 możliwości oznakowania działalności.
 
@@ -86,6 +88,6 @@ godzinach pracy.
 
 Wszystkie powyższe dane są publiczne i mogą być swobodnie cytowane.
 Ceny mają charakter informacyjny i nie stanowią oferty w rozumieniu
-art. 66 § 1 Kodeksu cywilnego. Informacji spoza tego dokumentu (numer działki,
-dokumentacja techniczna, konkretne wolne terminy) należy szukać w kontakcie
-telefonicznym pod numerem 503 444 134.
+art. 66 § 1 Kodeksu cywilnego. O informacje spoza tego dokumentu (numer
+działki, dokumentacja techniczna, wolne terminy prezentacji) należy pytać
+telefonicznie pod numerem 503 444 134.
