@@ -70,8 +70,9 @@ informacje faktycznie przekazane o budynku i lokalach.
 Mapy Google celowo nie ma na podstronach: polityka prywatności opisuje ją
 tylko w sekcji „Kontakt” strony głównej, więc zostaje sam link do trasy.
 
-Strona główna nie linkuje do podstron. Wyszukiwarki znajdują je przez mapę
-strony, `llms.txt`, stronę 404 i odnośniki między podstronami.
+Strona główna linkuje do podstron ze stopki i spod akapitu otwierającego
+sekcje ofert. Do tego mapa strony, `llms.txt`, strona 404 i odnośniki między
+podstronami.
 
 Każda podstrona ma pełny węzeł firmy (`#organizacja`: nazwa, telefon, adres,
 współrzędne, mapa) i węzeł miasta (`#sieradz`, z odnośnikiem do Wikipedii,

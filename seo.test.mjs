@@ -461,10 +461,13 @@ for (const path of SUBPAGES) {
   const selected = (html.match(/<option value="([^"]+)" selected>/) || [])[1]
   check(label + ': temat jak na stronie głównej', homeTopics.includes(selected), true)
   check(label + ': odnośniki do formularza na tej stronie', html.includes('href="/#kontakt"'), false)
+
+  // Strona główna prowadzi do podstrony
+  check('strona główna: odnośnik do ' + path, homepage.includes('href="' + path + '"'), true)
 }
 
 // Sformułowania, które audyt zdjęć uznał za nieprawdziwe
-for (const file of ['llms.txt', ...SUBPAGES.map(fileFor)]) {
+for (const file of ['index.html', 'llms.txt', ...SUBPAGES.map(fileFor)]) {
   const body = read(file).toLowerCase()
   for (const phrase of ['zadaszeni', 'bez schodów', 'witryn', 'gotowa do użytku', 'sala główna gotowa']) {
     check(file + ': bez „' + phrase + '”', body.includes(phrase), false)
