@@ -53,7 +53,7 @@
  * żądania, więc wartość poniżej jest tylko wartością zapasową na wypadek,
  * gdyby plik trafił do przeglądarki z pominięciem Workera.
  */
-const BASE_URL = 'https://nieruchomo-ci-chodkiewicza-2.pages.dev'
+const BASE_URL = 'https://chodkiewicza2.pl'
 
 /**
  * Jedyny adres, pod którym strona ma być indeksowana. Pod `www.` i po `http://`
@@ -732,6 +732,14 @@ export default {
      */
     if (res.status === 404 && request.method === 'GET' && !looksLikeFile(url.pathname)) {
       return Response.redirect(origin + '/', 302)
+    }
+
+    // Adresy robocze nie mają się indeksować — kanoniczny wskazuje domenę
+    // właściwą, a nagłówek zamyka drogę do wyboru kopii zamiast oryginału.
+    if (isPreviewHost(url.hostname)) {
+      const noindex = new Response(res.body, res)
+      noindex.headers.set('X-Robots-Tag', 'noindex, nofollow')
+      return noindex
     }
 
     return res

@@ -159,6 +159,6 @@ właściwą.
 
 W plikach HTML i w `llms.txt` adresy kanoniczny, Open Graph, linki i pola
 w danych strukturalnych są bezwzględne i wskazują na
-`https://nieruchomo-ci-chodkiewicza-2.pages.dev`. Worker podmienia ten adres
-na host bieżącego żądania. Przy zmianie domeny wystarczy więc poprawić
+`https://chodkiewicza2.pl`, czyli domenę właściwą. Worker podmienia ten adres
+na host bieżącego żądania, a na adresach roboczych dodaje `X-Robots-Tag: noindex`. Przy zmianie domeny trzeba poprawić `BASE_URL`, adresy w plikach i
 `CANONICAL_HOST`. Wartość `BASE_URL` w `worker.js` jest tylko zapasowa.

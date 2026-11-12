@@ -3,7 +3,7 @@ import { dirname, extname, join, posix } from 'path'
 import worker from './worker.js'
 
 const root = process.cwd()
-const BASE_URL = 'https://nieruchomo-ci-chodkiewicza-2.pages.dev'
+const BASE_URL = 'https://chodkiewicza2.pl'
 const SITE = 'https://chodkiewicza2.pl'
 
 const APARTMENT = '/apartament-na-sprzedaz-sieradz'
