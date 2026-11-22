@@ -174,7 +174,7 @@ const IMAGES = [
   ['apartament-salon-1200.webp', 'Apartament nr 4 — salon z aneksem kuchennym, wizualizacja aranżacji'],
   ['apartament-pokoj-3-1200.webp', 'Apartament nr 4 — sypialnia na poddaszu, wizualizacja aranżacji'],
   ['apartament-lazienka-1200.webp', 'Apartament nr 4 — łazienka, wizualizacja aranżacji'],
-  ['apartament-rzut-625.webp', 'Rzut poddasza — układ pomieszczeń apartamentu nr 4 o powierzchni 105 m²'],
+  ['apartament-rzut-v2-671.webp', 'Rzut poddasza — układ pomieszczeń apartamentu nr 4 o powierzchni 105 m²'],
   ['lokal1-sala-1-1200.webp', 'Lokal użytkowy nr 1 — otwarta sala główna o powierzchni 86 m²'],
   ['lokal1-sala-2-1200.webp', 'Lokal użytkowy nr 1 — druga część sali z oknami od strony ulicy'],
   ['lokal1-wejscie-1200.webp', 'Lokal użytkowy nr 1 — osobne wejście od ul. Zagłoby'],
@@ -197,7 +197,7 @@ const PAGES = [
     priority: '0.9',
     images: [
       ['budynek-zaglaby-1600.webp', 'Budynek przy ul. Chodkiewicza 2 w Sieradzu, w którym na II piętrze znajduje się apartament nr 4'],
-      ['apartament-rzut-625.webp', 'Rzut poddasza — układ pomieszczeń apartamentu nr 4 o powierzchni 105 m²'],
+      ['apartament-rzut-v2-671.webp', 'Rzut poddasza — układ pomieszczeń apartamentu nr 4 o powierzchni 105 m²'],
       ['apartament-salon-1200.webp', 'Apartament nr 4 — salon z aneksem kuchennym 30,5 m², wizualizacja aranżacji'],
       ['apartament-pokoj-3-1200.webp', 'Apartament nr 4 — sypialnia, wizualizacja aranżacji'],
       ['apartament-lazienka-1200.webp', 'Apartament nr 4 — łazienka, wizualizacja aranżacji'],

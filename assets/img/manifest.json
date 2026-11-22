@@ -233,19 +233,19 @@
     ]
   },
   "apartament-rzut": {
-    "w": 625,
-    "h": 741,
-    "ratio": 0.8435,
+    "w": 671,
+    "h": 804,
+    "ratio": 0.8346,
     "entries": [
       {
         "w": 480,
-        "file": "assets/img/apartament-rzut-480.webp",
-        "kb": 23
+        "file": "assets/img/apartament-rzut-v2-480.webp",
+        "kb": 29
       },
       {
-        "w": 625,
-        "file": "assets/img/apartament-rzut-625.webp",
-        "kb": 33
+        "w": 671,
+        "file": "assets/img/apartament-rzut-v2-671.webp",
+        "kb": 40
       }
     ]
   },
